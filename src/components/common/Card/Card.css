@@ -1,0 +1,20 @@
+.card {
+  width: 100%;
+  padding: 20px;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-card);
+}
+
+.card__title {
+  margin: 0 0 16px;
+
+  color: var(--color-text);
+
+  font-size: 18px;
+  font-weight: 700;
+}
