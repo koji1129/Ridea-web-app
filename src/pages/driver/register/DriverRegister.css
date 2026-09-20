@@ -1,0 +1,892 @@
+/* ========================================
+   Driver Register
+======================================== */
+
+/* ---------- Page ---------- */
+
+.driverRegister {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.driverRegister__container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+
+  margin: 0 auto;
+  padding: 0 20px 32px;
+
+  background: var(--color-surface);
+}
+
+
+/* ========================================
+   Header
+======================================== */
+
+.driverRegister__header {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72px;
+}
+
+.driverRegister__back {
+  position: absolute;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+}
+
+.driverRegister__back:hover {
+  background: var(--color-primary-light);
+}
+
+.driverRegister__logo {
+  color: #07539b;
+
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+
+/* ========================================
+   Register Steps
+======================================== */
+
+.registerSteps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  margin: 8px 0 32px;
+}
+
+.registerSteps__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-width: 90px;
+}
+
+.registerSteps__item span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  color: #ffffff;
+  background: #cbd5e1;
+
+  border-radius: 50%;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.registerSteps__item p {
+  margin: 7px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.registerSteps__item--active span {
+  background: var(--color-primary);
+}
+
+.registerSteps__item--active p {
+  color: var(--color-primary);
+}
+
+.registerSteps__item--completed span {
+  background: var(--color-primary);
+}
+
+.registerSteps__item--completed p {
+  color: var(--color-primary);
+}
+
+.registerSteps__item--completed svg {
+  color: #ffffff;
+}
+
+.registerSteps__line {
+  width: 70px;
+  height: 2px;
+
+  margin-top: 15px;
+
+  background: #dbe3ea;
+}
+
+.registerSteps__line--completed {
+  background: var(--color-primary);
+}
+
+
+/* ========================================
+   Register Main
+======================================== */
+
+.driverRegister__title {
+  margin: 0 0 8px;
+
+  color: #073b78;
+
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.driverRegister__description {
+  margin: 0 0 28px;
+
+  color: var(--color-text-secondary);
+
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.driverRegister__form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+
+/* ========================================
+   License Upload
+======================================== */
+
+.licenseUpload {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  padding: 20px;
+
+  background: #f8fcfd;
+
+  border: 1px solid #dceff2;
+  border-radius: var(--radius-lg);
+}
+
+.licenseUpload__heading {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.licenseUpload__heading h2 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.requiredBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px 7px;
+
+  color: #ffffff;
+  background: #ff6262;
+
+  border-radius: 5px;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.licenseUpload__description {
+  margin: 0;
+
+  color: var(--color-text-secondary);
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.licenseUpload__example {
+  display: block;
+
+  width: 100%;
+  max-width: 280px;
+  max-height: 170px;
+
+  margin: 4px auto;
+
+  object-fit: contain;
+}
+
+.licenseUpload__input {
+  display: none;
+}
+
+.licenseUpload__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  width: 100%;
+  min-height: 52px;
+
+  padding: 0 16px;
+
+  color: var(--color-primary);
+  background: #ffffff;
+
+  border: 1.5px dashed var(--color-primary);
+  border-radius: var(--radius-md);
+
+  font-size: 15px;
+  font-weight: 700;
+
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.licenseUpload__button:hover {
+  background: var(--color-primary-light);
+}
+
+.licenseUpload__button--selected {
+  background: #eef9f4;
+  border-style: solid;
+}
+
+.licenseUpload__fileName {
+  margin: 0;
+
+  color: var(--color-success);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-align: center;
+}
+
+
+/* ========================================
+   Register Notice
+======================================== */
+
+.driverRegister__notice {
+  padding: 14px 16px;
+
+  background: #eef8fc;
+
+  border-radius: var(--radius-md);
+}
+
+.driverRegister__notice p {
+  margin: 0;
+
+  color: #365f87;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.driverRegister__next {
+  margin-top: 4px;
+}
+
+
+/* ========================================
+   Confirm
+======================================== */
+
+.confirmSection {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+
+  padding: 20px;
+
+  background: #f8fcfd;
+
+  border: 1px solid #dceff2;
+  border-radius: var(--radius-lg);
+}
+
+.confirmSection__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.confirmSection__header h2 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.confirmSection__edit {
+  padding: 6px 8px;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-decoration: underline;
+}
+
+.confirmDocument {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 14px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.confirmDocument__imageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 76px;
+}
+
+.confirmDocument__image {
+  display: block;
+
+  width: 100%;
+  max-height: 80px;
+
+  object-fit: contain;
+}
+
+.confirmDocument__content {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.confirmDocument__title {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.confirmDocument__status {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  color: var(--color-success);
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* ========================================
+   Confirm Notice
+======================================== */
+
+.confirmNotice {
+  margin-top: 20px;
+  padding: 18px 20px;
+
+  background: #eef8fc;
+
+  border-radius: var(--radius-md);
+}
+
+.confirmNotice h2 {
+  margin: 0 0 12px;
+
+  color: #073b78;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.confirmNotice ul {
+  margin: 0;
+  padding-left: 20px;
+
+  color: #365f87;
+
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+
+/* ========================================
+   Agreement
+======================================== */
+
+.confirmAgreement {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+
+  margin: 22px 0;
+  padding: 16px;
+
+  color: var(--color-text);
+  background: #ffffff;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  font-size: 13px;
+  line-height: 1.7;
+
+  cursor: pointer;
+}
+
+.confirmAgreement input {
+  width: 20px;
+  height: 20px;
+
+  margin-top: 2px;
+
+  flex-shrink: 0;
+
+  accent-color: var(--color-primary);
+}
+
+.confirmAgreement__link {
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+
+  font-size: inherit;
+  font-weight: 700;
+
+  text-decoration: underline;
+}
+
+
+/* ========================================
+   Register Complete
+======================================== */
+
+.registerComplete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 48px;
+
+  text-align: center;
+}
+
+.registerComplete__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 96px;
+  height: 96px;
+
+  margin-bottom: 28px;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+
+  border-radius: 50%;
+}
+
+.registerComplete__title {
+  margin: 0 0 16px;
+
+  color: #073b78;
+
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.registerComplete__description {
+  margin: 0 0 30px;
+
+  color: var(--color-text-secondary);
+
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+
+/* ---------- Status ---------- */
+
+.registerComplete__status {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+
+  width: 100%;
+
+  margin-bottom: 20px;
+  padding: 18px;
+
+  background: #eef8fc;
+
+  border-radius: var(--radius-md);
+
+  text-align: left;
+}
+
+.registerComplete__statusIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  color: #087aa0;
+  background: #ffffff;
+
+  border-radius: 50%;
+}
+
+.registerComplete__statusTitle {
+  margin: 0 0 5px;
+
+  color: #073b78;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.registerComplete__statusText {
+  margin: 0;
+
+  color: #52708c;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* ---------- Notice ---------- */
+
+.registerComplete__notice {
+  width: 100%;
+
+  margin-bottom: 28px;
+  padding: 14px;
+
+  color: #52708c;
+  background: #fafcfd;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.registerComplete__notice p {
+  margin: 0;
+}
+
+
+/* ---------- Home ---------- */
+
+.registerComplete__homeButton {
+  width: 100%;
+
+  margin-top: 16px;
+}
+
+
+/* ========================================
+   Review Status - Common
+======================================== */
+
+.reviewStatus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 48px;
+
+  text-align: center;
+}
+
+.reviewStatus__image {
+  display: block;
+
+  width: 100px;
+  height: 100px;
+
+  margin-bottom: 26px;
+
+  object-fit: contain;
+}
+
+.reviewStatus__title {
+  margin: 0 0 16px;
+
+  color: #073b78;
+
+  font-size: 27px;
+  font-weight: 800;
+}
+
+.reviewStatus__description {
+  margin: 0 0 28px;
+
+  color: var(--color-text-secondary);
+
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+
+/* ---------- Review Info ---------- */
+
+.reviewStatus__info {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  width: 100%;
+
+  margin-bottom: 28px;
+  padding: 18px;
+
+  color: #17658a;
+  background: #eef8fc;
+
+  border-radius: var(--radius-md);
+
+  text-align: left;
+}
+
+.reviewStatus__info svg {
+  flex-shrink: 0;
+
+  margin-top: 1px;
+}
+
+.reviewStatus__info p {
+  margin: 0;
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.reviewStatus__home {
+  width: 100%;
+
+  margin-top: 4px;
+}
+
+
+/* ========================================
+   Review Approved
+======================================== */
+
+.reviewApproved__info {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  width: 100%;
+
+  margin-bottom: 28px;
+  padding: 18px;
+
+  color: #27745b;
+  background: #eefaf5;
+
+  border: 1px solid #d2eee1;
+  border-radius: var(--radius-md);
+
+  text-align: left;
+}
+
+.reviewApproved__info > svg {
+  flex-shrink: 0;
+
+  margin-top: 1px;
+
+  color: var(--color-success);
+}
+
+.reviewApproved__infoTitle {
+  margin: 0 0 5px;
+
+  color: #187052;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.reviewApproved__infoText {
+  margin: 0;
+
+  color: #477465;
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.reviewApproved__actions {
+  width: 100%;
+}
+
+.reviewApproved__home {
+  width: 100%;
+
+  margin-top: 14px;
+}
+
+
+/* ========================================
+   Review Rejected
+======================================== */
+
+.reviewRejected__actions {
+  width: 100%;
+}
+
+.reviewRejected__actions .button--secondary {
+  color: var(--color-primary);
+  background: #ffffff;
+
+  border: 1.5px solid var(--color-primary);
+}
+
+.reviewRejected__actions
+  .button--secondary:hover:not(:disabled) {
+  background: var(--color-primary-light);
+}
+
+.reviewRejected__home {
+  width: 100%;
+
+  margin-top: 14px;
+}
+
+
+/* ========================================
+   Responsive
+======================================== */
+
+@media (max-width: 520px) {
+  .driverRegister__container {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .driverRegister__title {
+    font-size: 26px;
+  }
+
+  .registerSteps__line {
+    width: 60px;
+  }
+
+  .licenseUpload {
+    padding: 16px;
+  }
+
+  .licenseUpload__example {
+    max-width: 240px;
+  }
+
+  .registerComplete {
+    padding-top: 32px;
+  }
+
+  .registerComplete__icon {
+    width: 84px;
+    height: 84px;
+  }
+
+  .registerComplete__title {
+    font-size: 25px;
+  }
+
+  .reviewStatus {
+    padding-top: 32px;
+  }
+
+  .reviewStatus__image {
+    width: 88px;
+    height: 88px;
+  }
+
+  .reviewStatus__title {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 420px) {
+  .confirmDocument {
+    grid-template-columns: 95px 1fr;
+
+    gap: 12px;
+  }
+}
