@@ -5,20 +5,29 @@ import {
   Routes,
 } from "react-router-dom";
 
-import DriverHomePage from "./pages/driver/DriverHomePage";
+import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* 最初にアクセスしたらログインへ */}
         <Route
           path="/"
-          element={<Navigate to="/driver" replace />}
+          element={<Navigate to="/login" replace />}
         />
 
+        {/* ログイン */}
         <Route
-          path="/driver"
-          element={<DriverHomePage />}
+          path="/login"
+          element={<LoginPage />}
+        />
+
+        {/* 新規登録 */}
+        <Route
+          path="/register"
+          element={<RegisterPage />}
         />
       </Routes>
     </BrowserRouter>
