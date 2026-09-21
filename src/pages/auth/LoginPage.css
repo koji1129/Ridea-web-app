@@ -15,7 +15,7 @@
   max-width: 390px;
   min-height: 100vh;
 
-  padding: 48px 27px 38px;
+  padding: 64px 27px 38px;
 
   background-color: #ffffff;
 }
@@ -28,19 +28,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  height: 86px;
+  background: url("../../assets/header_logo.png") center / contain no-repeat;
 }
 
+.login-logo > * { display: none; }
+
 .login-logo-mark {
-  width: 76px;
-  height: 62px;
+  width: 78px;
+  height: 66px;
 }
 
 .login-logo h1 {
-  margin: 4px 0 0;
+  margin: 8px 0 0;
 
   color: #102447;
 
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 800;
   line-height: 1;
 
@@ -52,14 +57,14 @@
 ========================= */
 
 .welcome-message {
-  margin-top: 46px;
-  margin-bottom: 28px;
+  margin-top: 44px;
+  margin-bottom: 44px;
 
   text-align: center;
 
   color: #152748;
 
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
 
   line-height: 1.45;
@@ -78,34 +83,34 @@
 }
 
 .form-group {
-  margin-bottom: 19px;
+  margin-bottom: 22px;
 }
 
 .form-group label {
   display: block;
 
-  margin-bottom: 7px;
+  margin-bottom: 9px;
 
   color: #43516c;
 
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
 }
 
 .form-group input {
   width: 100%;
-  height: 51px;
+  height: 58px;
 
   padding: 0 14px;
 
-  border: 1px solid #d8e0e8;
-  border-radius: 8px;
+  border: 2px solid #d7e5f3;
+  border-radius: 10px;
 
   background-color: #ffffff;
 
   color: #1c2c49;
 
-  font-size: 16px;
+  font-size: 18px;
 
   outline: none;
 
@@ -122,6 +127,52 @@
   border-color: #079ba8;
 
   box-shadow: 0 0 0 3px rgba(7, 155, 168, 0.1);
+}
+
+.form-group input.login-input-error {
+  border-color: #ef3340;
+}
+
+.login-error {
+  margin: 5px 0 0;
+  color: #ef3340;
+  font-size: 12px;
+}
+
+.account-type-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 58px;
+  border: 2px solid #d7e5f3;
+  border-radius: 10px;
+  color: #102445;
+}
+
+.account-type-icon {
+  flex: 0 0 auto;
+  margin-left: 25px;
+  color: #102f62;
+}
+
+.account-type-control select {
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  border: 0;
+  padding: 0 50px 0 22px;
+  background: transparent;
+  color: #102445;
+  font-size: 20px;
+  font-weight: 700;
+  outline: none;
+}
+
+.account-type-arrow {
+  position: absolute;
+  right: 22px;
+  pointer-events: none;
+  color: #102445;
 }
 
 /* =========================
@@ -169,18 +220,18 @@
 
 .login-button {
   width: 100%;
-  height: 56px;
+  height: 62px;
 
-  margin-top: 17px;
+  margin-top: 18px;
 
   border: none;
-  border-radius: 9px;
+  border-radius: 10px;
 
   background-color: #0799a5;
 
   color: #ffffff;
 
-  font-size: 19px;
+  font-size: 22px;
   font-weight: 700;
 
   cursor: pointer;
@@ -207,7 +258,7 @@
 ========================= */
 
 .login-links {
-  margin-top: 27px;
+  margin-top: 48px;
 
   text-align: center;
 }
@@ -219,7 +270,7 @@
 
   color: #238fe0;
 
-  font-size: 15px;
+  font-size: 19px;
   font-weight: 700;
 
   cursor: pointer;
@@ -233,7 +284,7 @@
   width: 100%;
   height: 1px;
 
-  margin: 22px 0;
+  margin: 30px 0;
 
   background-color: #edf0f3;
 }

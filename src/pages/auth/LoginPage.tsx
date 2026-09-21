@@ -1,20 +1,28 @@
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { ChevronDown, UserRound } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import UserPopup from "../../components/user/UserPopup";
 import "./LoginPage.css";
 
 function LoginPage() {
+  const navigate = useNavigate();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [accountType, setAccountType] = useState("user");
   const [showPassword, setShowPassword] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [showInputError, setShowInputError] = useState(false);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setSubmitted(true);
 
-    // 今は確認用
-    console.log("電話番号:", phoneNumber);
-    console.log("パスワード:", password);
+    if (!phoneNumber || !password) {
+      setShowInputError(true);
+      return;
+    }
 
-    // 後でここにログイン処理を書きます
+    navigate("/user/home");
   };
 
   return (
@@ -59,6 +67,22 @@ function LoginPage() {
 
         {/* 入力フォーム */}
         <form className="login-form" onSubmit={handleSubmit}>
+          <div className="form-group account-type-group">
+            <label htmlFor="accountType">アカウントの種類</label>
+            <div className="account-type-control">
+              <UserRound className="account-type-icon" size={26} aria-hidden="true" />
+              <select
+                id="accountType"
+                value={accountType}
+                onChange={(event) => setAccountType(event.target.value)}
+              >
+                <option value="user">利用者</option>
+                <option value="driver">ドライバー</option>
+              </select>
+              <ChevronDown className="account-type-arrow" size={27} aria-hidden="true" />
+            </div>
+          </div>
+
           <div className="form-group">
             <label htmlFor="phoneNumber">電話番号</label>
 
@@ -69,7 +93,9 @@ function LoginPage() {
               placeholder="09012345678"
               value={phoneNumber}
               onChange={(event) => setPhoneNumber(event.target.value)}
+              className={submitted && !phoneNumber ? "login-input-error" : ""}
             />
+            {submitted && !phoneNumber && <p className="login-error">電話番号を入力してください</p>}
           </div>
 
           <div className="form-group">
@@ -82,6 +108,7 @@ function LoginPage() {
                 placeholder="パスワードを入力"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
+                className={submitted && !password ? "login-input-error" : ""}
               />
 
               <button
@@ -125,6 +152,7 @@ function LoginPage() {
                 )}
               </button>
             </div>
+            {submitted && !password && <p className="login-error">パスワードを入力してください</p>}
           </div>
 
           <button className="login-button" type="submit">
@@ -134,19 +162,17 @@ function LoginPage() {
 
         {/* 下部リンク */}
         <div className="login-links">
-          <Link
-  to="/register"
-  className="text-link"
->
-  新規登録はこちら
-</Link>
+          <Link to="/register" className="text-link">
+            新規登録はこちら
+          </Link>
 
           <div className="login-divider" />
 
-          <button className="text-link" type="button">
+          <Link to="/reset-password" className="text-link">
             パスワードを忘れた方
-          </button>
+          </Link>
         </div>
+        <UserPopup variant="input-error" isOpen={showInputError} onClose={() => setShowInputError(false)} />
       </main>
     </div>
   );
