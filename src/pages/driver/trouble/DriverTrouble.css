@@ -1,0 +1,445 @@
+.driverTrouble {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.driverTrouble__container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #ffffff;
+}
+
+/* =========================
+   Header
+========================= */
+
+.driverTrouble__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72px;
+  padding: 0 60px;
+
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #edf1f3;
+}
+
+.driverTrouble__header h1 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.driverTrouble__back {
+  position: absolute;
+  left: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+}
+
+.driverTrouble__back:hover {
+  background: var(--color-primary-light);
+}
+
+.driverTrouble__back:active {
+  transform: scale(0.96);
+}
+
+/* =========================
+   Main
+========================= */
+
+.driverTrouble__main {
+  padding: 22px 20px 45px;
+}
+
+/* =========================
+   Hero
+========================= */
+
+.driverTroubleHero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin-bottom: 13px;
+  padding: 18px;
+
+  background: #fff8ea;
+
+  border: 1px solid #f0dfb9;
+  border-radius: var(--radius-lg);
+}
+
+.driverTroubleHero__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 52px;
+  height: 52px;
+
+  flex-shrink: 0;
+
+  color: #b77715;
+  background: #ffffff;
+
+  border-radius: 50%;
+}
+
+.driverTroubleHero h2 {
+  margin: 0 0 4px;
+
+  color: #72501a;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.driverTroubleHero p {
+  margin: 0;
+
+  color: #8a7758;
+
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+/* =========================
+   Safety
+========================= */
+
+.driverTrouble__safety {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  margin-bottom: 28px;
+  padding: 12px 13px;
+
+  color: #536f7d;
+  background: #eef7fa;
+
+  border-radius: var(--radius-md);
+}
+
+.driverTrouble__safety svg {
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.driverTrouble__safety p {
+  margin: 0;
+
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+/* =========================
+   Section
+========================= */
+
+.driverTrouble__section {
+  margin-bottom: 25px;
+}
+
+.driverTrouble__section > h2 {
+  margin: 0 0 9px;
+
+  color: #073b78;
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.driverTroubleList {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe9ed;
+  border-radius: var(--radius-md);
+}
+
+/* =========================
+   Trouble Item
+========================= */
+
+.driverTroubleItem {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 11px;
+
+  width: 100%;
+  min-height: 76px;
+
+  padding: 13px 14px;
+
+  color: inherit;
+  background: #ffffff;
+
+  border: none;
+  border-bottom: 1px solid #edf2f4;
+
+  text-align: left;
+
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+}
+
+.driverTroubleItem:last-child {
+  border-bottom: none;
+}
+
+.driverTroubleItem:hover {
+  background: #f8fbfc;
+}
+
+.driverTroubleItem:active {
+  transform: scale(0.99);
+}
+
+.driverTroubleItem__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  color: #a86f19;
+  background: #fff5e4;
+
+  border-radius: 11px;
+}
+
+.driverTroubleItem__content {
+  min-width: 0;
+}
+
+.driverTroubleItem__content strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #294a63;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.driverTroubleItem__content span {
+  display: block;
+
+  color: #85949f;
+
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.driverTroubleItem__arrow {
+  flex-shrink: 0;
+  color: #94a3ad;
+}
+
+/* =========================
+   Danger Item
+========================= */
+
+.driverTroubleItem--danger {
+  background: #fffafa;
+}
+
+.driverTroubleItem--danger:hover {
+  background: #fff5f5;
+}
+
+.driverTroubleItem--danger
+  .driverTroubleItem__icon {
+  color: #c55259;
+  background: #fdecee;
+}
+
+.driverTroubleItem--danger
+  .driverTroubleItem__content strong {
+  color: #a43e46;
+}
+
+.driverTroubleItem--danger
+  .driverTroubleItem__arrow {
+  color: #c77b80;
+}
+
+/* =========================
+   Emergency
+========================= */
+
+.driverTrouble__emergency {
+  margin-bottom: 14px;
+  padding: 16px;
+
+  background: #fff2f3;
+
+  border: 1px solid #f1cfd2;
+  border-radius: var(--radius-md);
+}
+
+.driverTrouble__emergencyHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 10px;
+}
+
+.driverTrouble__emergencyIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  color: var(--color-danger);
+  background: #ffffff;
+
+  border-radius: 50%;
+}
+
+.driverTrouble__emergencyHeader strong {
+  display: block;
+
+  color: #a33b43;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.driverTrouble__emergencyHeader span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #a66c71;
+
+  font-size: 9px;
+}
+
+.driverTrouble__emergency > p {
+  margin: 0;
+
+  color: #8f6266;
+
+  font-size: 9px;
+  line-height: 1.8;
+}
+
+/* =========================
+   Support
+========================= */
+
+.driverTrouble__support {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 9px;
+
+  width: 100%;
+  min-height: 64px;
+
+  padding: 14px 15px;
+
+  color: inherit;
+  background: #f0f8fa;
+
+  border: 1px solid #d2e6ea;
+  border-radius: var(--radius-md);
+
+  text-align: left;
+
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+}
+
+.driverTrouble__support:hover {
+  background: #e7f5f7;
+}
+
+.driverTrouble__support:active {
+  transform: scale(0.99);
+}
+
+.driverTrouble__support > svg:first-child {
+  color: var(--color-primary);
+}
+
+.driverTrouble__support strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #195b69;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.driverTrouble__support span {
+  display: block;
+
+  color: #758b96;
+
+  font-size: 9px;
+}
+
+.driverTrouble__support > svg:last-child {
+  color: #7e98a0;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 420px) {
+  .driverTrouble__main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .driverTroubleHero {
+    padding: 16px;
+  }
+
+  .driverTroubleItem {
+    grid-template-columns: 42px 1fr auto;
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+}

@@ -1,0 +1,322 @@
+.driverSettings {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.driverSettings__container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  background: #ffffff;
+}
+
+
+/* Header */
+
+.driverSettings__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-bottom: 1px solid #edf1f3;
+}
+
+.driverSettings__header h1 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.driverSettings__back {
+  position: absolute;
+  left: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+}
+
+.driverSettings__back:hover {
+  background: var(--color-primary-light);
+}
+
+
+/* Main */
+
+.driverSettings__main {
+  padding: 24px 20px 48px;
+}
+
+
+/* Section */
+
+.driverSettings__section {
+  margin-bottom: 28px;
+}
+
+.driverSettings__sectionTitle {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-bottom: 11px;
+}
+
+.driverSettings__sectionTitle > svg {
+  margin-top: 1px;
+
+  color: var(--color-primary);
+}
+
+.driverSettings__sectionTitle h2 {
+  margin: 0 0 2px;
+
+  color: #073b78;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.driverSettings__sectionTitle p {
+  margin: 0;
+
+  color: #84939f;
+
+  font-size: 9px;
+}
+
+
+/* Card */
+
+.settingsCard {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe9ed;
+  border-radius: var(--radius-md);
+
+  box-shadow: 0 1px 4px
+    rgba(0, 0, 0, 0.025);
+}
+
+
+/* Toggle */
+
+.settingsToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  min-height: 70px;
+
+  padding: 13px 15px;
+
+  border-bottom: 1px solid #edf2f4;
+}
+
+.settingsToggle:last-child {
+  border-bottom: none;
+}
+
+.settingsToggle__content {
+  min-width: 0;
+}
+
+.settingsToggle__content strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #294a63;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.settingsToggle__content span {
+  display: block;
+
+  color: #8796a2;
+
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+
+/* Switch */
+
+.settingsToggle__switch {
+  position: relative;
+
+  width: 46px;
+  height: 26px;
+
+  flex-shrink: 0;
+
+  padding: 0;
+
+  background: #cfd9de;
+
+  border: none;
+  border-radius: 999px;
+
+  transition: background 0.2s;
+}
+
+.settingsToggle__switch > span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+
+  width: 20px;
+  height: 20px;
+
+  background: #ffffff;
+
+  border-radius: 50%;
+
+  box-shadow: 0 1px 4px
+    rgba(0, 0, 0, 0.18);
+
+  transition: transform 0.2s;
+}
+
+.settingsToggle__switch--active {
+  background: var(--color-primary);
+}
+
+.settingsToggle__switch--active > span {
+  transform: translateX(20px);
+}
+
+
+/* Link */
+
+.settingsLink {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+
+  gap: 10px;
+
+  width: 100%;
+  min-height: 64px;
+
+  padding: 11px 14px;
+
+  color: inherit;
+  background: #ffffff;
+
+  border: none;
+  border-bottom: 1px solid #edf2f4;
+
+  text-align: left;
+}
+
+.settingsLink:last-child {
+  border-bottom: none;
+}
+
+.settingsLink:hover {
+  background: #f8fbfc;
+}
+
+.settingsLink__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+
+  border-radius: 10px;
+}
+
+.settingsLink__content strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #294a63;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.settingsLink__content span {
+  display: block;
+
+  color: #8796a2;
+
+  font-size: 9px;
+}
+
+.settingsLink__arrow {
+  color: #92a2ad;
+}
+
+
+/* Version */
+
+.driverSettings__version {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 3px;
+
+  margin-top: 35px;
+
+  color: #9aa8b1;
+}
+
+.driverSettings__version strong {
+  color: #73939b;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.driverSettings__version span {
+  font-size: 9px;
+}
+
+
+@media (max-width: 420px) {
+  .driverSettings__main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}

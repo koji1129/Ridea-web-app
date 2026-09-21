@@ -1,0 +1,413 @@
+.notificationDetail {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.notificationDetail__container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  background: #ffffff;
+}
+
+/* Header */
+
+.notificationDetail__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72px;
+  padding: 0 60px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-bottom: 1px solid #edf1f3;
+}
+
+.notificationDetail__header h1 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.notificationDetail__back {
+  position: absolute;
+  left: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+}
+
+.notificationDetail__back:hover {
+  background: var(--color-primary-light);
+}
+
+/* Main */
+
+.notificationDetail__main {
+  padding: 24px 20px 45px;
+}
+
+/* Hero */
+
+.notificationDetailHero {
+  padding-bottom: 22px;
+
+  border-bottom: 1px solid #e8eef1;
+}
+
+.notificationDetailHero__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 54px;
+
+  margin-bottom: 14px;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+
+  border-radius: 14px;
+}
+
+.notificationDetailHero__icon--cancel {
+  color: #c05259;
+  background: #fdecee;
+}
+
+.notificationDetailHero__icon--approval {
+  color: #278068;
+  background: #e8f7f1;
+}
+
+.notificationDetailHero__icon--notice {
+  color: #a66c16;
+  background: #fff5e3;
+}
+
+.notificationDetailHero__label {
+  display: inline-block;
+
+  margin-bottom: 8px;
+  padding: 4px 8px;
+
+  color: #167182;
+  background: #e8f5f7;
+
+  border-radius: 999px;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.notificationDetailHero__label--cancel {
+  color: #a33d45;
+  background: #fdecee;
+}
+
+.notificationDetailHero__label--approval {
+  color: #28775f;
+  background: #e8f7f1;
+}
+
+.notificationDetailHero__label--notice {
+  color: #936116;
+  background: #fff4df;
+}
+
+.notificationDetailHero h2 {
+  margin: 0 0 9px;
+
+  color: #24465e;
+
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+.notificationDetailHero__date {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #8797a1;
+
+  font-size: 9px;
+}
+
+/* Body */
+
+.notificationDetailBody {
+  padding: 21px 0;
+}
+
+.notificationDetailBody p {
+  margin: 0 0 13px;
+
+  color: #536d7c;
+
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.notificationDetailBody p:last-child {
+  margin-bottom: 0;
+}
+
+/* Operation */
+
+.notificationOperation {
+  margin-bottom: 18px;
+  padding: 17px;
+
+  background: #f7fafb;
+
+  border: 1px solid #e1e9ed;
+  border-radius: var(--radius-md);
+}
+
+.notificationOperation__title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 15px;
+
+  color: var(--color-primary);
+}
+
+.notificationOperation__title h2 {
+  margin: 0;
+
+  color: #234d63;
+
+  font-size: 13px;
+}
+
+.notificationOperation__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 8px 0;
+
+  border-bottom: 1px solid #e8eef1;
+}
+
+.notificationOperation__row span {
+  color: #83939e;
+  font-size: 9px;
+}
+
+.notificationOperation__row strong {
+  color: #36566a;
+  font-size: 10px;
+}
+
+.notificationOperation__route {
+  margin-top: 15px;
+}
+
+.notificationOperation__place {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+
+  gap: 8px;
+
+  color: var(--color-primary);
+}
+
+.notificationOperation__place span {
+  display: block;
+
+  color: #8999a3;
+
+  font-size: 8px;
+}
+
+.notificationOperation__place strong {
+  display: block;
+
+  margin-top: 1px;
+
+  color: #34566a;
+
+  font-size: 10px;
+}
+
+.notificationOperation__dot {
+  width: 11px;
+  height: 11px;
+
+  margin-left: 3px;
+
+  background: var(--color-primary);
+
+  border: 3px solid #d9f0f3;
+  border-radius: 50%;
+}
+
+.notificationOperation__line {
+  width: 2px;
+  height: 21px;
+
+  margin: 3px 0 3px 7px;
+
+  background: #cbdde1;
+}
+
+/* Notice */
+
+.notificationDetailNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  margin-bottom: 18px;
+  padding: 13px;
+
+  color: #566f7c;
+  background: #eef7fa;
+
+  border-radius: var(--radius-md);
+}
+
+.notificationDetailNotice svg {
+  flex-shrink: 0;
+
+  color: var(--color-primary);
+}
+
+.notificationDetailNotice p {
+  margin: 0;
+
+  font-size: 9px;
+  line-height: 1.7;
+}
+
+.notificationDetailNotice--warning {
+  color: #755e32;
+  background: #fff8e9;
+}
+
+.notificationDetailNotice--warning svg {
+  color: #b57b1e;
+}
+
+.notificationDetailNotice--success {
+  color: #396d5e;
+  background: #eaf7f2;
+}
+
+.notificationDetailNotice--success svg {
+  color: #2e8b6e;
+}
+
+/* Buttons */
+
+.notificationDetail__primary {
+  width: 100%;
+  min-height: 52px;
+
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border: none;
+  border-radius: var(--radius-md);
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.notificationDetail__secondary {
+  width: 100%;
+
+  margin-top: 8px;
+  padding: 12px;
+
+  color: #708591;
+  background: transparent;
+
+  border: none;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* Not found */
+
+.notificationDetailNotFound {
+  padding: 70px 20px;
+
+  color: #83949e;
+
+  text-align: center;
+}
+
+.notificationDetailNotFound > svg {
+  margin-bottom: 12px;
+
+  color: #9aabb4;
+}
+
+.notificationDetailNotFound h2 {
+  margin: 0 0 7px;
+
+  color: #36566a;
+
+  font-size: 16px;
+}
+
+.notificationDetailNotFound p {
+  margin: 0 0 20px;
+
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.notificationDetailNotFound button {
+  min-height: 46px;
+  padding: 0 20px;
+
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border: none;
+  border-radius: var(--radius-md);
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+@media (max-width: 420px) {
+  .notificationDetail__main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}

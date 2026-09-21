@@ -1,0 +1,468 @@
+.driverRevenue {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.driverRevenue__container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--color-surface);
+}
+
+
+/* Header */
+
+.driverRevenue__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72px;
+  padding: 0 20px;
+
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #edf1f3;
+}
+
+.driverRevenue__header h1 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.driverRevenue__back {
+  position: absolute;
+  left: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+}
+
+.driverRevenue__back:hover {
+  background: var(--color-primary-light);
+}
+
+
+/* Main */
+
+.driverRevenue__main {
+  padding: 22px 20px 40px;
+}
+
+
+/* Month */
+
+.driverRevenue__month {
+  display: grid;
+  grid-template-columns: 42px 1fr 42px;
+  align-items: center;
+
+  margin-bottom: 18px;
+}
+
+.driverRevenue__month strong {
+  color: #073b78;
+
+  font-size: 18px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.driverRevenue__month button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+}
+
+.driverRevenue__month button:hover {
+  background: var(--color-primary-light);
+}
+
+
+/* Main revenue */
+
+.revenueMainCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-bottom: 13px;
+  padding: 25px 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eaf9f7,
+      #f5fcfd
+    );
+
+  border: 1px solid #d1ebe7;
+  border-radius: var(--radius-lg);
+}
+
+.revenueMainCard__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  margin-bottom: 9px;
+
+  color: #16836c;
+  background: #d9f2ea;
+
+  border-radius: 50%;
+}
+
+.revenueMainCard > span {
+  margin-bottom: 3px;
+
+  color: #678278;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.revenueMainCard > strong {
+  color: #13745e;
+
+  font-size: 35px;
+  font-weight: 800;
+}
+
+.revenueMainCard > p {
+  margin: 5px 0 0;
+
+  color: #7b9189;
+
+  font-size: 10px;
+}
+
+
+/* Stats */
+
+.revenueStats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 11px;
+
+  margin-bottom: 27px;
+}
+
+.revenueStats__item {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 15px;
+
+  background: #ffffff;
+
+  border: 1px solid #dce8ed;
+  border-radius: var(--radius-md);
+}
+
+.revenueStats__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+
+  border-radius: 50%;
+}
+
+.revenueStats__item span {
+  display: block;
+
+  color: #778b9b;
+
+  font-size: 10px;
+}
+
+.revenueStats__item strong {
+  color: #073b78;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.revenueStats__item small {
+  margin-left: 2px;
+
+  font-size: 11px;
+}
+
+
+/* History */
+
+.revenueHistory__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 12px;
+}
+
+.revenueHistory__heading h2 {
+  margin: 0 0 2px;
+
+  color: #073b78;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.revenueHistory__heading p {
+  margin: 0;
+
+  color: #81909c;
+
+  font-size: 10px;
+}
+
+.revenueHistory__heading > span {
+  padding: 4px 9px;
+
+  color: #60798e;
+  background: #edf4f6;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.revenueHistory__list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 11px;
+}
+
+
+/* Record */
+
+.revenueRecord {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #dce8ed;
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-card);
+}
+
+.revenueRecord__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 14px 16px;
+
+  border-bottom: 1px solid #edf2f4;
+}
+
+.revenueRecord__header > div {
+  display: flex;
+  align-items: baseline;
+
+  gap: 7px;
+}
+
+.revenueRecord__header > div strong {
+  color: #073b78;
+
+  font-size: 14px;
+}
+
+.revenueRecord__header > div span {
+  color: #718596;
+
+  font-size: 11px;
+}
+
+.revenueRecord__amount {
+  color: #16806a;
+
+  font-size: 17px;
+  font-weight: 800;
+}
+
+
+/* Route */
+
+.revenueRecord__route {
+  padding: 13px 16px;
+}
+
+.revenueRecord__route > div:not(
+    .revenueRecord__line
+  ) {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.revenueRecord__marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 26px;
+  height: 26px;
+
+  border-radius: 50%;
+}
+
+.revenueRecord__marker--pickup {
+  color: #17836c;
+  background: #e5f7f1;
+}
+
+.revenueRecord__marker--destination {
+  color: #2872ad;
+  background: #e8f2fb;
+}
+
+.revenueRecord__route p {
+  margin: 0;
+
+  color: #334e64;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.revenueRecord__line {
+  width: 2px;
+  height: 9px;
+
+  margin: 2px 0 2px 12px;
+
+  background: #ccdde4;
+}
+
+
+/* Footer */
+
+.revenueRecord__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 16px;
+
+  background: #f8fbfc;
+
+  border-top: 1px solid #edf2f4;
+
+  font-size: 10px;
+}
+
+.revenueRecord__footer > div {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+}
+
+.revenueRecord__footer > div:first-child {
+  color: #61798d;
+}
+
+.revenueRecord__paid {
+  color: #178067;
+
+  font-weight: 700;
+}
+
+
+/* Notice */
+
+.driverRevenue__notice {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-top: 18px;
+  padding: 14px;
+
+  color: #55778a;
+  background: #eef8fc;
+
+  border-radius: var(--radius-md);
+}
+
+.driverRevenue__notice svg {
+  flex-shrink: 0;
+
+  color: var(--color-primary);
+}
+
+.driverRevenue__notice p {
+  margin: 0;
+
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+
+@media (max-width: 420px) {
+  .driverRevenue__main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .revenueMainCard > strong {
+    font-size: 31px;
+  }
+
+  .revenueStats__item {
+    padding: 12px;
+  }
+}
