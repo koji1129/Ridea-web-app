@@ -1,0 +1,307 @@
+.login-page {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+
+  background-color: #f3f5f7;
+
+  color: #102445;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 390px;
+  min-height: 100vh;
+
+  padding: 64px 27px 38px;
+
+  background-color: #ffffff;
+}
+
+/* =========================
+   ロゴ
+========================= */
+
+.login-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 86px;
+  background: url("../../assets/header_logo.png") center / contain no-repeat;
+}
+
+.login-logo > * { display: none; }
+
+.login-logo-mark {
+  width: 78px;
+  height: 66px;
+}
+
+.login-logo h1 {
+  margin: 8px 0 0;
+
+  color: #102447;
+
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+
+  letter-spacing: 1px;
+}
+
+/* =========================
+   ようこそ
+========================= */
+
+.welcome-message {
+  margin-top: 44px;
+  margin-bottom: 44px;
+
+  text-align: center;
+
+  color: #152748;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  line-height: 1.45;
+}
+
+.welcome-message p {
+  margin: 0;
+}
+
+/* =========================
+   フォーム
+========================= */
+
+.login-form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #43516c;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.form-group input {
+  width: 100%;
+  height: 58px;
+
+  padding: 0 14px;
+
+  border: 2px solid #d7e5f3;
+  border-radius: 10px;
+
+  background-color: #ffffff;
+
+  color: #1c2c49;
+
+  font-size: 18px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder {
+  color: #a0a9b8;
+}
+
+.form-group input:focus {
+  border-color: #079ba8;
+
+  box-shadow: 0 0 0 3px rgba(7, 155, 168, 0.1);
+}
+
+.form-group input.login-input-error {
+  border-color: #ef3340;
+}
+
+.login-error {
+  margin: 5px 0 0;
+  color: #ef3340;
+  font-size: 12px;
+}
+
+.account-type-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 58px;
+  border: 2px solid #d7e5f3;
+  border-radius: 10px;
+  color: #102445;
+}
+
+.account-type-icon {
+  flex: 0 0 auto;
+  margin-left: 25px;
+  color: #102f62;
+}
+
+.account-type-control select {
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  border: 0;
+  padding: 0 50px 0 22px;
+  background: transparent;
+  color: #102445;
+  font-size: 20px;
+  font-weight: 700;
+  outline: none;
+}
+
+.account-type-arrow {
+  position: absolute;
+  right: 22px;
+  pointer-events: none;
+  color: #102445;
+}
+
+/* =========================
+   パスワード
+========================= */
+
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-input-wrapper input {
+  padding-right: 52px;
+}
+
+.password-toggle {
+  position: absolute;
+
+  top: 50%;
+  right: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #52627e;
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+}
+
+.password-toggle:hover {
+  color: #079ba8;
+}
+
+/* =========================
+   ログインボタン
+========================= */
+
+.login-button {
+  width: 100%;
+  height: 62px;
+
+  margin-top: 18px;
+
+  border: none;
+  border-radius: 10px;
+
+  background-color: #0799a5;
+
+  color: #ffffff;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  box-shadow: 0 3px 8px rgba(0, 130, 140, 0.15);
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.login-button:hover {
+  background-color: #078994;
+}
+
+.login-button:active {
+  transform: scale(0.99);
+}
+
+/* =========================
+   下のリンク
+========================= */
+
+.login-links {
+  margin-top: 48px;
+
+  text-align: center;
+}
+
+.text-link {
+  border: none;
+
+  background: transparent;
+
+  color: #238fe0;
+
+  font-size: 19px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
+.login-divider {
+  width: 100%;
+  height: 1px;
+
+  margin: 30px 0;
+
+  background-color: #edf0f3;
+}
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 480px) {
+  .login-page {
+    background-color: #ffffff;
+  }
+
+  .login-container {
+    max-width: none;
+
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
