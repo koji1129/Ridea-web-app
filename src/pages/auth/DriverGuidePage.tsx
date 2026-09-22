@@ -14,22 +14,13 @@ function DriverGuidePage() {
   };
 
   const handleStartAsUser = () => {
-    navigate("/home");
+    navigate("/user/home");
   };
 
   return (
     <div className="driverGuide">
       <div className="driverGuide__container">
         <header className="driverGuide__header">
-          <button
-            type="button"
-            className="driverGuide__back"
-            onClick={() => navigate(-1)}
-            aria-label="戻る"
-          >
-            <ChevronLeft size={30} />
-          </button>
-
           <div className="driverGuide__logo">
             YORIAI
           </div>

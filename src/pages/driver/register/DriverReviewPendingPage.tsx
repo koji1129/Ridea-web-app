@@ -51,7 +51,7 @@ function DriverReviewPendingPage() {
           {/* 利用者ホーム */}
           <div className="reviewStatus__home">
             <HomeButton
-              to="/home"
+              to="/user/home"
               label="利用者ホームへ戻る"
             />
           </div>

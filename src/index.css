@@ -2,6 +2,22 @@
   box-sizing: border-box;
 }
 
+:root {
+  --app-max-width: 430px;
+
+  --color-background: #f3f5f7;
+  --color-surface: #ffffff;
+
+  --color-primary: #0797a5;
+  --color-primary-dark: #078994;
+
+  --color-text: #102d55;
+  --color-text-sub: #607795;
+
+  --color-border: #cddfed;
+  --color-error: #ef3340;
+}
+
 html,
 body,
 #root {
@@ -25,16 +41,131 @@ body {
     "Yu Gothic",
     sans-serif;
 
-  background-color: #f3f5f7;
+  background-color: var(--color-background);
+  color: var(--color-text);
 
   -webkit-font-smoothing: antialiased;
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 a {
   color: inherit;
+}
+/* =========================
+   共通モーダル
+========================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(16, 45, 85, 0.58);
+}
+
+.modal {
+  position: relative;
+
+  width: 100%;
+  max-width: 390px;
+  max-height: 80vh;
+
+  padding: 28px 20px 20px;
+
+  overflow-y: auto;
+
+  border-radius: 12px;
+
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.modal__title {
+  margin: 0 40px 22px 0;
+
+  color: var(--color-text);
+
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.modal__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  display: grid;
+  place-items: center;
+
+  width: 44px;
+  height: 44px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: transparent;
+  color: var(--color-text);
+
+  cursor: pointer;
+}
+
+.modal__close:hover {
+  background: #f0f7fa;
+}
+
+.modal__content {
+  margin-bottom: 24px;
+}
+
+.modal__content h3 {
+  margin: 26px 0 9px;
+
+  color: #173964;
+
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.6;
+}
+
+.modal__content h3:first-child {
+  margin-top: 0;
+}
+
+.modal__content p {
+  margin: 0;
+
+  color: var(--color-text-sub);
+
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+@media (max-width: 480px) {
+  .modal-backdrop {
+    padding: 16px;
+  }
+
+  .modal {
+    max-width: 100%;
+    max-height: 85vh;
+  }
 }

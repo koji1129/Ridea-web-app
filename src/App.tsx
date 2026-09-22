@@ -65,7 +65,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* 共通・利用者 */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Navigate to="/register" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/reset-password" element={<PasswordResetPage />} />
