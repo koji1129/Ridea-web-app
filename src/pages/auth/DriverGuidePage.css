@@ -1,0 +1,220 @@
+.driverGuide {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.driverGuide__container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+
+  margin: 0 auto;
+  padding: 0 20px 28px;
+
+  background: var(--color-surface);
+}
+
+/* Header */
+
+.driverGuide__header {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72px;
+}
+
+.driverGuide__back {
+  position: absolute;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  padding: 0;
+
+  color: #0759b7;
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+}
+
+.driverGuide__back:hover {
+  background: #edf7fb;
+}
+
+.driverGuide__logo {
+  color: #07539b;
+
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* Main */
+
+.driverGuide__main {
+  display: flex;
+  flex-direction: column;
+
+  min-height: calc(100vh - 100px);
+}
+
+/* Intro */
+
+.driverGuide__intro {
+  text-align: center;
+}
+
+.driverGuide__title {
+  margin: 20px 0 12px;
+
+  color: #073b78;
+
+  font-size: 29px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.driverGuide__lead {
+  margin: 0;
+
+  color: #174d82;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.75;
+}
+
+/* Illustration */
+
+.driverGuide__illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  margin: 20px 0 24px;
+}
+
+.driverGuide__carImage {
+  display: block;
+
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+
+  object-fit: contain;
+}
+
+/* Benefits */
+
+.driverGuide__benefits {
+  display: flex;
+  flex-direction: column;
+
+  gap: 15px;
+
+  padding: 20px;
+
+  background: #eef9fd;
+
+  border-radius: var(--radius-md);
+}
+
+.driverGuide__benefit {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  color: #123e72;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.driverGuide__benefit svg {
+  flex-shrink: 0;
+
+  color: #069cad;
+}
+
+/* Notice */
+
+.driverGuide__notice {
+  margin: 24px 0;
+
+  color: #365f87;
+
+  font-size: 14px;
+  line-height: 1.7;
+
+  text-align: center;
+}
+
+/* Actions */
+
+.driverGuide__actions {
+  margin-top: auto;
+}
+
+.driverGuide__separator {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  gap: 14px;
+
+  margin: 12px 0;
+}
+
+.driverGuide__separator span {
+  height: 1px;
+  background: #cfe2ec;
+}
+
+.driverGuide__separator p {
+  margin: 0;
+
+  color: #16869c;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.driverGuide__actions .button--secondary {
+  color: var(--color-primary);
+  background: #ffffff;
+
+  border: 1.5px solid var(--color-primary);
+}
+
+.driverGuide__actions .button--secondary:hover:not(:disabled) {
+  background: var(--color-primary-light);
+}
+
+/* Smartphone */
+
+@media (max-width: 520px) {
+  .driverGuide__container {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .driverGuide__title {
+    font-size: 26px;
+  }
+
+  .driverGuide__carImage {
+    max-width: 360px;
+  }
+}

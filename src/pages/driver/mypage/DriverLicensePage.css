@@ -1,0 +1,341 @@
+.driverLicensePage {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.driverLicensePage__container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  background: #ffffff;
+}
+
+/* Header */
+
+.driverLicensePage__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72px;
+  padding: 0 60px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-bottom: 1px solid #edf1f3;
+}
+
+.driverLicensePage__header h1 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.driverLicensePage__back {
+  position: absolute;
+  left: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.driverLicensePage__back:hover {
+  background: var(--color-primary-light);
+}
+
+/* Main */
+
+.driverLicensePage__main {
+  padding: 24px 20px 110px;
+}
+
+/* Status */
+
+.driverLicenseStatus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-bottom: 30px;
+  padding: 27px 20px;
+
+  background: #f5fbfc;
+
+  border: 1px solid #d9edf1;
+  border-radius: 16px;
+
+  text-align: center;
+}
+
+.driverLicenseStatus__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  height: 64px;
+
+  margin-bottom: 12px;
+
+  color: var(--color-primary);
+  background: #e1f4f6;
+
+  border-radius: 50%;
+}
+
+.driverLicenseStatus > span {
+  margin-bottom: 7px;
+
+  color: #728794;
+
+  font-size: 11px;
+}
+
+.driverLicenseStatus__approved {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #19846e;
+
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.driverLicenseStatus p {
+  margin: 7px 0 0;
+
+  color: #84959f;
+
+  font-size: 10px;
+}
+
+/* Section */
+
+.driverLicensePage__section {
+  margin-bottom: 27px;
+}
+
+.driverLicensePage__section > h2 {
+  margin: 0 0 11px;
+
+  color: #073b78;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+/* Information */
+
+.driverLicenseInfo {
+  overflow: hidden;
+
+  border: 1px solid #dce8ed;
+  border-radius: 14px;
+}
+
+.driverLicenseInfo__row {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 15px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #edf2f4;
+}
+
+.driverLicenseInfo__row:last-child {
+  border-bottom: none;
+}
+
+.driverLicenseInfo__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+
+  border-radius: 10px;
+}
+
+.driverLicenseInfo__content {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.driverLicenseInfo__content span {
+  color: #83949e;
+
+  font-size: 9px;
+}
+
+.driverLicenseInfo__content strong {
+  color: #36566a;
+
+  font-size: 12px;
+}
+
+/* Images */
+
+.driverLicenseImages {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 10px;
+}
+
+.driverLicenseImage {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #dce8ed;
+  border-radius: 14px;
+}
+
+.driverLicenseImage__preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 95px;
+
+  color: #78a5b2;
+  background: #f2f8fa;
+}
+
+.driverLicenseImage__content {
+  padding: 12px;
+}
+
+.driverLicenseImage__content > span {
+  display: block;
+
+  color: #8798a2;
+
+  font-size: 8px;
+}
+
+.driverLicenseImage__content > strong {
+  display: block;
+
+  margin: 2px 0 7px;
+
+  color: #36566a;
+
+  font-size: 12px;
+}
+
+.driverLicenseImage__registered {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  color: #21846d;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+/* Warning */
+
+.driverLicenseWarning {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-bottom: 18px;
+  padding: 14px;
+
+  color: #765e2f;
+  background: #fff8e8;
+
+  border: 1px solid #f2e3bd;
+  border-radius: 12px;
+}
+
+.driverLicenseWarning svg {
+  flex-shrink: 0;
+
+  color: #b57b1e;
+}
+
+.driverLicenseWarning p {
+  margin: 0;
+
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+/* Update */
+
+.driverLicensePage__updateButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  width: 100%;
+  min-height: 54px;
+
+  padding: 0 18px;
+
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border: none;
+  border-radius: 12px;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.driverLicensePage__updateButton:hover {
+  opacity: 0.92;
+}
+
+@media (max-width: 420px) {
+  .driverLicensePage__main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}

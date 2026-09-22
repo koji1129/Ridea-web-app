@@ -1,0 +1,308 @@
+.driverNotifications {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.driverNotifications__container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #ffffff;
+}
+
+.driverNotifications__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72px;
+
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #edf1f3;
+}
+
+.driverNotifications__header h1 {
+  margin: 0;
+  color: #073b78;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.driverNotifications__back {
+  position: absolute;
+  left: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+}
+
+.driverNotifications__back:hover {
+  background: var(--color-primary-light);
+}
+
+.driverNotifications__main {
+  padding: 22px 20px 45px;
+}
+
+
+/* Summary */
+
+.notificationSummary {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 26px;
+  padding: 17px;
+
+  background: #edf8fa;
+
+  border: 1px solid #d6eaee;
+  border-radius: var(--radius-lg);
+}
+
+.notificationSummary__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 45px;
+  height: 45px;
+
+  flex-shrink: 0;
+
+  color: var(--color-primary);
+  background: #ffffff;
+
+  border-radius: 50%;
+}
+
+.notificationSummary span {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #778d9a;
+
+  font-size: 10px;
+}
+
+.notificationSummary strong {
+  color: #145c6c;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+
+/* Heading */
+
+.notificationHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+}
+
+.notificationHeading h2 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.notificationHeading > span {
+  padding: 4px 9px;
+
+  color: #647c8d;
+  background: #edf3f5;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+/* List */
+
+.notificationList {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe9ed;
+  border-radius: var(--radius-lg);
+}
+
+.notificationItem {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  align-items: center;
+
+  gap: 11px;
+
+  width: 100%;
+
+  padding: 15px;
+
+  color: inherit;
+  background: #ffffff;
+
+  border: none;
+  border-bottom: 1px solid #edf2f4;
+
+  text-align: left;
+}
+
+.notificationItem:last-child {
+  border-bottom: none;
+}
+
+.notificationItem:hover {
+  background: #f8fbfc;
+}
+
+.notificationItem--unread {
+  background: #f3fafb;
+}
+
+.notificationItem__unreadDot {
+  position: absolute;
+  top: 13px;
+  left: 7px;
+
+  width: 6px;
+  height: 6px;
+
+  background: var(--color-primary);
+
+  border-radius: 50%;
+}
+
+
+/* Icons */
+
+.notificationItem__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 11px;
+}
+
+.notificationItem__icon--operation {
+  color: #08798a;
+  background: #e5f5f7;
+}
+
+.notificationItem__icon--change {
+  color: #b97815;
+  background: #fff4dd;
+}
+
+.notificationItem__icon--approved {
+  color: #248064;
+  background: #e7f6f0;
+}
+
+.notificationItem__icon--notice {
+  color: #376fa0;
+  background: #eaf3fb;
+}
+
+
+/* Content */
+
+.notificationItem__content {
+  min-width: 0;
+}
+
+.notificationItem__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  margin-bottom: 4px;
+}
+
+.notificationItem__top strong {
+  color: #294a63;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.notificationItem__top span {
+  flex-shrink: 0;
+
+  color: #98a5ae;
+
+  font-size: 8px;
+}
+
+.notificationItem__content p {
+  margin: 0;
+
+  color: #758894;
+
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.notificationItem__arrow {
+  color: #95a4ae;
+}
+
+
+/* Note */
+
+.driverNotifications__note {
+  margin: 16px 8px 0;
+
+  color: #8897a1;
+
+  font-size: 9px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+@media (max-width: 420px) {
+  .driverNotifications__main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .notificationItem {
+    grid-template-columns: 40px 1fr auto;
+    padding-right: 11px;
+    padding-left: 12px;
+  }
+}

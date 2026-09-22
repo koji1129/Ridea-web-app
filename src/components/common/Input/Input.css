@@ -4,45 +4,52 @@
   gap: 8px;
   width: 100%;
 }
-
 .inputField__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
   color: var(--color-text);
   font-size: 15px;
   font-weight: 700;
 }
-
+.inputField__required {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 7px;
+  color: #ffffff;
+  background-color: #ff5c5c;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+}
 .inputField__input {
   width: 100%;
   min-height: 52px;
   padding: 0 16px;
-
   color: var(--color-text);
   background: var(--color-surface);
-
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-
   font-size: 16px;
   outline: none;
-
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
 }
-
 .inputField__input::placeholder {
   color: #9ca3af;
 }
-
 .inputField__input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-light);
+  box-shadow:
+    0 0 0 3px var(--color-primary-light);
 }
-
 .inputField__input--error {
   border-color: var(--color-danger);
 }
-
 .inputField__error {
   margin: 0;
   color: var(--color-danger);

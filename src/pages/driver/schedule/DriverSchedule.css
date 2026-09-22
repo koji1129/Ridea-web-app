@@ -1,0 +1,675 @@
+/* ========================================
+   Driver Schedule
+======================================== */
+
+.driverSchedule {
+  min-height: 100vh;
+
+  background: var(--color-background);
+}
+
+.driverSchedule__container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  background: var(--color-surface);
+}
+
+
+/* ========================================
+   Header
+======================================== */
+
+.driverSchedule__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72px;
+
+  padding: 0 20px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-bottom: 1px solid #edf1f3;
+}
+
+.driverSchedule__header h1 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.driverSchedule__back {
+  position: absolute;
+  left: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+}
+
+.driverSchedule__back:hover {
+  background: var(--color-primary-light);
+}
+
+
+/* ========================================
+   Main
+======================================== */
+
+.driverSchedule__main {
+  padding: 22px 20px 40px;
+}
+
+
+/* ========================================
+   Intro
+======================================== */
+
+.driverSchedule__intro {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  margin-bottom: 20px;
+}
+
+.driverSchedule__introIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+
+  border-radius: 50%;
+}
+
+.driverSchedule__intro h2 {
+  margin: 0 0 3px;
+
+  color: #073b78;
+
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.driverSchedule__intro p {
+  margin: 0;
+
+  color: var(--color-text-secondary);
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* ========================================
+   Calendar
+======================================== */
+
+.scheduleCalendar {
+  margin-bottom: 20px;
+  padding: 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #dce9ee;
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-card);
+}
+
+.scheduleCalendar__header {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+
+  margin-bottom: 18px;
+}
+
+.scheduleCalendar__header h2 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 19px;
+  font-weight: 800;
+
+  text-align: center;
+}
+
+.scheduleCalendar__header button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+}
+
+.scheduleCalendar__header button:hover {
+  background: var(--color-primary-light);
+}
+
+
+/* ========================================
+   Weekdays
+======================================== */
+
+.scheduleCalendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  margin-bottom: 5px;
+}
+
+.scheduleCalendar__weekdays div {
+  padding: 5px 0;
+
+  color: #6f8294;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-align: center;
+}
+
+.scheduleCalendar__weekdays
+  .scheduleCalendar__sunday {
+  color: #e85a65;
+}
+
+.scheduleCalendar__weekdays
+  .scheduleCalendar__saturday {
+  color: #4384c5;
+}
+
+
+/* ========================================
+   Calendar Days
+======================================== */
+
+.scheduleCalendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  gap: 4px;
+}
+
+.scheduleCalendar__day,
+.scheduleCalendar__empty {
+  aspect-ratio: 1;
+}
+
+.scheduleCalendar__day {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 0;
+
+  padding: 0;
+
+  color: #334d64;
+  background: transparent;
+
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.scheduleCalendar__day:hover {
+  background: #f1f8fa;
+}
+
+.scheduleCalendar__day--selected {
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+
+  border-color: var(--color-primary);
+
+  font-weight: 800;
+}
+
+.scheduleCalendar__status {
+  position: absolute;
+  bottom: 5px;
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+}
+
+.scheduleCalendar__status--available {
+  background: #38b995;
+}
+
+.scheduleCalendar__status--assigned {
+  background: #2d76c3;
+}
+
+.scheduleCalendar__status--unavailable {
+  background: #c5ccd3;
+}
+
+
+/* ========================================
+   Legend
+======================================== */
+
+.scheduleCalendar__legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 10px 16px;
+
+  margin-top: 18px;
+  padding-top: 14px;
+
+  border-top: 1px solid #edf2f4;
+
+  color: #64798b;
+
+  font-size: 11px;
+}
+
+.scheduleCalendar__legend > div {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+}
+
+.scheduleCalendar__legendDot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+}
+
+.scheduleCalendar__legendDot--available {
+  background: #38b995;
+}
+
+.scheduleCalendar__legendDot--assigned {
+  background: #2d76c3;
+}
+
+.scheduleCalendar__legendDot--unavailable {
+  background: #c5ccd3;
+}
+
+
+/* ========================================
+   Schedule Editor
+======================================== */
+
+.scheduleEditor {
+  margin-bottom: 18px;
+  padding: 20px;
+
+  background: #f8fcfd;
+
+  border: 1px solid #dceff2;
+  border-radius: var(--radius-lg);
+}
+
+.scheduleEditor__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 18px;
+}
+
+.scheduleEditor__heading span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #718395;
+
+  font-size: 11px;
+}
+
+.scheduleEditor__heading h2 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.scheduleEditor__assignedBadge {
+  margin: 0 !important;
+  padding: 6px 9px;
+
+  color: #276cae !important;
+  background: #eaf3fc;
+
+  border-radius: 999px;
+
+  font-size: 11px !important;
+  font-weight: 700;
+}
+
+
+/* ========================================
+   Status Buttons
+======================================== */
+
+.scheduleEditor__statusButtons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 10px;
+
+  margin-bottom: 20px;
+}
+
+.scheduleEditor__statusButton {
+  min-height: 48px;
+
+  padding: 0 12px;
+
+  color: #65798a;
+  background: #ffffff;
+
+  border: 1.5px solid #d9e2e7;
+  border-radius: var(--radius-md);
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.scheduleEditor__statusButton--active {
+  color: #16826b;
+  background: #eaf9f4;
+
+  border-color: #38b995;
+}
+
+.scheduleEditor__statusButton--unavailable {
+  color: #6c7680;
+  background: #f1f3f5;
+
+  border-color: #aeb8c0;
+}
+
+
+/* ========================================
+   Time
+======================================== */
+
+.scheduleEditor__time {
+  margin-bottom: 20px;
+  padding: 16px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.scheduleEditor__timeTitle {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 14px;
+
+  color: #073b78;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.scheduleEditor__timeTitle svg {
+  color: var(--color-primary);
+}
+
+.scheduleEditor__timeInputs {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+
+  gap: 10px;
+}
+
+.scheduleEditor__timeInputs label {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.scheduleEditor__timeInputs label > span {
+  color: #6b7d8d;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.scheduleEditor__timeInputs input {
+  width: 100%;
+  min-height: 46px;
+
+  padding: 0 10px;
+
+  color: #073b78;
+  background: #ffffff;
+
+  border: 1px solid #ccd9df;
+  border-radius: 9px;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.scheduleEditor__timeInputs input:focus {
+  outline: 2px solid
+    rgba(0, 122, 138, 0.15);
+
+  border-color: var(--color-primary);
+}
+
+.scheduleEditor__timeSeparator {
+  padding-bottom: 13px;
+
+  color: #738698;
+
+  font-size: 15px;
+}
+
+
+/* ========================================
+   Save
+======================================== */
+
+.scheduleEditor__save {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  width: 100%;
+  min-height: 52px;
+
+  padding: 0 16px;
+
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border: none;
+  border-radius: var(--radius-md);
+
+  font-size: 15px;
+  font-weight: 800;
+
+  transition:
+    opacity 0.2s,
+    transform 0.1s;
+}
+
+.scheduleEditor__save:hover {
+  opacity: 0.92;
+}
+
+.scheduleEditor__save:active {
+  transform: scale(0.99);
+}
+
+
+/* ========================================
+   Assigned / Locked
+======================================== */
+
+.scheduleEditor__locked {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 16px;
+
+  color: #2d6598;
+  background: #edf6fc;
+
+  border-radius: var(--radius-md);
+}
+
+.scheduleEditor__locked svg {
+  flex-shrink: 0;
+}
+
+.scheduleEditor__locked strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #174f83;
+
+  font-size: 14px;
+}
+
+.scheduleEditor__locked p {
+  margin: 0;
+
+  color: #5c7892;
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+
+/* ========================================
+   Notice
+======================================== */
+
+.driverSchedule__notice {
+  padding: 16px;
+
+  color: #567087;
+  background: #eef8fc;
+
+  border-radius: var(--radius-md);
+}
+
+.driverSchedule__notice strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #073b78;
+
+  font-size: 13px;
+}
+
+.driverSchedule__notice p {
+  margin: 0;
+
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+
+/* ========================================
+   Responsive
+======================================== */
+
+@media (max-width: 420px) {
+  .driverSchedule__main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .scheduleCalendar {
+    padding: 14px;
+  }
+
+  .scheduleCalendar__days {
+    gap: 2px;
+  }
+
+  .scheduleCalendar__day {
+    font-size: 12px;
+  }
+
+  .scheduleEditor {
+    padding: 16px;
+  }
+
+  .scheduleEditor__heading h2 {
+    font-size: 18px;
+  }
+}

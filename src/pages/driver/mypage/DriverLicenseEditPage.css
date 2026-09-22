@@ -1,0 +1,506 @@
+.driverLicenseEditPage {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.driverLicenseEditPage__container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  background: #ffffff;
+}
+
+
+/* Header */
+
+.driverLicenseEditPage__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72px;
+  padding: 0 60px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-bottom: 1px solid #edf1f3;
+}
+
+.driverLicenseEditPage__header h1 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.driverLicenseEditPage__back {
+  position: absolute;
+  left: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.driverLicenseEditPage__back:hover {
+  background: var(--color-primary-light);
+}
+
+
+/* Main */
+
+.driverLicenseEditPage__main {
+  padding: 22px 20px 110px;
+}
+
+
+/* Intro */
+
+.driverLicenseEditIntro {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 16px;
+  padding: 18px;
+
+  background: #f3fafb;
+
+  border: 1px solid #d8eaee;
+  border-radius: 14px;
+}
+
+.driverLicenseEditIntro__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+
+  color: var(--color-primary);
+  background: #ffffff;
+
+  border-radius: 50%;
+
+  box-shadow: var(--shadow-card);
+}
+
+.driverLicenseEditIntro h2 {
+  margin: 0 0 5px;
+
+  color: #073b78;
+
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.driverLicenseEditIntro p {
+  margin: 0;
+
+  color: #718792;
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+
+/* Warning */
+
+.driverLicenseEditWarning {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-bottom: 27px;
+  padding: 13px 14px;
+
+  color: #765e2f;
+  background: #fff8e8;
+
+  border: 1px solid #f2e3bd;
+  border-radius: 12px;
+}
+
+.driverLicenseEditWarning svg {
+  flex-shrink: 0;
+
+  color: #b57b1e;
+}
+
+.driverLicenseEditWarning p {
+  margin: 0;
+
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+
+/* Section */
+
+.driverLicenseEditPage__section {
+  margin-bottom: 26px;
+}
+
+.driverLicenseEditPage__sectionHeading {
+  margin-bottom: 10px;
+}
+
+.driverLicenseEditPage__sectionHeading > div {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.driverLicenseEditPage__sectionHeading h2 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.driverLicenseEditPage__sectionHeading span {
+  padding: 3px 6px;
+
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border-radius: 5px;
+
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.driverLicenseEditPage__sectionHeading p {
+  margin: 4px 0 0;
+
+  color: #84949e;
+
+  font-size: 9px;
+}
+
+
+/* Upload */
+
+.driverLicenseEditPage__fileInput {
+  display: none;
+}
+
+.licenseEditUpload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 180px;
+
+  margin: 0;
+  padding: 20px;
+
+  color: inherit;
+  background: #f8fcfd;
+
+  border: 1.5px dashed #a9cfd6;
+  border-radius: 14px;
+
+  font: inherit;
+  text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.licenseEditUpload:hover {
+  background: #f0f9fa;
+  border-color: var(--color-primary);
+}
+
+.licenseEditUpload__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 60px;
+  height: 60px;
+
+  margin-bottom: 11px;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+
+  border-radius: 50%;
+}
+
+.licenseEditUpload > strong {
+  margin-bottom: 5px;
+
+  color: #24556a;
+
+  font-size: 13px;
+}
+
+.licenseEditUpload > span {
+  color: #82949e;
+
+  font-size: 9px;
+}
+
+
+/* Selected image */
+
+.licenseEditUpload--selected {
+  display: block;
+
+  min-height: 0;
+  padding: 0;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border-style: solid;
+
+  text-align: left;
+
+  cursor: default;
+}
+
+.licenseEditUpload__preview {
+  position: relative;
+
+  width: 100%;
+  min-height: 180px;
+
+  background: #eef4f6;
+}
+
+.licenseEditUpload__preview img {
+  display: block;
+
+  width: 100%;
+  height: 220px;
+
+  object-fit: contain;
+}
+
+.licenseEditUpload__registered {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+  padding: 6px 9px;
+
+  color: #19745e;
+  background: rgba(232, 249, 243, 0.95);
+
+  border-radius: 999px;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.licenseEditUpload__selectedFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 13px 14px;
+
+  border-top: 1px solid #e5edef;
+}
+
+.licenseEditUpload__selectedFooter > div {
+  min-width: 0;
+}
+
+.licenseEditUpload__selectedFooter strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #284e62;
+
+  font-size: 11px;
+}
+
+.licenseEditUpload__selectedFooter span {
+  display: block;
+
+  max-width: 250px;
+
+  overflow: hidden;
+
+  color: #84949e;
+
+  font-size: 8px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.licenseEditUpload__selectedFooter button {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  flex-shrink: 0;
+
+  padding: 7px 9px;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+
+  border: none;
+  border-radius: 8px;
+
+  font: inherit;
+  font-size: 9px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* Notes */
+
+.driverLicenseEditNotes {
+  margin-bottom: 22px;
+  padding: 15px;
+
+  background: #f8fafb;
+
+  border-radius: 12px;
+}
+
+.driverLicenseEditNotes h2 {
+  margin: 0 0 9px;
+
+  color: #365a6d;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.driverLicenseEditNotes ul {
+  margin: 0;
+  padding-left: 18px;
+
+  color: #778b96;
+
+  font-size: 9px;
+  line-height: 1.9;
+}
+
+
+/* Submit */
+
+.driverLicenseEditPage__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  width: 100%;
+  min-height: 54px;
+
+  padding: 0 18px;
+
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border: none;
+  border-radius: 12px;
+
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.driverLicenseEditPage__submit:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
+.driverLicenseEditPage__submit:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+.driverLicenseEditPage__cancel {
+  width: 100%;
+  min-height: 44px;
+
+  margin-top: 8px;
+  padding: 0 15px;
+
+  color: #738792;
+  background: transparent;
+
+  border: none;
+
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.driverLicenseEditPage__cancel:hover:not(:disabled) {
+  color: #365a6d;
+}
+
+
+/* Responsive */
+
+@media (max-width: 420px) {
+  .driverLicenseEditPage__main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .licenseEditUpload__preview img {
+    height: 190px;
+  }
+}

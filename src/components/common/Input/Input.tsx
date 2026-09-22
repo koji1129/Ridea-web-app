@@ -11,6 +11,7 @@ function Input({
   error,
   id,
   className = "",
+  required,
   ...props
 }: InputProps) {
   return (
@@ -18,11 +19,18 @@ function Input({
       {label && (
         <label className="inputField__label" htmlFor={id}>
           {label}
+
+          {required && (
+            <span className="inputField__required">
+              必須
+            </span>
+          )}
         </label>
       )}
 
       <input
         id={id}
+        required={required}
         className={`inputField__input ${
           error ? "inputField__input--error" : ""
         }`}
@@ -30,7 +38,9 @@ function Input({
       />
 
       {error && (
-        <p className="inputField__error">{error}</p>
+        <p className="inputField__error">
+          {error}
+        </p>
       )}
     </div>
   );

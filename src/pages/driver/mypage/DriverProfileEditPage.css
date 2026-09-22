@@ -1,0 +1,450 @@
+.driverProfileEdit {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.driverProfileEdit__container {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  background: #ffffff;
+}
+
+
+/* Header */
+
+.driverProfileEdit__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72px;
+  padding: 0 60px;
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.96
+  );
+
+  border-bottom: 1px solid #edf1f3;
+}
+
+.driverProfileEdit__header h1 {
+  margin: 0;
+
+  color: #073b78;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.driverProfileEdit__back {
+  position: absolute;
+  left: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  color: var(--color-primary);
+  background: transparent;
+
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.driverProfileEdit__back:hover {
+  background:
+    var(--color-primary-light);
+}
+
+
+/* Main */
+
+.driverProfileEdit__main {
+  padding: 22px 20px 110px;
+}
+
+
+/* Intro */
+
+.driverProfileEdit__intro {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 26px;
+  padding: 18px;
+
+  background: #f2fafb;
+
+  border: 1px solid #d8ebee;
+  border-radius: 14px;
+}
+
+.driverProfileEdit__introIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+
+  color: var(--color-primary);
+  background: #ffffff;
+
+  border-radius: 50%;
+
+  box-shadow: var(--shadow-card);
+}
+
+.driverProfileEdit__intro h2 {
+  margin: 0 0 4px;
+
+  color: #073b78;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.driverProfileEdit__intro p {
+  margin: 0;
+
+  color: #748a96;
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+
+/* Form */
+
+.driverProfileEdit__form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 22px;
+}
+
+.driverProfileField {
+  width: 100%;
+}
+
+.driverProfileField__label {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 8px;
+}
+
+.driverProfileField__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  color: var(--color-primary);
+  background:
+    var(--color-primary-light);
+
+  border-radius: 8px;
+}
+
+.driverProfileField__label span {
+  color: #284e63;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.driverProfileField__label strong {
+  margin-left: auto;
+
+  padding: 3px 6px;
+
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border-radius: 5px;
+
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.driverProfileField__input {
+  box-sizing: border-box;
+
+  width: 100%;
+  height: 52px;
+
+  padding: 0 14px;
+
+  color: #284e63;
+  background: #ffffff;
+
+  border: 1px solid #d8e5e9;
+  border-radius: 11px;
+
+  outline: none;
+
+  font: inherit;
+  font-size: 12px;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.driverProfileField__input::placeholder {
+  color: #a2afb6;
+}
+
+.driverProfileField__input:focus {
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(0, 122, 138, 0.08);
+}
+
+.driverProfileField__input--error {
+  border-color: var(--color-danger);
+}
+
+.driverProfileField__error {
+  margin: 5px 0 0;
+
+  color: var(--color-danger);
+
+  font-size: 9px;
+}
+
+
+/* Notice */
+
+.driverProfileEdit__notice {
+  padding: 14px;
+
+  background: #f8fafb;
+
+  border: 1px solid #e4ecef;
+  border-radius: 11px;
+}
+
+.driverProfileEdit__notice strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #456476;
+
+  font-size: 10px;
+}
+
+.driverProfileEdit__notice p {
+  margin: 0;
+
+  color: #7d909b;
+
+  font-size: 9px;
+  line-height: 1.7;
+}
+
+
+/* Save */
+
+.driverProfileEdit__save {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  width: 100%;
+  min-height: 54px;
+
+  margin-top: 2px;
+  padding: 0 18px;
+
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border: none;
+  border-radius: 12px;
+
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.driverProfileEdit__save:hover:not(
+  :disabled
+) {
+  opacity: 0.92;
+}
+
+.driverProfileEdit__save:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* Cancel */
+
+.driverProfileEdit__cancel {
+  width: 100%;
+  min-height: 44px;
+
+  margin-top: -14px;
+
+  color: #718691;
+  background: transparent;
+
+  border: none;
+
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.driverProfileEdit__cancel:hover:not(
+  :disabled
+) {
+  color: #365a6d;
+}
+
+
+/* Responsive */
+
+@media (max-width: 420px) {
+  .driverProfileEdit__main {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
+.driverProfileView {
+  overflow: hidden;
+
+  margin-bottom: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe9ed;
+  border-radius: var(--radius-md);
+}
+
+.driverProfileView__row {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 15px;
+
+  border-bottom: 1px solid #edf2f4;
+}
+
+.driverProfileView__row:last-child {
+  border-bottom: none;
+}
+
+.driverProfileView__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+
+  border-radius: 10px;
+}
+
+.driverProfileView__content {
+  min-width: 0;
+}
+
+.driverProfileView__content span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #7b8e9d;
+
+  font-size: 9px;
+}
+
+.driverProfileView__content strong {
+  display: block;
+
+  color: #294a63;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.driverProfileEdit__editButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  width: 100%;
+  min-height: 52px;
+
+  margin-top: 18px;
+
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border: none;
+  border-radius: 12px;
+
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.driverProfileEdit__editButton:hover {
+  opacity: 0.92;
+}
+
+.driverProfileEdit__cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+}
