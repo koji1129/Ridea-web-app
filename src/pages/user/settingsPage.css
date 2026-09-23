@@ -120,3 +120,14 @@
   bottom: 33px;
   font-size: 29px;
 }
+.mypage-menu .mypage-driver-switch {
+  margin: 8px 0;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-medium);
+  background: var(--color-soft-primary);
+  color: var(--color-primary-dark);
+}
+
+.mypage-menu .mypage-driver-switch svg {
+  color: var(--color-primary);
+}

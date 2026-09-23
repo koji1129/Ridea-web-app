@@ -1,4 +1,5 @@
 import {
+  Car,
   ChevronRight,
   CircleHelp,
   Clock3,
@@ -17,6 +18,8 @@ import "./SettingsPage.css";
 function SettingsPage() {
   const navigate = useNavigate();
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+
+  const isDriver = true;
 
   const handleLogout = () => {
     setShowLogoutPopup(false);
@@ -50,6 +53,17 @@ function SettingsPage() {
           <span>予約一覧</span>
           <ChevronRight aria-hidden="true" />
         </Link>
+
+        {isDriver && (
+          <Link
+            to="/driver"
+            className="mypage-driver-switch"
+          >
+            <Car aria-hidden="true" />
+            <span>ドライバーモードに切り替える</span>
+            <ChevronRight aria-hidden="true" />
+          </Link>
+        )}
 
         <Link to="/user/faq">
           <CircleHelp aria-hidden="true" />
