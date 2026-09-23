@@ -1,4 +1,4 @@
-import { CheckCircle2, ChevronLeft } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../../components/common/Button/Button";
@@ -14,22 +14,13 @@ function DriverGuidePage() {
   };
 
   const handleStartAsUser = () => {
-    navigate("/home");
+    navigate("/user/home");
   };
 
   return (
     <div className="driverGuide">
       <div className="driverGuide__container">
         <header className="driverGuide__header">
-          <button
-            type="button"
-            className="driverGuide__back"
-            onClick={() => navigate(-1)}
-            aria-label="戻る"
-          >
-            <ChevronLeft size={30} />
-          </button>
-
           <div className="driverGuide__logo">
             YORIAI
           </div>

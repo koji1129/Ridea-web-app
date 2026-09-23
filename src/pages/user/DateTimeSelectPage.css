@@ -1,0 +1,124 @@
+.datetime-heading {
+  margin: 42px 0 46px;
+  color: #10345f;
+  text-align: center;
+}
+
+.datetime-heading h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.datetime-heading p {
+  margin: 18px 0 0;
+  color: #5a7898;
+  font-size: 21px;
+}
+
+.datetime-form {
+  min-height: calc(100vh - 190px);
+  display: flex;
+  flex-direction: column;
+}
+
+.datetime-date-card {
+  position: relative;
+  min-height: 94px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  overflow: hidden;
+  border: 2px solid #dceaf5;
+  border-radius: 15px;
+  padding: 0 30px;
+  color: #0e3970;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.datetime-date-card input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.time-wheel {
+  margin: 38px 18px 0;
+  padding: 14px 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  border-radius: 20px;
+  background: #f7fbfe;
+}
+
+.time-column {
+  min-width: 0;
+}
+
+.time-column-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #6f8ca9;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.time-scroll {
+  height: 220px;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+
+.time-scroll button {
+  width: 100%;
+  min-height: 58px;
+  scroll-snap-align: center;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: #88a2bd;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.time-scroll button.selected {
+  background: #eaf3fa;
+  color: #103d78;
+  font-size: 28px;
+}
+
+.wheel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0 10px;
+}
+
+.wheel-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #e1ebf3;
+}
+
+.wheel-dots span.active {
+  background: #b6d0e3;
+}
+
+.datetime-note {
+  margin: 0 0 20px;
+  color: #527395;
+  font-size: 17px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.datetime-next {
+  margin-top: auto;
+}

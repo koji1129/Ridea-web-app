@@ -1,0 +1,85 @@
+.ride-active-status {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.ride-active-status > div {
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #dceaf5;
+  border-radius: 16px;
+  padding: 16px 12px;
+  background: #f7fcff;
+  color: #10345f;
+  text-align: center;
+}
+
+.ride-active-status svg {
+  color: #0797a5;
+}
+
+.ride-active-status span {
+  color: #527395;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ride-active-status strong {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.ride-driver-phone {
+  width: 52px;
+  height: 52px;
+  margin-left: auto;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e7f4fc;
+  color: #087bdb;
+  text-decoration: none;
+}
+
+.ride-emergency-button {
+  width: 100%;
+  min-height: 60px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ride-arrival-button {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.ride-active-status + .map-placeholder {
+  min-height: 240px;
+  margin-bottom: 18px;
+}
+
+.map-placeholder small {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+@media (max-width: 380px) {
+  .ride-active-status {
+    grid-template-columns: 1fr;
+  }
+
+  .ride-active-status > div {
+    min-height: 105px;
+  }
+}

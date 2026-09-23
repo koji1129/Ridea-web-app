@@ -1,0 +1,122 @@
+.mypage-avatar {
+  width: 166px;
+  height: 166px;
+  margin: 24px auto 11px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #dff4fb;
+  color: #087da7;
+}
+
+.mypage-avatar svg {
+  width: 104px;
+  height: 104px;
+  stroke-width: 1.7;
+}
+
+.mypage-name {
+  margin: 0 0 23px;
+  color: #10345f;
+  font-size: 30px;
+  text-align: center;
+}
+
+.mypage-name small {
+  margin-left: 3px;
+  font-size: 18px;
+}
+
+.mypage-menu {
+  display: grid;
+  gap: 8px;
+}
+
+.mypage-menu a,
+.mypage-menu button {
+  min-height: 70px;
+  padding: 0 18px;
+  display: grid;
+  grid-template-columns: 40px 1fr 26px;
+  align-items: center;
+  gap: 14px;
+  border: 2px solid #deedf5;
+  border-radius: 15px;
+  background: #fff;
+  color: #10345f;
+  font-size: 20px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mypage-menu svg {
+  width: 29px;
+  height: 29px;
+  stroke-width: 2.2;
+}
+
+.mypage-menu a svg:first-child,
+.mypage-menu button svg:first-child {
+  color: #0b4c89;
+}
+
+.mypage-menu a svg:last-child,
+.mypage-menu button svg:last-child {
+  color: #527395;
+}
+
+.mypage-landscape {
+  position: relative;
+  height: 130px;
+  margin: 23px -20px -24px;
+  overflow: hidden;
+  background: linear-gradient(
+    to top,
+    #dff6f2 0 42%,
+    transparent 42%
+  );
+}
+
+.mypage-hill {
+  position: absolute;
+  bottom: 42px;
+  width: 220px;
+  height: 70px;
+  border-radius: 50% 50% 0 0;
+  background: #c9eee1;
+}
+
+.hill-left {
+  left: -70px;
+}
+
+.hill-right {
+  right: -80px;
+  background: #c0e6d6;
+}
+
+.mypage-house {
+  position: absolute;
+  bottom: 42px;
+  width: 48px;
+  height: 42px;
+  background: #d8f0f6;
+}
+
+.house-one {
+  left: 35%;
+}
+
+.house-two {
+  left: 58%;
+  width: 40px;
+  height: 32px;
+}
+
+.mypage-car {
+  position: absolute;
+  right: 18%;
+  bottom: 33px;
+  font-size: 29px;
+}

@@ -1,0 +1,81 @@
+.arrival-complete-screen {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 0 24px;
+  color: #102d55;
+  text-align: center;
+}
+
+.arrival-check-ring {
+  width: 150px;
+  height: 150px;
+  margin-top: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e8f7f3;
+}
+
+.arrival-check-ring div {
+  width: 84px;
+  height: 84px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #08b47e;
+  color: #fff;
+}
+
+.arrival-check-ring svg {
+  width: 40px;
+  height: 40px;
+}
+
+.arrival-complete-screen h1 {
+  max-width: 340px;
+  margin: 28px 0 0;
+  font-size: 28px;
+  line-height: 1.5;
+}
+
+.arrival-complete-screen > p {
+  margin: 12px 0 24px;
+  color: #527395;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.arrival-complete-screen .info-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+}
+
+.arrival-complete-screen .info-card > svg {
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.arrival-complete-screen .info-card div {
+  min-width: 0;
+}
+
+.arrival-complete-screen .info-card strong {
+  font-size: 18px;
+}
+
+.arrival-complete-screen .info-card p {
+  margin: 5px 0 0;
+  color: var(--color-text-sub);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.arrival-home-button {
+  width: 100%;
+  margin-top: 28px;
+}

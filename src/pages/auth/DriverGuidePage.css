@@ -1,49 +1,56 @@
 .driverGuide {
+  width: 100%;
   min-height: 100vh;
-  background: var(--color-background);
+  display: flex;
+  justify-content: center;
+  background: #f3f5f7;
+  color: #102d55;
 }
 
 .driverGuide__container {
   width: 100%;
   max-width: 520px;
   min-height: 100vh;
-
+  box-sizing: border-box;
   margin: 0 auto;
-  padding: 0 20px 28px;
-
-  background: var(--color-surface);
+  padding: 0 20px 32px;
+  background: #ffffff;
 }
 
-/* Header */
+/* =========================
+   Header
+========================= */
 
 .driverGuide__header {
   position: relative;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  height: 72px;
+  height: 68px;
 }
 
 .driverGuide__back {
   position: absolute;
   left: 0;
+  top: 50%;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 44px;
-  height: 44px;
-
+  width: 46px;
+  height: 46px;
   padding: 0;
-
-  color: #0759b7;
-  background: transparent;
 
   border: none;
   border-radius: 50%;
+
+  background: transparent;
+  color: #0759b7;
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
 }
 
 .driverGuide__back:hover {
@@ -52,22 +59,23 @@
 
 .driverGuide__logo {
   color: #07539b;
-
-  font-size: 24px;
-  font-weight: 800;
+  font-size: 25px;
+  font-weight: 900;
   letter-spacing: 0.5px;
 }
 
-/* Main */
+/* =========================
+   Main
+========================= */
 
 .driverGuide__main {
   display: flex;
   flex-direction: column;
-
-  min-height: calc(100vh - 100px);
 }
 
-/* Intro */
+/* =========================
+   Intro
+========================= */
 
 .driverGuide__intro {
   text-align: center;
@@ -78,7 +86,7 @@
 
   color: #073b78;
 
-  font-size: 29px;
+  font-size: 30px;
   font-weight: 800;
   line-height: 1.45;
 }
@@ -88,12 +96,14 @@
 
   color: #174d82;
 
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
-  line-height: 1.75;
+  line-height: 1.7;
 }
 
-/* Illustration */
+/* =========================
+   Illustration
+========================= */
 
 .driverGuide__illustration {
   display: flex;
@@ -115,70 +125,127 @@
   object-fit: contain;
 }
 
-/* Benefits */
+/* =========================
+   Benefits
+========================= */
 
 .driverGuide__benefits {
   display: flex;
   flex-direction: column;
 
-  gap: 15px;
+  gap: 16px;
 
   padding: 20px;
 
-  background: #eef9fd;
+  border-radius: 10px;
 
-  border-radius: var(--radius-md);
+  background: #eef9fd;
 }
 
 .driverGuide__benefit {
   display: flex;
   align-items: center;
 
-  gap: 10px;
+  gap: 12px;
 
   color: #123e72;
 
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.6;
 }
 
 .driverGuide__benefit svg {
   flex-shrink: 0;
+  width: 23px;
+  height: 23px;
 
   color: #069cad;
 }
 
-/* Notice */
+/* =========================
+   Notice
+========================= */
 
 .driverGuide__notice {
-  margin: 24px 0;
+  margin: 22px 0 24px;
 
   color: #365f87;
 
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.8;
 
   text-align: center;
 }
 
-/* Actions */
+/* =========================
+   Actions
+========================= */
 
 .driverGuide__actions {
-  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  margin-top: 4px;
 }
+
+/*
+   ButtonコンポーネントのCSSより
+   この画面のデザインを優先する
+*/
+
+.driverGuide__actions > button {
+  width: 100%;
+  min-height: 58px;
+
+  box-sizing: border-box;
+
+  border-radius: 9px;
+
+  font-size: 19px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+/* 登録をはじめる */
+.driverGuide__actions > button:first-child {
+  border: 2px solid #0797a5 !important;
+
+  background: #0797a5 !important;
+  color: #ffffff !important;
+
+  box-shadow: 0 3px 8px rgba(0, 130, 140, 0.15);
+}
+
+.driverGuide__actions > button:first-child:hover {
+  border-color: #078994 !important;
+  background: #078994 !important;
+}
+
+/* =========================
+   Separator
+========================= */
 
 .driverGuide__separator {
   display: grid;
+
   grid-template-columns: 1fr auto 1fr;
+
   align-items: center;
 
   gap: 14px;
 
-  margin: 12px 0;
+  width: 100%;
+
+  margin: 16px 0;
 }
 
 .driverGuide__separator span {
   height: 1px;
+
   background: #cfe2ec;
 }
 
@@ -187,34 +254,86 @@
 
   color: #16869c;
 
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
 }
 
+/* =========================
+   利用者としてはじめる
+========================= */
+
+.driverGuide__actions > button:last-child,
 .driverGuide__actions .button--secondary {
-  color: var(--color-primary);
-  background: #ffffff;
+  border: 2px solid #0797a5 !important;
 
-  border: 1.5px solid var(--color-primary);
+  background: #ffffff !important;
+  color: #0797a5 !important;
+
+  box-shadow: none;
 }
 
+.driverGuide__actions > button:last-child:hover,
 .driverGuide__actions .button--secondary:hover:not(:disabled) {
-  background: var(--color-primary-light);
+  background: #f0fafb !important;
+  color: #078994 !important;
 }
 
-/* Smartphone */
+/* =========================
+   Smartphone
+========================= */
 
 @media (max-width: 520px) {
+  .driverGuide {
+    background: #ffffff;
+  }
+
+  .driverGuide__container {
+    max-width: none;
+
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .driverGuide__title {
+    font-size: 28px;
+  }
+
+  .driverGuide__carImage {
+    max-width: 370px;
+  }
+}
+
+/* =========================
+   Small Smartphone
+========================= */
+
+@media (max-width: 360px) {
   .driverGuide__container {
     padding-right: 16px;
     padding-left: 16px;
   }
 
   .driverGuide__title {
-    font-size: 26px;
+    font-size: 25px;
+  }
+
+  .driverGuide__lead {
+    font-size: 16px;
+  }
+
+  .driverGuide__benefit {
+    font-size: 16px;
+  }
+
+  .driverGuide__notice {
+    font-size: 15px;
   }
 
   .driverGuide__carImage {
-    max-width: 360px;
+    max-width: 320px;
+  }
+
+  .driverGuide__actions > button {
+    font-size: 18px;
   }
 }

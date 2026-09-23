@@ -1,0 +1,168 @@
+.return-confirmed-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 12px;
+  text-align: center;
+}
+
+.return-confirmed-icon {
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: #e8f7f3;
+  color: #08a77b;
+}
+
+.return-confirmed-heading h2 {
+  margin: 16px 0 8px;
+  color: #10345f;
+  font-size: 24px;
+}
+
+.return-confirmed-heading p {
+  margin: 0;
+  color: #527395;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.return-confirmed-time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  border-radius: 16px;
+  padding: 18px;
+  background: #f1f9fd;
+  color: #087bdb;
+}
+
+.return-confirmed-time div {
+  display: grid;
+  gap: 3px;
+}
+
+.return-confirmed-time span {
+  color: #527395;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.return-confirmed-time strong {
+  color: #10345f;
+  font-size: 24px;
+}
+
+.return-confirmed-driver {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.return-driver-icon {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e7f4fc;
+  color: #087bdb;
+}
+
+.return-driver-info {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.return-driver-info span {
+  color: #527395;
+  font-size: 13px;
+}
+
+.return-driver-info strong {
+  color: #10345f;
+  font-size: 18px;
+}
+
+.return-driver-info p {
+  margin: 0;
+  color: #527395;
+  font-size: 14px;
+}
+
+.return-driver-phone {
+  width: 48px;
+  height: 48px;
+  margin-left: auto;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e7f4fc;
+  color: #087bdb;
+  text-decoration: none;
+}
+
+.return-confirmed-details {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+  border: 1px solid #dceaf5;
+  border-radius: 16px;
+  padding: 18px;
+  background: #fff;
+}
+
+.return-confirmed-details > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.return-confirmed-details > div:last-child {
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid #dceaf5;
+}
+
+.return-confirmed-details svg {
+  flex: 0 0 auto;
+  color: #087bdb;
+}
+
+.return-confirmed-details div div {
+  display: grid;
+  gap: 3px;
+}
+
+.return-confirmed-details span {
+  color: #527395;
+  font-size: 14px;
+}
+
+.return-confirmed-details strong {
+  color: #10345f;
+  font-size: 17px;
+}
+
+.return-confirmed-details .price {
+  font-size: 22px;
+}
+
+.return-location-button {
+  width: 100%;
+  margin-top: 22px;
+}
+.return-confirmed-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 22px;
+}

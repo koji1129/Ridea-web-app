@@ -1,0 +1,238 @@
+.pickup-heading {
+  margin: 4px 0 20px;
+  color: #10345f;
+  text-align: center;
+}
+
+.pickup-heading h1 {
+  margin: 0 0 6px;
+  font-size: 21px;
+}
+
+.pickup-heading p {
+  margin: 0;
+  color: #5a7898;
+  font-size: 16px;
+}
+
+.pickup-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.pickup-tabs button {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 0;
+  border-radius: 8px;
+  background: #f2f8fb;
+  color: #406483;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pickup-tabs button.active {
+  background: #0797a5;
+  color: #fff;
+}
+
+.pickup-place-card,
+.pickup-selected-place {
+  width: 100%;
+  min-height: 65px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #e3edf3;
+  border-radius: 9px;
+  padding: 12px 14px;
+  background: #fff;
+  color: #10345f;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pickup-place-card > svg,
+.pickup-selected-place > svg {
+  flex: 0 0 auto;
+  color: #0b4c89;
+}
+
+.pickup-place-card span:not(.pickup-radio),
+.pickup-selected-place span {
+  display: grid;
+  gap: 3px;
+}
+
+.pickup-place-card strong,
+.pickup-selected-place strong {
+  font-size: 14px;
+}
+
+.pickup-place-card small,
+.pickup-selected-place small {
+  color: #5a7898;
+  font-size: 12px;
+}
+
+.pickup-place-card.selected {
+  margin-bottom: 18px;
+  background: #fbfdfe;
+}
+
+.pickup-radio {
+  width: 17px;
+  height: 17px;
+  margin-left: auto;
+  border: 2px solid #c8dce9;
+  border-radius: 50%;
+}
+
+.pickup-place-card.selected .pickup-radio {
+  border: 5px solid #0797a5;
+}
+
+.pickup-history {
+  display: grid;
+  gap: 5px;
+}
+
+.pickup-history-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  color: #10345f;
+  font-size: 13px;
+}
+
+.pickup-history-heading button {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  border: 0;
+  background: transparent;
+  color: #406483;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.pickup-search {
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #dceaf2;
+  border-radius: 8px;
+  padding: 0 12px;
+  background: #f5fafd;
+  color: #47718f;
+}
+
+.pickup-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #10345f;
+  font-size: 14px;
+}
+
+.pickup-search.bottom {
+  margin-top: auto;
+}
+
+.pickup-map-section {
+  display: grid;
+  gap: 8px;
+}
+
+.pickup-map-placeholder {
+  position: relative;
+  min-height: 290px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #d6eadf, #f2f0d4 48%, #c9e5ef);
+}
+
+.pickup-map-placeholder::before,
+.pickup-map-placeholder::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.pickup-map-placeholder::before {
+  width: 140%;
+  height: 18px;
+  top: 44%;
+  left: -20%;
+  transform: rotate(-28deg);
+}
+
+.pickup-map-placeholder::after {
+  width: 120%;
+  height: 12px;
+  top: 68%;
+  left: -10%;
+  transform: rotate(34deg);
+}
+
+.map-marker {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  color: #087bdb;
+}
+
+.map-marker.main {
+  top: 47%;
+  left: 46%;
+  color: #0b4c89;
+}
+
+.map-marker.second {
+  top: 24%;
+  right: 20%;
+}
+
+.map-marker.third {
+  bottom: 23%;
+  left: 22%;
+}
+
+.map-road {
+  position: absolute;
+  z-index: 0;
+  width: 160%;
+  height: 2px;
+  background: #91bccd;
+  transform: rotate(65deg);
+}
+
+.road-one {
+  top: 22%;
+  left: -10%;
+}
+
+.road-two {
+  top: 55%;
+  left: -5%;
+  transform: rotate(-52deg);
+}
+
+.pickup-selected-place {
+  background: #fff;
+}
+
+.pickup-next {
+  margin-top: 12px;
+}

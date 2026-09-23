@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   ChevronLeft,
   FileCheck2,
+  X,
 } from "lucide-react";
 
 import Button from "../../../components/common/Button/Button";
@@ -11,12 +12,19 @@ import Button from "../../../components/common/Button/Button";
 import licenseFrontImage from "../../../assets/driver/driver-license-front.png";
 import licenseBackImage from "../../../assets/driver/driver-license-back.png";
 
+import { TERMS_CONTENT } from "../../../constants/terms";
+import { PRIVACY_CONTENT } from "../../../constants/privacyPolicy";
+
 import "./DriverRegister.css";
+
+type LegalModal = "terms" | "privacy" | null;
 
 function DriverRegisterConfirmPage() {
   const navigate = useNavigate();
 
   const [agreed, setAgreed] = useState(false);
+  const [legalModal, setLegalModal] =
+    useState<LegalModal>(null);
 
   const handleSubmit = () => {
     if (!agreed) {
@@ -24,6 +32,10 @@ function DriverRegisterConfirmPage() {
     }
 
     navigate("/driver/register/complete");
+  };
+
+  const closeLegalModal = () => {
+    setLegalModal(null);
   };
 
   return (
@@ -81,7 +93,9 @@ function DriverRegisterConfirmPage() {
               <button
                 type="button"
                 className="confirmSection__edit"
-                onClick={() => navigate("/driver/register")}
+                onClick={() =>
+                  navigate("/driver/register")
+                }
               >
                 編集
               </button>
@@ -134,15 +148,19 @@ function DriverRegisterConfirmPage() {
 
           {/* 確認事項 */}
           <section className="confirmNotice">
-            <h2>申請前にご確認ください</h2>
+            <h2>
+              申請前にご確認ください
+            </h2>
 
             <ul>
               <li>
                 提出した運転免許証が有効期限内であること
               </li>
+
               <li>
                 登録されている本人の免許証であること
               </li>
+
               <li>
                 提出内容に誤りがないこと
               </li>
@@ -165,7 +183,7 @@ function DriverRegisterConfirmPage() {
                 className="confirmAgreement__link"
                 onClick={(event) => {
                   event.preventDefault();
-                  navigate("/terms");
+                  setLegalModal("terms");
                 }}
               >
                 利用規約
@@ -178,7 +196,7 @@ function DriverRegisterConfirmPage() {
                 className="confirmAgreement__link"
                 onClick={(event) => {
                   event.preventDefault();
-                  navigate("/privacy");
+                  setLegalModal("privacy");
                 }}
               >
                 プライバシーポリシー
@@ -198,6 +216,56 @@ function DriverRegisterConfirmPage() {
             ドライバー登録を申請する
           </Button>
         </main>
+
+        {/* 利用規約・プライバシーポリシー */}
+        {legalModal && (
+          <div
+            className="modal-backdrop"
+            role="presentation"
+            onClick={closeLegalModal}
+          >
+            <section
+              className="modal"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="legalModalTitle"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button
+                type="button"
+                className="modal__close"
+                onClick={closeLegalModal}
+                aria-label="閉じる"
+              >
+                <X size={25} />
+              </button>
+
+              <h2
+                id="legalModalTitle"
+                className="modal__title"
+              >
+                {legalModal === "terms"
+                  ? "利用規約"
+                  : "プライバシーポリシー"}
+              </h2>
+
+              <div className="modal__content">
+                {legalModal === "terms"
+                  ? TERMS_CONTENT
+                  : PRIVACY_CONTENT}
+              </div>
+
+              <Button
+                type="button"
+                variant="secondary"
+                fullWidth
+                onClick={closeLegalModal}
+              >
+                閉じる
+              </Button>
+            </section>
+          </div>
+        )}
       </div>
     </div>
   );

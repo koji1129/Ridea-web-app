@@ -1,0 +1,82 @@
+.reservation-matching {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 12px 24px;
+  text-align: center;
+}
+
+.reservation-matching-icon {
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: #e7f4fc;
+  color: #087bdb;
+}
+
+.reservation-matching h2 {
+  margin: 18px 0 8px;
+  color: #10345f;
+  font-size: 24px;
+  line-height: 1.5;
+}
+
+.reservation-matching p {
+  margin: 0;
+  color: #527395;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.reservation-matching-info {
+  display: block;
+}
+
+.reservation-matching-info > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #527395;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.reservation-matching-info > div svg {
+  color: #087bdb;
+}
+
+.reservation-matching-info > strong {
+  display: block;
+  margin-top: 10px;
+  color: #10345f;
+  font-size: 19px;
+}
+
+.reservation-matching-info > p {
+  margin: 8px 0 0;
+  color: #527395;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.reservation-matching-wait {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 18px 0 24px;
+  color: #527395;
+  font-size: 14px;
+}
+
+.reservation-matching-test-link {
+  display: block;
+  padding: 10px;
+  color: #527395;
+  font-size: 13px;
+  text-align: center;
+  text-decoration: underline;
+}

@@ -1,0 +1,88 @@
+.confirm-heading {
+  margin: 36px 0;
+  color: #10345f;
+  text-align: center;
+}
+
+.confirm-heading h1 {
+  margin: 0;
+  font-size: 31px;
+}
+
+.confirm-heading p {
+  margin: 17px 0 0;
+  color: #5a7898;
+  font-size: 21px;
+}
+
+.reservation-confirm-list {
+  border-top: 2px solid #e2edf5;
+}
+
+.confirm-section {
+  min-height: 132px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 2px solid #e2edf5;
+  color: #10345f;
+}
+
+.confirm-section > div {
+  display: grid;
+  gap: 6px;
+}
+
+.confirm-section span {
+  color: #527395;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.confirm-section strong {
+  font-size: 24px;
+}
+
+.confirm-section small {
+  color: #527395;
+  font-size: 17px;
+}
+
+.confirm-section button {
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 14px;
+  padding: 17px 21px;
+  background: #e7f4fc;
+  color: #087bdb;
+  font-size: 19px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.estimated-fare {
+  padding: 26px 18px 20px;
+  color: #10345f;
+}
+
+.estimated-fare h2 {
+  margin: 0 0 10px;
+  color: #527395;
+  font-size: 19px;
+}
+
+.estimated-fare strong {
+  font-size: 30px;
+}
+
+.estimated-fare p {
+  margin: 8px 0 0;
+  color: #527395;
+  font-size: 17px;
+}
+
+.confirm-submit {
+  margin-top: auto;
+}
