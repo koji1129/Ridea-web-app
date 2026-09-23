@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserScreen from "../../components/user/UserScreen";
 import type { ReservationState } from "./flowTypes";
-
+import "./DestinationSelectPage.css";
 function DestinationSelectPage() {
   const navigate = useNavigate();
   const location = useLocation();

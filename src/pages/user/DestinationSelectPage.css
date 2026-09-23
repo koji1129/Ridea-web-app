@@ -2,7 +2,8 @@
   margin: 38px 0;
 }
 
-.destination-heading h1 {
+.destination-heading h2 {
+  margin: 0;
   font-size: 31px;
 }
 
