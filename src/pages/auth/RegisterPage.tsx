@@ -37,31 +37,22 @@ function RegisterPage() {
 
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
   const [postalCode, setPostalCode] = useState("");
   const [prefecture, setPrefecture] = useState("");
   const [city, setCity] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const [building, setBuilding] = useState("");
-
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
-
   const [step, setStep] = useState<Step>("input");
   const [submitted, setSubmitted] = useState(false);
-
-  const [isSearchingAddress, setIsSearchingAddress] =
-    useState(false);
-
-  const [addressSearchError, setAddressSearchError] =
-    useState("");
+  const [isSearchingAddress, setIsSearchingAddress] = useState(false);
+  const [addressSearchError, setAddressSearchError] = useState("");
 
   const isPasswordValid = password.length >= 8;
-
   const isPostalCodeValid =
     postalCode.replace(/\D/g, "").length === 7;
 
@@ -117,13 +108,11 @@ function RegisterPage() {
     setPostalCode(
       formatPostalCode(event.target.value)
     );
-
     setAddressSearchError("");
   };
 
   const handleAddressSearch = async () => {
-    const zipCode =
-      postalCode.replace(/\D/g, "");
+    const zipCode = postalCode.replace(/\D/g, "");
 
     if (zipCode.length !== 7) {
       setAddressSearchError(
@@ -195,8 +184,8 @@ function RegisterPage() {
 
   if (step === "complete") {
     return (
-      <div className="register-page">
-        <main className="register-container register-complete-page">
+      <div className="app-page">
+        <main className="app-container register-container register-complete-page">
           <div className="register-complete-icon">
             <Check
               size={58}
@@ -213,7 +202,7 @@ function RegisterPage() {
           </p>
 
           <button
-            className="register-button"
+            className="primary-button"
             type="button"
             onClick={() =>
               navigate("/login")
@@ -228,8 +217,8 @@ function RegisterPage() {
 
   if (step === "confirm") {
     return (
-      <div className="register-page">
-        <main className="register-container">
+      <div className="app-page">
+        <main className="app-container register-container">
           <div className="register-header">
             <h1>登録内容の確認</h1>
             <p>
@@ -280,7 +269,7 @@ function RegisterPage() {
           </div>
 
           <button
-            className="register-button"
+            className="primary-button"
             type="button"
             onClick={handleRegister}
           >
@@ -288,7 +277,7 @@ function RegisterPage() {
           </button>
 
           <button
-            className="register-outline-button"
+            className="secondary-button register-secondary-button"
             type="button"
             onClick={() =>
               setStep("input")
@@ -302,8 +291,8 @@ function RegisterPage() {
   }
 
   return (
-    <div className="register-page">
-      <main className="register-container">
+    <div className="app-page">
+      <main className="app-container register-container">
         <div className="auth-brand-logo-wrapper">
           <img
             className="auth-brand-logo"
@@ -320,7 +309,7 @@ function RegisterPage() {
         </div>
 
         <form
-          className="register-form"
+          className="form-stack register-form"
           onSubmit={handleSubmit}
         >
           <RegisterField
@@ -344,12 +333,12 @@ function RegisterPage() {
                   event.target.value
                 )
               }
-              className={
+              className={`field-input ${
                 submitted &&
                 !name.trim()
                   ? "input-error"
                   : ""
-              }
+              }`}
             />
           </RegisterField>
 
@@ -375,12 +364,12 @@ function RegisterPage() {
                   event.target.value
                 )
               }
-              className={
+              className={`field-input ${
                 submitted &&
                 !phoneNumber.trim()
                   ? "input-error"
                   : ""
-              }
+              }`}
             />
           </RegisterField>
 
@@ -406,12 +395,12 @@ function RegisterPage() {
                 onChange={
                   handlePostalCodeChange
                 }
-                className={
+                className={`field-input ${
                   submitted &&
                   !isPostalCodeValid
                     ? "input-error"
                     : ""
-                }
+                }`}
               />
 
               <button
@@ -433,7 +422,7 @@ function RegisterPage() {
             </div>
 
             {addressSearchError && (
-              <p className="register-error">
+              <p className="error-message">
                 {addressSearchError}
               </p>
             )}
@@ -458,12 +447,12 @@ function RegisterPage() {
                   event.target.value
                 )
               }
-              className={
+              className={`field-select ${
                 submitted &&
                 !prefecture
                   ? "input-error"
                   : ""
-              }
+              }`}
             >
               <option value="">
                 都道府県を選択してください
@@ -503,12 +492,12 @@ function RegisterPage() {
                   event.target.value
                 )
               }
-              className={
+              className={`field-input ${
                 submitted &&
                 !city.trim()
                   ? "input-error"
                   : ""
-              }
+              }`}
             />
           </RegisterField>
 
@@ -533,12 +522,12 @@ function RegisterPage() {
                   event.target.value
                 )
               }
-              className={
+              className={`field-input ${
                 submitted &&
                 !streetAddress.trim()
                   ? "input-error"
                   : ""
-              }
+              }`}
             />
           </RegisterField>
 
@@ -557,6 +546,7 @@ function RegisterPage() {
                   event.target.value
                 )
               }
+              className="field-input"
             />
           </RegisterField>
 
@@ -586,12 +576,12 @@ function RegisterPage() {
                     event.target.value
                   )
                 }
-                className={
+                className={`field-input ${
                   submitted &&
                   !isPasswordValid
                     ? "input-error"
                     : ""
-                }
+                }`}
               />
 
               <button
@@ -632,20 +622,14 @@ function RegisterPage() {
             <span>
               <button
                 type="button"
-                onClick={() => {
-                  setShowPrivacy(false);
-                  setShowTerms(true);
-                }}
+                onClick={openTerms}
               >
                 利用規約
               </button>
               ・
               <button
                 type="button"
-                onClick={() => {
-                  setShowTerms(false);
-                  setShowPrivacy(true);
-                }}
+                onClick={openPrivacy}
               >
                 プライバシーポリシー
               </button>
@@ -655,37 +639,38 @@ function RegisterPage() {
 
           {submitted &&
             !acceptedTerms && (
-              <p className="register-error">
+              <p className="error-message">
                 利用規約とプライバシーポリシーに同意してください
               </p>
             )}
 
           <button
-            className="register-button"
+            className="primary-button"
             type="submit"
           >
             登録内容を確認する
           </button>
-          
-        <div className="register-login-link">
-          <button
-            type="button"
-            onClick={() => navigate("/login")}
-          >
-            ログインはこちら
-          </button>
-        </div>
+
+          <div className="register-login-link">
+            <button
+              type="button"
+              onClick={() =>
+                navigate("/login")
+              }
+            >
+              ログインはこちら
+            </button>
+          </div>
         </form>
 
-        {(showTerms ||
-          showPrivacy) && (
+        {(showTerms || showPrivacy) && (
           <div
-            className="register-modal-backdrop"
+            className="modal-backdrop"
             role="presentation"
             onClick={closeModal}
           >
             <section
-              className="register-modal"
+              className="modal"
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-title"
@@ -694,7 +679,7 @@ function RegisterPage() {
               }
             >
               <button
-                className="register-modal-close"
+                className="modal__close"
                 type="button"
                 onClick={closeModal}
                 aria-label="閉じる"
@@ -702,20 +687,23 @@ function RegisterPage() {
                 <X size={22} />
               </button>
 
-              <h2 id="modal-title">
+              <h2
+                className="modal__title"
+                id="modal-title"
+              >
                 {showTerms
                   ? "利用規約"
                   : "プライバシーポリシー"}
               </h2>
 
-              <div className="register-modal-content">
+              <div className="modal__content">
                 {showTerms
                   ? TERMS_CONTENT
                   : PRIVACY_CONTENT}
               </div>
 
               <button
-                className="register-outline-button"
+                className="secondary-button"
                 type="button"
                 onClick={closeModal}
               >
@@ -747,8 +735,11 @@ function RegisterField({
   children,
 }: RegisterFieldProps) {
   return (
-    <div className="form-group">
-      <label htmlFor={htmlFor}>
+    <div className="field-group">
+      <label
+        className="field-label"
+        htmlFor={htmlFor}
+      >
         {label}
 
         {required && (
@@ -760,12 +751,11 @@ function RegisterField({
 
       {children}
 
-      {error &&
-        errorMessage && (
-          <p className="register-error">
-            {errorMessage}
-          </p>
-        )}
+      {error && errorMessage && (
+        <p className="error-message">
+          {errorMessage}
+        </p>
+      )}
     </div>
   );
 }

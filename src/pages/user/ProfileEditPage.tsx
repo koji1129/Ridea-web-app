@@ -1,23 +1,480 @@
-import { ArrowLeft, Camera, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import {
+  Camera,
+  ChevronDown,
+  User,
+  X,
+} from "lucide-react";
+import {
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import UserScreen from "../../components/user/UserScreen";
+import { PREFECTURES } from "../../constants/prefectures";
+import "./ProfileEditPage.css";
+
+type ZipCloudResult = {
+  address1: string;
+  address2: string;
+  address3: string;
+};
+
+type ZipCloudResponse = {
+  results: ZipCloudResult[] | null;
+};
 
 function ProfileEditPage() {
-	const navigate = useNavigate();
-	const [name, setName] = useState("山田 太郎");
-	const [kana, setKana] = useState("やまだ たろう");
-	const [phone, setPhone] = useState("09012345678");
-	const [postalCode, setPostalCode] = useState("");
-	const [prefecture, setPrefecture] = useState("");
-	const [city, setCity] = useState("");
-	const [town, setTown] = useState("");
-	const [block, setBlock] = useState("");
-	const [building, setBuilding] = useState("");
+  const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-	return <UserScreen title="" showHeader={false}><header className="destination-brand profile-edit-brand"><button type="button" onClick={() => navigate(-1)} aria-label="前の画面へ戻る"><ArrowLeft size={32} /></button><div><span className="destination-brand-mark">◆</span><strong>YORIAI</strong></div><span /></header><div className="profile-edit-heading"><h1>登録情報の確認・変更</h1><p>登録情報を編集できます</p></div><section className="profile-image-section"><div className="profile-edit-avatar">◯</div><div><strong>プロフィール画像</strong><p>※ 画像を設定すると、<br />ドライバーに表示されます</p></div><button type="button"><Camera size={19} />画像を変更</button></section><form className="profile-edit-form" onSubmit={(event) => event.preventDefault()}><ProfileInput label="氏名" value={name} onChange={setName} /><ProfileInput label="ふりがな" value={kana} onChange={setKana} /><ProfileInput label="電話番号" value={phone} onChange={setPhone} type="tel" /><div className="address-fields"><label>住所 <span>必須</span></label><div className="address-row"><span>郵便番号</span><input placeholder="例：4860804" value={postalCode} onChange={(event) => setPostalCode(event.target.value)} /><button type="button">住所を検索</button></div><div className="address-row"><span>都道府県</span><div className="select-wrapper"><select value={prefecture} onChange={(event) => setPrefecture(event.target.value)}><option value="">選択してください</option><option value="愛知県">愛知県</option><option value="東京都">東京都</option></select><ChevronDown size={20} /></div></div><AddressInput label="市区町村" placeholder="例：春日井市" value={city} onChange={setCity} /><AddressInput label="町名" placeholder="例：神領町" value={town} onChange={setTown} /><AddressInput label="丁目・番地" placeholder="例：2-24" value={block} onChange={setBlock} /><AddressInput label="建物名・部屋番号" placeholder="例：サンハイツ101（任意）" value={building} onChange={setBuilding} /></div><button className="primary-button profile-save-button" type="submit">変更を保存する</button></form></UserScreen>;
+  const [name, setName] = useState("山田 太郎");
+  const [kana, setKana] = useState("やまだ たろう");
+  const [phone, setPhone] = useState("09012345678");
+  const [postalCode, setPostalCode] = useState("");
+  const [prefecture, setPrefecture] = useState("");
+  const [city, setCity] = useState("");
+  const [town, setTown] = useState("");
+  const [block, setBlock] = useState("");
+  const [building, setBuilding] = useState("");
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [error, setError] = useState("");
+  const [addressSearchError, setAddressSearchError] = useState("");
+  const [isSearchingAddress, setIsSearchingAddress] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
+
+  const handleImageChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      setError("画像ファイルを選択してください");
+      return;
+    }
+
+    const imageUrl = URL.createObjectURL(file);
+
+    setProfileImage(imageUrl);
+    setError("");
+  };
+
+  const handlePostalCodeChange = (value: string) => {
+    const formatted = value
+      .replace(/[^\d-]/g, "")
+      .slice(0, 8);
+
+    setPostalCode(formatted);
+    setAddressSearchError("");
+  };
+
+  const handleSearchAddress = async () => {
+    const zipCode = postalCode.replace(/-/g, "");
+
+    if (!/^\d{7}$/.test(zipCode)) {
+      setAddressSearchError(
+        "郵便番号を7桁で入力してください"
+      );
+      return;
+    }
+
+    setIsSearchingAddress(true);
+    setAddressSearchError("");
+
+    try {
+      const response = await fetch(
+        `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zipCode}`
+      );
+
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      const data = (await response.json()) as ZipCloudResponse;
+
+      if (!data.results || data.results.length === 0) {
+        setAddressSearchError(
+          "該当する住所が見つかりませんでした"
+        );
+        return;
+      }
+
+      const address = data.results[0];
+
+      setPrefecture(address.address1);
+      setCity(address.address2);
+      setTown(address.address3);
+    } catch {
+      setAddressSearchError(
+        "住所を取得できませんでした。もう一度お試しください"
+      );
+    } finally {
+      setIsSearchingAddress(false);
+    }
+  };
+
+  const handleSubmit = (
+    event: FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+
+    if (
+      !name.trim() ||
+      !kana.trim() ||
+      !phone.trim() ||
+      !postalCode.trim() ||
+      !prefecture ||
+      !city.trim() ||
+      !town.trim() ||
+      !block.trim()
+    ) {
+      setError("必須項目を入力してください");
+      return;
+    }
+
+    const zipCode = postalCode.replace(/-/g, "");
+
+    if (!/^\d{7}$/.test(zipCode)) {
+      setError("郵便番号を7桁で入力してください");
+      return;
+    }
+
+    if (!/^[0-9-]+$/.test(phone)) {
+      setError("電話番号を正しく入力してください");
+      return;
+    }
+
+    setError("");
+    setShowCompleteModal(true);
+  };
+
+  return (
+    <UserScreen
+      title="登録情報の確認・変更"
+      showBack={true}
+      showNavigation={false}
+    >
+      <p className="page-lead">
+        登録している情報を編集できます
+      </p>
+
+      <section className="profile-image-section">
+        <div className="profile-edit-avatar">
+          {profileImage ? (
+            <img
+              src={profileImage}
+              alt="プロフィール画像"
+              className="profile-edit-avatar-image"
+            />
+          ) : (
+            <User size={48} aria-hidden="true" />
+          )}
+        </div>
+
+        <div className="profile-image-info">
+          <strong>プロフィール画像</strong>
+          <p>
+            ドライバーに表示される画像です
+          </p>
+        </div>
+
+        <button
+          type="button"
+          className="secondary-button profile-image-button"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <Camera size={19} aria-hidden="true" />
+          画像を変更
+        </button>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleImageChange}
+        />
+      </section>
+
+      <form
+        className="form-stack profile-edit-form"
+        onSubmit={handleSubmit}
+      >
+        <ProfileInput
+          label="氏名"
+          required
+          value={name}
+          onChange={setName}
+          autoComplete="name"
+        />
+
+        <ProfileInput
+          label="ふりがな"
+          required
+          value={kana}
+          onChange={setKana}
+        />
+
+        <ProfileInput
+          label="電話番号"
+          required
+          type="tel"
+          inputMode="tel"
+          value={phone}
+          onChange={setPhone}
+          autoComplete="tel"
+        />
+
+        <section className="address-fields">
+          <h2 className="profile-address-title">
+            住所
+          </h2>
+
+          <div className="field-group">
+            <label
+              className="field-label"
+              htmlFor="profile-postal-code"
+            >
+              郵便番号
+              <span className="required-badge">
+                必須
+              </span>
+            </label>
+
+            <div className="postal-code-row">
+              <input
+                id="profile-postal-code"
+                className="field-input"
+                type="text"
+                inputMode="numeric"
+                autoComplete="postal-code"
+                placeholder="例：4860804"
+                maxLength={8}
+                value={postalCode}
+                onChange={(event) =>
+                  handlePostalCodeChange(
+                    event.target.value
+                  )
+                }
+              />
+
+              <button
+                type="button"
+                className="postal-search-button"
+                onClick={handleSearchAddress}
+                disabled={isSearchingAddress}
+              >
+                {isSearchingAddress
+                  ? "検索中..."
+                  : "住所を検索"}
+              </button>
+            </div>
+
+            {addressSearchError && (
+              <p className="error-message">
+                {addressSearchError}
+              </p>
+            )}
+          </div>
+
+          <div className="field-group">
+            <label
+              className="field-label"
+              htmlFor="profile-prefecture"
+            >
+              都道府県
+              <span className="required-badge">
+                必須
+              </span>
+            </label>
+
+            <div className="select-wrapper">
+              <select
+                id="profile-prefecture"
+                className="field-select"
+                value={prefecture}
+                onChange={(event) =>
+                  setPrefecture(event.target.value)
+                }
+                autoComplete="address-level1"
+              >
+                <option value="">
+                  選択してください
+                </option>
+
+                {PREFECTURES.map((item) => (
+                  <option
+                    key={item}
+                    value={item}
+                  >
+                    {item}
+                  </option>
+                ))}
+              </select>
+
+              <ChevronDown
+                size={20}
+                aria-hidden="true"
+              />
+            </div>
+          </div>
+
+          <ProfileInput
+            label="市区町村"
+            required
+            placeholder="例：春日井市"
+            value={city}
+            onChange={setCity}
+            autoComplete="address-level2"
+          />
+
+          <ProfileInput
+            label="町名"
+            required
+            placeholder="例：神領町"
+            value={town}
+            onChange={setTown}
+          />
+
+          <ProfileInput
+            label="丁目・番地"
+            required
+            placeholder="例：2-24"
+            value={block}
+            onChange={setBlock}
+            autoComplete="address-line1"
+          />
+
+          <ProfileInput
+            label="建物名・部屋番号"
+            placeholder="例：サンハイツ101"
+            value={building}
+            onChange={setBuilding}
+            autoComplete="address-line2"
+          />
+        </section>
+
+        {error && (
+          <p className="error-message">
+            {error}
+          </p>
+        )}
+
+        <button
+          className="primary-button profile-save-button"
+          type="submit"
+        >
+          変更を保存する
+        </button>
+      </form>
+
+      {showCompleteModal && (
+        <div
+          className="modal-backdrop"
+          onClick={() =>
+            setShowCompleteModal(false)
+          }
+        >
+          <section
+            className="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="profileSaveTitle"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+            <button
+              type="button"
+              className="modal__close"
+              onClick={() =>
+                setShowCompleteModal(false)
+              }
+              aria-label="閉じる"
+            >
+              <X size={25} />
+            </button>
+
+            <h2
+              id="profileSaveTitle"
+              className="modal__title"
+            >
+              変更を保存しました
+            </h2>
+
+            <div className="modal__content">
+              <p className="profile-save-complete">
+                登録情報を更新しました。
+              </p>
+            </div>
+
+            <button
+              type="button"
+              className="primary-button profile-save-complete-button"
+              onClick={() =>
+                navigate("/user/settings")
+              }
+            >
+              設定に戻る
+            </button>
+          </section>
+        </div>
+      )}
+    </UserScreen>
+  );
 }
 
-function ProfileInput({ label, value, onChange, type = "text" }: { label: string; value: string; onChange: (value: string) => void; type?: string }) { return <label className="profile-field"><span>{label}<b>必須</b></span><input type={type} value={value} onChange={(event) => onChange(event.target.value)} /></label>; }
-function AddressInput({ label, placeholder, value, onChange }: { label: string; placeholder: string; value: string; onChange: (value: string) => void }) { return <label className="address-row"><span>{label}</span><input placeholder={placeholder} value={value} onChange={(event) => onChange(event.target.value)} /></label>; }
+type ProfileInputProps = {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  type?: string;
+  placeholder?: string;
+  required?: boolean;
+  inputMode?: "text" | "tel" | "numeric";
+  autoComplete?: string;
+};
+
+function ProfileInput({
+  label,
+  value,
+  onChange,
+  type = "text",
+  placeholder,
+  required = false,
+  inputMode,
+  autoComplete,
+}: ProfileInputProps) {
+  return (
+    <div className="field-group">
+      <label className="field-label">
+        {label}
+
+        {required && (
+          <span className="required-badge">
+            必須
+          </span>
+        )}
+      </label>
+
+      <input
+        className="field-input"
+        type={type}
+        inputMode={inputMode}
+        autoComplete={autoComplete}
+        placeholder={placeholder}
+        value={value}
+        onChange={(event) =>
+          onChange(event.target.value)
+        }
+      />
+    </div>
+  );
+}
+
 export default ProfileEditPage;

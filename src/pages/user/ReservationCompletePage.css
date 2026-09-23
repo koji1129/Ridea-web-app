@@ -1,0 +1,39 @@
+.reservation-complete-screen {
+  min-height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #102d55;
+  text-align: center;
+}
+
+.reservation-complete-icon {
+  width: 148px;
+  height: 148px;
+  margin-bottom: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #08b47e;
+  color: #fff;
+}
+
+.reservation-complete-screen h1 {
+  margin: 0;
+  font-size: 34px;
+}
+
+.reservation-complete-screen p {
+  margin: 27px 0 0;
+  color: #526b89;
+  font-size: 22px;
+  line-height: 1.8;
+}
+
+.reservation-complete-actions {
+  width: 100%;
+  margin-top: auto;
+  display: grid;
+  gap: 16px;
+}

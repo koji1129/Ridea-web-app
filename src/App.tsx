@@ -24,6 +24,7 @@ import ReservationConfirmedPage from "./pages/user/ReservationConfirmedPage";
 import CancelReservationPage from "./pages/user/CancelReservationPage";
 import DriverLocationPage from "./pages/user/DriverLocationPage";
 import ArrivalCompletePage from "./pages/user/ArrivalCompletePage";
+import RideActivePage from "./pages/user/RideActivePage";
 import RideCompletePage from "./pages/user/RideCompletePage";
 import ReturnSelectPage from "./pages/user/ReturnSelectPage";
 import ReturnMatchingPage from "./pages/user/ReturnMatchingPage";
@@ -34,7 +35,8 @@ import SettingsPage from "./pages/user/SettingsPage";
 import ProfileEditPage from "./pages/user/ProfileEditPage";
 import TermsPage from "./pages/user/TermsPage";
 import PrivacyPage from "./pages/user/PrivacyPage";
-
+import FaqPage from "./pages/user/FaqPage";
+import TaxiGuidePage from "./pages/user/TaxiGuidePage";
 import DriverHomePage from "./pages/driver/DriverHomePage";
 import DriverRegisterPage from "./pages/driver/register/DriverRegisterPage";
 import DriverRegisterConfirmPage from "./pages/driver/register/DriverRegisterConfirmPage";
@@ -110,6 +112,10 @@ function App() {
 
         <Route path="/user/driver-location" element={<DriverLocationPage />} />
         <Route path="/user/arrival-complete" element={<ArrivalCompletePage />} />
+        <Route
+          path="/user/ride"
+          element={<RideActivePage />}
+        />
         <Route path="/user/ride-complete" element={<RideCompletePage />} />
 
         <Route path="/user/return" element={<ReturnSelectPage />} />
@@ -117,12 +123,13 @@ function App() {
         <Route path="/user/return/confirmed" element={<ReturnConfirmedPage />} />
 
         <Route path="/user/taxi-switch" element={<TaxiSwitchPage />} />
+        <Route path="/user/taxi-guide" element={<TaxiGuidePage />} />
         <Route path="/user/emergency" element={<EmergencyPage />} />
         <Route path="/user/settings" element={<SettingsPage />} />
         <Route path="/user/settings/profile" element={<ProfileEditPage />} />
         <Route path="/user/terms" element={<TermsPage />} />
         <Route path="/user/privacy" element={<PrivacyPage />} />
-
+        <Route path="/user/faq" element={<FaqPage />} />
         <Route path="/driver/guide" element={<DriverGuidePage />} />
         <Route path="/driver/register" element={<DriverRegisterPage />} />
         <Route

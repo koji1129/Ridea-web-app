@@ -1,0 +1,273 @@
+.ride-complete-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-bottom: 24px;
+  color: #10345f;
+}
+
+.ride-complete-screen h1 {
+  margin: 8px 0 0;
+  font-size: 26px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.ride-complete-lead {
+  margin: -8px 0 4px;
+  color: #527395;
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.trip-summary {
+  border: 1px solid #dceaf5;
+  border-radius: 16px;
+  padding: 18px;
+  background: #fff;
+}
+
+.trip-summary h2 {
+  margin: 0 0 18px;
+  font-size: 20px;
+}
+
+.trip-summary-body {
+  display: grid;
+  grid-template-columns: 24px 1fr 125px;
+  align-items: center;
+  gap: 12px;
+}
+
+.trip-route-mini {
+  height: 115px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.trip-route-mini span {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 5px solid #daf5ee;
+  border-radius: 50%;
+  background: #0ab68f;
+}
+
+.trip-route-mini i {
+  width: 3px;
+  flex: 1;
+  border-left: 3px dashed #0ab68f;
+}
+
+.trip-stops {
+  display: flex;
+  height: 115px;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.trip-stops div {
+  display: grid;
+  gap: 3px;
+}
+
+.trip-stops strong {
+  font-size: 16px;
+}
+
+.trip-stops small {
+  color: #527395;
+  font-size: 14px;
+}
+
+.trip-map-mini {
+  position: relative;
+  height: 115px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e0edf1, #cde9e0);
+}
+
+.trip-map-mini::before,
+.trip-map-mini::after {
+  content: "";
+  position: absolute;
+  width: 140%;
+  height: 3px;
+  background: #fff;
+}
+
+.trip-map-mini::before {
+  top: 38%;
+  left: -20%;
+  transform: rotate(35deg);
+}
+
+.trip-map-mini::after {
+  top: 68%;
+  left: -20%;
+  transform: rotate(-25deg);
+}
+
+.mini-car,
+.mini-route,
+.mini-pin {
+  position: absolute;
+  z-index: 1;
+}
+
+.mini-car {
+  top: 20px;
+  left: 20px;
+  font-size: 20px;
+}
+
+.mini-route {
+  top: 44px;
+  left: 42px;
+  width: 64px;
+  height: 45px;
+  border: 4px solid #087bdb;
+  border-top-color: transparent;
+  border-radius: 20px;
+  transform: rotate(-28deg);
+}
+
+.mini-pin {
+  right: 15px;
+  bottom: 17px;
+  color: #087bdb;
+  font-size: 32px;
+}
+
+.fare-breakdown {
+  margin: 0;
+  border-radius: 16px;
+  padding: 18px;
+  background: #f1f9fd;
+  color: #10345f;
+}
+
+.fare-heading {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #dceaf5;
+}
+
+.fare-heading svg {
+  color: #08a5b0;
+}
+
+.fare-heading strong {
+  font-size: 18px;
+}
+
+.fare-heading b {
+  font-size: 28px;
+}
+
+.fare-breakdown > div:not(.fare-heading) {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  color: #527395;
+  font-size: 15px;
+}
+
+.fare-breakdown > div strong {
+  font-weight: 500;
+}
+
+.fare-hospital {
+  position: relative;
+  width: 130px;
+  height: 62px;
+  margin: 10px auto 0;
+  background: #d8f0f6;
+}
+
+.fare-hospital::before {
+  content: "";
+  position: absolute;
+  left: 40px;
+  bottom: 62px;
+  width: 50px;
+  height: 28px;
+  background: #c4eaf2;
+}
+
+.fare-hospital span {
+  position: absolute;
+  z-index: 1;
+  left: 56px;
+  bottom: 67px;
+  color: #35bddb;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.fare-hospital i,
+.fare-hospital b,
+.fare-hospital em {
+  position: absolute;
+  bottom: 25px;
+  width: 14px;
+  height: 18px;
+  background: #63c9e4;
+}
+
+.fare-hospital i {
+  left: 22px;
+}
+
+.fare-hospital b {
+  left: 58px;
+}
+
+.fare-hospital em {
+  right: 22px;
+}
+
+.fare-thanks {
+  margin: 0;
+  color: #527395;
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.ride-complete-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.ride-complete-actions .primary-button,
+.ride-complete-actions .secondary-button {
+  width: 100%;
+}
+
+.ride-complete-home {
+  margin-top: 0;
+}
+
+@media (max-width: 380px) {
+  .trip-summary-body {
+    grid-template-columns: 22px 1fr 105px;
+  }
+
+  .ride-complete-screen h1 {
+    font-size: 23px;
+  }
+
+  .trip-stops strong {
+    font-size: 15px;
+  }
+}

@@ -1,0 +1,172 @@
+.detail-title {
+  margin: 0 0 24px;
+  color: #10345f;
+  font-size: 31px;
+  text-align: center;
+}
+
+.detail-status {
+  width: 245px;
+  margin: 0 auto 35px;
+  border-radius: 999px;
+  padding: 12px;
+  background: #08b48e;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.detail-route h2 {
+  margin: 0 0 25px;
+  color: #0870cc;
+  font-size: 32px;
+}
+
+.detail-route-row {
+  display: flex;
+  gap: 27px;
+}
+
+.detail-route-line {
+  width: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 0 19px;
+}
+
+.detail-route-line span {
+  width: 27px;
+  height: 27px;
+  border: 8px solid #0ab68f;
+  border-radius: 50%;
+}
+
+.detail-route-line i {
+  width: 8px;
+  flex: 1;
+  background: #0ab68f;
+}
+
+.detail-route-stops {
+  display: grid;
+  gap: 31px;
+}
+
+.detail-route-stops div {
+  display: grid;
+  gap: 5px;
+}
+
+.detail-route-stops strong {
+  color: #10345f;
+  font-size: 27px;
+}
+
+.detail-route-stops small {
+  color: #527395;
+  font-size: 19px;
+  line-height: 1.7;
+}
+
+.detail-stats {
+  display: grid;
+  gap: 9px;
+  margin: 22px 0 0;
+}
+
+.detail-stats div {
+  display: flex;
+  align-items: baseline;
+  gap: 50px;
+}
+
+.detail-stats dt {
+  color: #527395;
+  font-size: 21px;
+}
+
+.detail-stats dd {
+  margin: 0;
+  color: #10345f;
+  font-size: 29px;
+  font-weight: 800;
+}
+
+.detail-stats .detail-price {
+  color: #0870cc;
+  font-size: 39px;
+}
+
+.detail-note {
+  margin: 4px 0 19px;
+  color: #527395;
+  font-size: 16px;
+  text-align: center;
+}
+
+.driver-card {
+  min-height: 102px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 2px solid #dceaf5;
+  border-radius: 15px;
+  padding: 10px 14px;
+  color: #10345f;
+}
+
+.driver-avatar {
+  width: 70px;
+  height: 70px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #d9eff7;
+  color: #0870cc;
+  font-weight: 800;
+}
+
+.driver-card div:nth-child(2) {
+  display: grid;
+  gap: 5px;
+}
+
+.driver-card span {
+  font-size: 17px;
+}
+
+.driver-card strong {
+  font-size: 23px;
+}
+
+.driver-card a {
+  width: 72px;
+  height: 72px;
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  border: 2px solid #dceaf5;
+  border-radius: 50%;
+  color: #0870cc;
+}
+
+.detail-map-button,
+.detail-cancel-button {
+  min-height: 76px;
+  margin-top: 16px;
+}
+
+.detail-map-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  border: 2px solid #6bb3e4;
+  border-radius: 12px;
+  color: #0a4e8c;
+  font-size: 23px;
+  font-weight: 800;
+  text-decoration: none;
+}

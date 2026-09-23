@@ -1,4 +1,4 @@
-import { CheckCircle2, ChevronLeft } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../../components/common/Button/Button";

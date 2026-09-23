@@ -1,0 +1,40 @@
+.taxi-switch-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 12px 22px;
+  text-align: center;
+}
+
+.taxi-switch-icon {
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  background: #e7f4fc;
+  color: #087bdb;
+}
+
+.taxi-switch-heading h2 {
+  margin: 0 0 10px;
+  color: #10345f;
+  font-size: 24px;
+  line-height: 1.5;
+}
+
+.taxi-switch-heading p {
+  margin: 0;
+  color: #527395;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.taxi-switch-notice {
+  margin-top: 10px;
+}
+
+.taxi-switch-actions {
+  margin-top: 24px;
+}

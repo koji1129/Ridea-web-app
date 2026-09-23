@@ -1,0 +1,151 @@
+.driver-location-title {
+  margin: 0 0 37px;
+  color: #10345f;
+  font-size: 34px;
+  text-align: center;
+}
+
+.driver-eta {
+  margin: 0 14px 25px;
+  color: #10345f;
+}
+
+.driver-eta p {
+  margin: 0 0 3px;
+  font-size: 25px;
+}
+
+.driver-eta strong {
+  color: #0870cc;
+  font-size: 46px;
+}
+
+.driver-eta span {
+  margin-left: 10px;
+  font-size: 25px;
+}
+
+.driver-map {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    #dcecf0 0%,
+    #f2f3ed 48%,
+    #cdecc8 100%
+  );
+}
+
+.driver-map::before,
+.driver-map::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.driver-map::before {
+  width: 145%;
+  height: 18px;
+  top: 38%;
+  left: -20%;
+  transform: rotate(48deg);
+}
+
+.driver-map::after {
+  width: 145%;
+  height: 14px;
+  top: 64%;
+  left: -15%;
+  transform: rotate(-34deg);
+}
+
+.driver-map-grid {
+  position: absolute;
+  width: 130%;
+  height: 2px;
+  background: rgba(126, 178, 191, 0.45);
+}
+
+.grid-one {
+  top: 23%;
+  left: -8%;
+  transform: rotate(-12deg);
+}
+
+.grid-two {
+  top: 79%;
+  left: -5%;
+  transform: rotate(17deg);
+}
+
+.driver-route {
+  position: absolute;
+  z-index: 2;
+  top: 36%;
+  left: 23%;
+  width: 57%;
+  height: 47%;
+  border: 10px solid #087bdb;
+  border-top-color: transparent;
+  border-right-color: #087bdb;
+  border-radius: 40% 20% 45% 25%;
+  transform: rotate(-19deg);
+}
+
+.driver-route::after {
+  content: "";
+  position: absolute;
+  top: -13px;
+  left: -10px;
+  width: 42%;
+  height: 10px;
+  background: #ffc21c;
+  transform: rotate(61deg);
+  transform-origin: left center;
+}
+
+.driver-car,
+.driver-destination,
+.driver-home {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  color: #10345f;
+}
+
+.driver-car {
+  top: 19%;
+  left: 18%;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: rgba(188, 229, 244, 0.72);
+}
+
+.driver-destination {
+  right: 15%;
+  bottom: 19%;
+  color: #0870cc;
+}
+
+.driver-home {
+  top: 21%;
+  left: 54%;
+  color: #0870cc;
+}
+
+.driver-map-label {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  z-index: 3;
+  color: #527395;
+  font-size: 11px;
+}
+
+.driver-home-button {
+  margin-top: 38px;
+}
