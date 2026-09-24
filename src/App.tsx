@@ -32,6 +32,8 @@ import SettingsPage from "./pages/user/SettingsPage";
 import ProfileEditPage from "./pages/user/ProfileEditPage";
 import TermsPage from "./pages/user/TermsPage";
 import PrivacyPage from "./pages/user/PrivacyPage";
+import DriverHomePage from "./pages/driver/DriverHomePage";
+import DriverAvailabilityPage from "./pages/driver/DriverAvailabilityPage";
 
 function App() {
   return (
@@ -81,6 +83,8 @@ function App() {
         <Route path="/user/settings/profile" element={<ProfileEditPage />} />
         <Route path="/user/terms" element={<TermsPage />} />
         <Route path="/user/privacy" element={<PrivacyPage />} />
+        <Route path="/driver/home" element={<DriverHomePage />} />
+        <Route path="/driver/availability" element={<DriverAvailabilityPage />} />
       </Routes>
     </BrowserRouter>
   );

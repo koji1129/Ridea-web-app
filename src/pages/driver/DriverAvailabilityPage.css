@@ -1,0 +1,187 @@
+.driverAvailability {
+  min-height: 100vh;
+  color: #143d63;
+  background: #ffffff;
+}
+
+.driverAvailability__main {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 0 30px 44px;
+}
+
+.availabilityCalendar {
+  padding: 42px 26px 26px;
+  border: 1px solid #dfe8ed;
+  border-radius: 2px;
+}
+
+.availabilityCalendar__heading {
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  margin-bottom: 42px;
+}
+
+.availabilityCalendar__heading h1 {
+  margin: 0;
+  color: #0e4f86;
+  font-size: 28px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.availabilityCalendar__monthButton {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  place-items: center;
+  color: #0899ac;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.availabilityCalendar__monthButton:hover {
+  background: #eef8f9;
+}
+
+.availabilityCalendar__weekdays,
+.availabilityCalendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.availabilityCalendar__weekdays {
+  margin-bottom: 14px;
+  color: #71839a;
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.availabilityCalendar__weekdays span:first-child {
+  color: #f0646b;
+}
+
+.availabilityCalendar__weekdays span:last-child {
+  color: #297cc0;
+}
+
+.availabilityCalendar__cell {
+  min-width: 0;
+  aspect-ratio: 1 / 0.86;
+}
+
+.availabilityDay {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 84px;
+  padding: 20px 8px 9px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #244a6c;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.availabilityDay--unavailable {
+  background: #f2f4f5;
+}
+
+.availabilityDay--available {
+  background: #e6f6f2;
+}
+
+.availabilityDay--scheduled {
+  background: #eaf3fc;
+}
+
+.availabilityDay--selected {
+  border-color: #0ca4b5;
+}
+
+.availabilityDay i,
+.legendDot {
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #c5ced4;
+}
+
+.availabilityDay--available i,
+.legendDot--available {
+  background: #32b99b;
+}
+
+.availabilityDay--scheduled i,
+.legendDot--scheduled {
+  background: #2e7bc3;
+}
+
+.availabilityDay--selected span {
+  color: #0798aa;
+  font-weight: 800;
+}
+
+.availabilityCalendar__legend {
+  display: flex;
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid #e5ecef;
+  justify-content: center;
+  gap: 24px;
+  color: #71839a;
+  font-size: 15px;
+}
+
+.availabilityCalendar__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .driverAvailability__main {
+    padding: 0 12px 28px;
+  }
+
+  .availabilityCalendar {
+    padding: 28px 10px 20px;
+  }
+
+  .availabilityCalendar__heading {
+    margin-bottom: 28px;
+  }
+
+  .availabilityCalendar__heading h1 {
+    font-size: 23px;
+  }
+
+  .availabilityCalendar__weekdays,
+  .availabilityCalendar__grid {
+    gap: 4px;
+  }
+
+  .availabilityDay {
+    min-height: 62px;
+    padding: 12px 3px 7px;
+    border-radius: 11px;
+    font-size: 16px;
+  }
+
+  .availabilityCalendar__legend {
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    font-size: 13px;
+  }
+}
