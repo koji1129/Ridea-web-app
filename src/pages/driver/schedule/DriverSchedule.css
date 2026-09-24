@@ -265,11 +265,34 @@
 
 .scheduleCalendar__day--selected {
   color: var(--color-primary);
-  background: var(--color-primary-light);
 
   border-color: var(--color-primary);
 
   font-weight: 800;
+}
+
+.scheduleCalendar__day--available {
+  background: #eaf8f3;
+}
+
+.scheduleCalendar__day--assigned {
+  background: #edf4fc;
+}
+
+.scheduleCalendar__day--unavailable {
+  background: #f4f6f7;
+}
+
+.scheduleCalendar__day--available.scheduleCalendar__day--selected {
+  background: #eaf8f3;
+}
+
+.scheduleCalendar__day--assigned.scheduleCalendar__day--selected {
+  background: #edf4fc;
+}
+
+.scheduleCalendar__day--unavailable.scheduleCalendar__day--selected {
+  background: #f4f6f7;
 }
 
 .scheduleCalendar__status {

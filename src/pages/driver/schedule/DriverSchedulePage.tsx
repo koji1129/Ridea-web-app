@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CalendarDays,
   ChevronLeft,
@@ -8,6 +8,13 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+import {
+  cancelShift,
+  createShift,
+  getShifts,
+  updateShift,
+  type Shift,
+} from "../../../lib/shift-api";
 import "../DriverHome.css";
 import "./DriverSchedule.css";
 
@@ -20,6 +27,7 @@ type Schedule = {
   status: ScheduleStatus;
   startTime?: string;
   endTime?: string;
+  shiftId?: number;
 };
 
 type ScheduleMap = Record<string, Schedule>;
@@ -60,6 +68,32 @@ const initialSchedules: ScheduleMap = {
   },
 };
 
+const defaultCarId = Number(import.meta.env.VITE_DRIVER_CAR_ID ?? "1");
+
+function formatShiftDate(date: Date) {
+  return formatDateKey(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function formatShiftTime(date: Date) {
+  return `${String(date.getHours()).padStart(2, "0")}:${String(
+    date.getMinutes(),
+  ).padStart(2, "0")}`;
+}
+
+function scheduleFromShift(shift: Shift): [string, Schedule] {
+  const start = new Date(shift.start_time);
+  const end = new Date(shift.end_time);
+  return [
+    formatShiftDate(start),
+    {
+      shiftId: shift.id,
+      status: shift.status === "booked" ? "assigned" : "available",
+      startTime: formatShiftTime(start),
+      endTime: formatShiftTime(end),
+    },
+  ];
+}
+
 function formatDateKey(
   year: number,
   month: number,
@@ -82,6 +116,19 @@ function DriverSchedulePage() {
 
   const [schedules, setSchedules] =
     useState<ScheduleMap>(initialSchedules);
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getShifts()
+      .then((shifts) => {
+        setSchedules(Object.fromEntries(shifts.map(scheduleFromShift)));
+      })
+      .catch((error: unknown) => {
+        setApiError(
+          error instanceof Error ? error.message : "シフトを読み込めませんでした",
+        );
+      });
+  }, []);
 
   const selectedSchedule =
     schedules[selectedDate] ?? {
@@ -135,12 +182,45 @@ function DriverSchedulePage() {
     }));
   };
 
-  const handleSave = () => {
-    /*
-     * TODO:
-     * バックエンド完成後にAPIへ保存する
-     */
-    alert("シフトを保存しました");
+  const handleSave = async () => {
+    setApiError(null);
+
+    try {
+      if (!Number.isInteger(defaultCarId) || defaultCarId <= 0) {
+        throw new Error("VITE_DRIVER_CAR_ID を正しく設定してください");
+      }
+
+      const shift = schedules[selectedDate];
+      if (shift?.status === "unavailable") {
+        if (shift.shiftId !== undefined) await cancelShift(shift.shiftId);
+        setSchedules((current) => {
+          const next = { ...current };
+          delete next[selectedDate];
+          return next;
+        });
+        return;
+      }
+
+      const input = {
+        car_id: defaultCarId,
+        start_time: new Date(
+          `${selectedDate}T${shift?.startTime ?? "09:00"}`,
+        ).toISOString(),
+        end_time: new Date(
+          `${selectedDate}T${shift?.endTime ?? "18:00"}`,
+        ).toISOString(),
+      };
+      const savedShift =
+        shift?.shiftId !== undefined
+          ? await updateShift(shift.shiftId, input)
+          : await createShift(input);
+      const [dateKey, savedSchedule] = scheduleFromShift(savedShift);
+      setSchedules((current) => ({ ...current, [dateKey]: savedSchedule }));
+    } catch (error: unknown) {
+      setApiError(
+        error instanceof Error ? error.message : "シフトを保存できませんでした",
+      );
+    }
   };
 
   const selectedDateObject =
@@ -168,6 +248,12 @@ function DriverSchedulePage() {
         </header>
 
         <main className="driverSchedule__main">
+          {apiError && (
+            <p role="alert" className="driverSchedule__error">
+              {apiError}
+            </p>
+          )}
+
           <section className="driverSchedule__intro">
             <div className="driverSchedule__introIcon">
               <CalendarDays size={25} />
@@ -243,6 +329,9 @@ function DriverSchedulePage() {
                 const schedule =
                   schedules[dateKey];
 
+                const dayStatus =
+                  schedule?.status ?? "unavailable";
+
                 const isSelected =
                   selectedDate === dateKey;
 
@@ -252,6 +341,7 @@ function DriverSchedulePage() {
                     type="button"
                     className={[
                       "scheduleCalendar__day",
+                      `scheduleCalendar__day--${dayStatus}`,
                       isSelected
                         ? "scheduleCalendar__day--selected"
                         : "",
@@ -261,14 +351,19 @@ function DriverSchedulePage() {
                     onClick={() =>
                       setSelectedDate(dateKey)
                     }
+                    aria-label={`${month + 1}月${day}日: ${
+                      dayStatus === "available"
+                        ? "勤務可能"
+                        : dayStatus === "assigned"
+                          ? "運行予定あり"
+                          : "勤務不可"
+                    }`}
                   >
                     <span>{day}</span>
 
-                    {schedule && (
-                      <span
-                        className={`scheduleCalendar__status scheduleCalendar__status--${schedule.status}`}
-                      />
-                    )}
+                    <span
+                      className={`scheduleCalendar__status scheduleCalendar__status--${dayStatus}`}
+                    />
                   </button>
                 );
               })}
