@@ -37,6 +37,7 @@ function RegisterPage() {
 
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [prefecture, setPrefecture] = useState("");
   const [city, setCity] = useState("");
@@ -49,16 +50,20 @@ function RegisterPage() {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [step, setStep] = useState<Step>("input");
   const [submitted, setSubmitted] = useState(false);
-  const [isSearchingAddress, setIsSearchingAddress] = useState(false);
-  const [addressSearchError, setAddressSearchError] = useState("");
+  const [isSearchingAddress, setIsSearchingAddress] =
+    useState(false);
+  const [addressSearchError, setAddressSearchError] =
+    useState("");
 
   const isPasswordValid = password.length >= 8;
+
   const isPostalCodeValid =
     postalCode.replace(/\D/g, "").length === 7;
 
   const isFormValid =
     name.trim() !== "" &&
     phoneNumber.trim() !== "" &&
+    email.trim() !== "" &&
     isPostalCodeValid &&
     prefecture !== "" &&
     city.trim() !== "" &&
@@ -108,6 +113,7 @@ function RegisterPage() {
     setPostalCode(
       formatPostalCode(event.target.value)
     );
+
     setAddressSearchError("");
   };
 
@@ -244,6 +250,14 @@ function RegisterPage() {
             />
 
             <ConfirmRow
+              label="メールアドレス"
+              value={email}
+              onEdit={() =>
+                setStep("input")
+              }
+            />
+
+            <ConfirmRow
               label="郵便番号"
               value={`〒${postalCode}`}
               onEdit={() =>
@@ -329,9 +343,7 @@ function RegisterPage() {
               placeholder="山田 太郎"
               value={name}
               onChange={(event) =>
-                setName(
-                  event.target.value
-                )
+                setName(event.target.value)
               }
               className={`field-input ${
                 submitted &&
@@ -360,13 +372,40 @@ function RegisterPage() {
               placeholder="090-1234-5678"
               value={phoneNumber}
               onChange={(event) =>
-                setPhoneNumber(
-                  event.target.value
-                )
+                setPhoneNumber(event.target.value)
               }
               className={`field-input ${
                 submitted &&
                 !phoneNumber.trim()
+                  ? "input-error"
+                  : ""
+              }`}
+            />
+          </RegisterField>
+
+          <RegisterField
+            label="メールアドレス"
+            htmlFor="email"
+            required
+            error={
+              submitted &&
+              !email.trim()
+            }
+            errorMessage="メールアドレスを入力してください"
+          >
+            <input
+              id="email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              placeholder="example@example.com"
+              value={email}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
+              className={`field-input ${
+                submitted &&
+                !email.trim()
                   ? "input-error"
                   : ""
               }`}
@@ -488,9 +527,7 @@ function RegisterPage() {
               placeholder="春日井市"
               value={city}
               onChange={(event) =>
-                setCity(
-                  event.target.value
-                )
+                setCity(event.target.value)
               }
               className={`field-input ${
                 submitted &&

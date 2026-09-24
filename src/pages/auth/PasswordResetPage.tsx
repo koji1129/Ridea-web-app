@@ -5,7 +5,7 @@ import logo from "../../assets/header_logo.png";
 import "./PasswordResetPage.css";
 
 function PasswordResetPage() {
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
@@ -14,7 +14,7 @@ function PasswordResetPage() {
 
     setSubmitted(true);
 
-    if (!phoneNumber.trim()) {
+    if (!email.trim()) {
       return;
     }
 
@@ -44,7 +44,7 @@ function PasswordResetPage() {
             <h1>受付が完了しました</h1>
 
             <p>
-              登録されている電話番号へ、
+              登録されているメールアドレスへ、
               <br />
               再設定の案内をお送りします。
             </p>
@@ -62,7 +62,7 @@ function PasswordResetPage() {
               <h1>パスワード再設定</h1>
 
               <p>
-                登録済みの電話番号を入力してください。
+                登録済みのメールアドレスを入力してください。
               </p>
             </div>
 
@@ -74,31 +74,31 @@ function PasswordResetPage() {
               <div className="field-group">
                 <label
                   className="field-label"
-                  htmlFor="resetPhoneNumber"
+                  htmlFor="resetEmail"
                 >
-                  電話番号
+                  メールアドレス
                 </label>
 
                 <input
-                  id="resetPhoneNumber"
+                  id="resetEmail"
                   className={`field-input ${
-                    submitted && !phoneNumber.trim()
+                    submitted && !email.trim()
                       ? "input-error"
                       : ""
                   }`}
-                  type="tel"
-                  inputMode="tel"
-                  autoComplete="tel"
-                  placeholder="09012345678"
-                  value={phoneNumber}
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  placeholder="example@example.com"
+                  value={email}
                   onChange={(event) =>
-                    setPhoneNumber(event.target.value)
+                    setEmail(event.target.value)
                   }
                 />
 
-                {submitted && !phoneNumber.trim() && (
+                {submitted && !email.trim() && (
                   <p className="error-message">
-                    電話番号を入力してください
+                    メールアドレスを入力してください
                   </p>
                 )}
               </div>
