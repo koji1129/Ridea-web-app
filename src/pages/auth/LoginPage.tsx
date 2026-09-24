@@ -8,7 +8,7 @@ import "./LoginPage.css";
 function LoginPage() {
   const navigate = useNavigate();
 
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -18,7 +18,7 @@ function LoginPage() {
     event.preventDefault();
     setSubmitted(true);
 
-    if (!phoneNumber.trim() || !password.trim()) {
+    if (!email.trim() || !password.trim()) {
       setShowInputError(true);
       return;
     }
@@ -49,31 +49,31 @@ function LoginPage() {
           <div className="field-group">
             <label
               className="field-label"
-              htmlFor="phoneNumber"
+              htmlFor="email"
             >
-              電話番号
+              メールアドレス
             </label>
 
             <input
-              id="phoneNumber"
+              id="email"
               className={`field-input ${
-                submitted && !phoneNumber.trim()
+                submitted && !email.trim()
                   ? "input-error"
                   : ""
               }`}
-              type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-              placeholder="09012345678"
-              value={phoneNumber}
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              placeholder="example@example.com"
+              value={email}
               onChange={(event) =>
-                setPhoneNumber(event.target.value)
+                setEmail(event.target.value)
               }
             />
 
-            {submitted && !phoneNumber.trim() && (
+            {submitted && !email.trim() && (
               <p className="error-message">
-                電話番号を入力してください
+                メールアドレスを入力してください
               </p>
             )}
           </div>
@@ -94,11 +94,7 @@ function LoginPage() {
                     ? "input-error"
                     : ""
                 }`}
-                type={
-                  showPassword
-                    ? "text"
-                    : "password"
-                }
+                type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 placeholder="パスワードを入力"
                 value={password}
@@ -111,9 +107,7 @@ function LoginPage() {
                 className="login-password-toggle"
                 type="button"
                 onClick={() =>
-                  setShowPassword(
-                    (current) => !current
-                  )
+                  setShowPassword((current) => !current)
                 }
                 aria-label={
                   showPassword

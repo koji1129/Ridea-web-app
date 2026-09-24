@@ -32,17 +32,22 @@ function ProfileEditPage() {
   const [name, setName] = useState("山田 太郎");
   const [kana, setKana] = useState("やまだ たろう");
   const [phone, setPhone] = useState("09012345678");
+  const [email, setEmail] = useState("taro@example.com");
   const [postalCode, setPostalCode] = useState("");
   const [prefecture, setPrefecture] = useState("");
   const [city, setCity] = useState("");
   const [town, setTown] = useState("");
   const [block, setBlock] = useState("");
   const [building, setBuilding] = useState("");
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileImage, setProfileImage] =
+    useState<string | null>(null);
   const [error, setError] = useState("");
-  const [addressSearchError, setAddressSearchError] = useState("");
-  const [isSearchingAddress, setIsSearchingAddress] = useState(false);
-  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [addressSearchError, setAddressSearchError] =
+    useState("");
+  const [isSearchingAddress, setIsSearchingAddress] =
+    useState(false);
+  const [showCompleteModal, setShowCompleteModal] =
+    useState(false);
 
   const handleImageChange = (
     event: ChangeEvent<HTMLInputElement>
@@ -95,9 +100,13 @@ function ProfileEditPage() {
         throw new Error();
       }
 
-      const data = (await response.json()) as ZipCloudResponse;
+      const data =
+        (await response.json()) as ZipCloudResponse;
 
-      if (!data.results || data.results.length === 0) {
+      if (
+        !data.results ||
+        data.results.length === 0
+      ) {
         setAddressSearchError(
           "該当する住所が見つかりませんでした"
         );
@@ -127,6 +136,7 @@ function ProfileEditPage() {
       !name.trim() ||
       !kana.trim() ||
       !phone.trim() ||
+      !email.trim() ||
       !postalCode.trim() ||
       !prefecture ||
       !city.trim() ||
@@ -140,12 +150,16 @@ function ProfileEditPage() {
     const zipCode = postalCode.replace(/-/g, "");
 
     if (!/^\d{7}$/.test(zipCode)) {
-      setError("郵便番号を7桁で入力してください");
+      setError(
+        "郵便番号を7桁で入力してください"
+      );
       return;
     }
 
     if (!/^[0-9-]+$/.test(phone)) {
-      setError("電話番号を正しく入力してください");
+      setError(
+        "電話番号を正しく入力してください"
+      );
       return;
     }
 
@@ -172,12 +186,18 @@ function ProfileEditPage() {
               className="profile-edit-avatar-image"
             />
           ) : (
-            <User size={48} aria-hidden="true" />
+            <User
+              size={48}
+              aria-hidden="true"
+            />
           )}
         </div>
 
         <div className="profile-image-info">
-          <strong>プロフィール画像</strong>
+          <strong>
+            プロフィール画像
+          </strong>
+
           <p>
             ドライバーに表示される画像です
           </p>
@@ -186,9 +206,14 @@ function ProfileEditPage() {
         <button
           type="button"
           className="secondary-button profile-image-button"
-          onClick={() => fileInputRef.current?.click()}
+          onClick={() =>
+            fileInputRef.current?.click()
+          }
         >
-          <Camera size={19} aria-hidden="true" />
+          <Camera
+            size={19}
+            aria-hidden="true"
+          />
           画像を変更
         </button>
 
@@ -230,6 +255,16 @@ function ProfileEditPage() {
           autoComplete="tel"
         />
 
+        <ProfileInput
+          label="メールアドレス"
+          required
+          type="email"
+          inputMode="email"
+          value={email}
+          onChange={setEmail}
+          autoComplete="email"
+        />
+
         <section className="address-fields">
           <h2 className="profile-address-title">
             住所
@@ -241,6 +276,7 @@ function ProfileEditPage() {
               htmlFor="profile-postal-code"
             >
               郵便番号
+
               <span className="required-badge">
                 必須
               </span>
@@ -288,6 +324,7 @@ function ProfileEditPage() {
               htmlFor="profile-prefecture"
             >
               都道府県
+
               <span className="required-badge">
                 必須
               </span>
@@ -299,7 +336,9 @@ function ProfileEditPage() {
                 className="field-select"
                 value={prefecture}
                 onChange={(event) =>
-                  setPrefecture(event.target.value)
+                  setPrefecture(
+                    event.target.value
+                  )
                 }
                 autoComplete="address-level1"
               >
@@ -307,14 +346,16 @@ function ProfileEditPage() {
                   選択してください
                 </option>
 
-                {PREFECTURES.map((item) => (
-                  <option
-                    key={item}
-                    value={item}
-                  >
-                    {item}
-                  </option>
-                ))}
+                {PREFECTURES.map(
+                  (item) => (
+                    <option
+                      key={item}
+                      value={item}
+                    >
+                      {item}
+                    </option>
+                  )
+                )}
               </select>
 
               <ChevronDown
@@ -436,7 +477,11 @@ type ProfileInputProps = {
   type?: string;
   placeholder?: string;
   required?: boolean;
-  inputMode?: "text" | "tel" | "numeric";
+  inputMode?:
+    | "text"
+    | "email"
+    | "tel"
+    | "numeric";
   autoComplete?: string;
 };
 

@@ -7,6 +7,7 @@ import { useState } from "react";
 import {
   ChevronLeft,
   Home,
+  Mail,
   Pencil,
   Phone,
   Save,
@@ -20,18 +21,21 @@ import "./DriverProfileEditPage.css";
 type ProfileForm = {
   name: string;
   phone: string;
+  email: string;
   address: string;
 };
 
 type ProfileErrors = {
   name?: string;
   phone?: string;
+  email?: string;
   address?: string;
 };
 
 const initialProfile: ProfileForm = {
   name: "山田 太郎",
   phone: "090-1234-5678",
+  email: "taro@example.com",
   address: "愛知県春日井市○○町1-2-3",
 };
 
@@ -80,6 +84,11 @@ function DriverProfileEditPage() {
     if (!form.phone.trim()) {
       nextErrors.phone =
         "電話番号を入力してください";
+    }
+
+    if (!form.email.trim()) {
+      nextErrors.email =
+        "メールアドレスを入力してください";
     }
 
     if (!form.address.trim()) {
@@ -180,6 +189,12 @@ function DriverProfileEditPage() {
                 />
 
                 <ProfileViewRow
+                  icon={<Mail size={20} />}
+                  label="メールアドレス"
+                  value={savedProfile.email}
+                />
+
+                <ProfileViewRow
                   icon={<Home size={20} />}
                   label="住所"
                   value={savedProfile.address}
@@ -192,8 +207,9 @@ function DriverProfileEditPage() {
                 </strong>
 
                 <p>
-                  電話番号や住所は、運行時の連絡や
-                  本人確認などに使用される場合があります。
+                  電話番号やメールアドレス、住所は、
+                  運行時の連絡や本人確認などに
+                  使用される場合があります。
                   変更があった場合は最新の情報に
                   更新してください。
                 </p>
@@ -231,6 +247,17 @@ function DriverProfileEditPage() {
                 value={form.phone}
                 placeholder="090-1234-5678"
                 error={errors.phone}
+                onChange={handleChange}
+              />
+
+              <ProfileField
+                icon={<Mail size={20} />}
+                label="メールアドレス"
+                name="email"
+                type="email"
+                value={form.email}
+                placeholder="taro@example.com"
+                error={errors.email}
                 onChange={handleChange}
               />
 
