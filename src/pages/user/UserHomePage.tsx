@@ -1,3 +1,4 @@
+
 import {
   Bell,
   CalendarPlus,
@@ -11,9 +12,13 @@ import {
   Settings,
   UserRound,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import UserScreen from "../../components/user/UserScreen";
+import {
+  getReservations,
+  type Reservation,
+} from "../../lib/reservation-api";
 import "./UserHomePage.css";
 
 type RideStatus =
@@ -22,12 +27,195 @@ type RideStatus =
   | "waiting"
   | "riding"
   | "outbound_completed"
-  | "return_matching"
   | "return_waiting"
   | "return_riding";
 
+const RIDE_STATUS_KEY = "yoriai_ride_status";
+
+const validStatuses: RideStatus[] = [
+  "reserved",
+  "waiting",
+  "riding",
+  "outbound_completed",
+  "return_waiting",
+  "return_riding",
+];
+
+function getJapanDate(value: string | Date): string {
+  const date = typeof value === "string" ? new Date(value) : value;
+
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+
+  const getPart = (type: string) =>
+    parts.find((part) => part.type === type)?.value ?? "";
+
+  return `${getPart("year")}-${getPart("month")}-${getPart("day")}`;
+}
+
+function formatTime(value: string | null): string {
+  if (!value) return "時刻未定";
+
+  return new Date(value).toLocaleTimeString("ja-JP", {
+    timeZone: "Asia/Tokyo",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function formatDate(value: string | null): string {
+  if (!value) return "日付未定";
+
+  return new Date(value).toLocaleDateString("ja-JP", {
+    timeZone: "Asia/Tokyo",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+function getSavedRideStatus(reservationId: number): RideStatus {
+  try {
+    const raw = localStorage.getItem(RIDE_STATUS_KEY);
+    if (!raw) return "reserved";
+
+    const saved: unknown = JSON.parse(raw);
+
+    if (
+      typeof saved !== "object" ||
+      saved === null ||
+      Array.isArray(saved)
+    ) {
+      return "reserved";
+    }
+
+    const status =
+      (saved as Record<string, unknown>)[String(reservationId)];
+
+    return validStatuses.includes(status as RideStatus)
+      ? (status as RideStatus)
+      : "reserved";
+  } catch {
+    return "reserved";
+  }
+}
+
 function UserHomePage() {
-  const [rideStatus] = useState<RideStatus>("return_waiting");
+  const [rideStatus, setRideStatus] = useState<RideStatus>("none");
+  const [todayReservation, setTodayReservation] =
+    useState<Reservation | null>(null);
+
+  useEffect(() => {
+    let active = true;
+
+    const loadReservation = async () => {
+      try {
+        const reservations = await getReservations();
+        const today = getJapanDate(new Date());
+
+        const todayReservations = reservations
+          .filter((reservation) => {
+            if (
+              reservation.status === "canceled" ||
+              reservation.status === "completed"
+            ) {
+              return false;
+            }
+
+            const date =
+              reservation.scheduled_pickup_at ??
+              reservation.desired_arrival_at;
+
+            return date !== null && getJapanDate(date) === today;
+          })
+          .sort((a, b) => {
+            const aDate =
+              a.scheduled_pickup_at ??
+              a.desired_arrival_at ??
+              "";
+
+            const bDate =
+              b.scheduled_pickup_at ??
+              b.desired_arrival_at ??
+              "";
+
+            return aDate.localeCompare(bDate);
+          });
+
+        if (!active) return;
+
+        const reservation = todayReservations[0] ?? null;
+
+        setTodayReservation(reservation);
+        setRideStatus(
+          reservation
+            ? getSavedRideStatus(reservation.id)
+            : "none"
+        );
+      } catch (error) {
+        console.error("予約情報の取得に失敗しました", error);
+      }
+    };
+
+    void loadReservation();
+
+    const handleStorage = (event: StorageEvent) => {
+      if (
+        event.key === RIDE_STATUS_KEY ||
+        event.key === "yoriai_dev_reservations"
+      ) {
+        void loadReservation();
+      }
+    };
+
+    const handleFocus = () => {
+      void loadReservation();
+    };
+
+    window.addEventListener("storage", handleStorage);
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      active = false;
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, []);
+
+  const nextStatus = (status: RideStatus) => {
+    setRideStatus(status);
+
+    if (!todayReservation) return;
+
+    try {
+      const raw = localStorage.getItem(RIDE_STATUS_KEY);
+      const parsed: unknown = raw ? JSON.parse(raw) : {};
+
+      const saved: Record<string, unknown> =
+        typeof parsed === "object" &&
+        parsed !== null &&
+        !Array.isArray(parsed)
+          ? (parsed as Record<string, unknown>)
+          : {};
+
+      saved[String(todayReservation.id)] = status;
+
+      localStorage.setItem(
+        RIDE_STATUS_KEY,
+        JSON.stringify(saved)
+      );
+    } catch (error) {
+      console.error("ステータスの保存に失敗しました", error);
+    }
+  };
+
+  const reservationDate =
+    todayReservation?.scheduled_pickup_at ??
+    todayReservation?.desired_arrival_at ??
+    null;
 
   return (
     <UserScreen
@@ -71,7 +259,7 @@ function UserHomePage() {
         </section>
       )}
 
-      {rideStatus === "reserved" && (
+      {rideStatus === "reserved" && todayReservation && (
         <section className="ride-card">
           <div className="ride-card-heading">
             <span className="ride-card-icon">
@@ -81,23 +269,26 @@ function UserHomePage() {
           </div>
 
           <p className="ride-countdown">
-            9:20 お迎え予定
+            {todayReservation.scheduled_pickup_at
+              ? `${formatTime(todayReservation.scheduled_pickup_at)} お迎え予定`
+              : `${formatTime(todayReservation.desired_arrival_at)} 到着希望`}
           </p>
 
           <p className="ride-arrival">
-            8月20日
+            {formatDate(reservationDate)}
           </p>
 
           <p className="ride-destination">
-            春日井市民病院行き
+            {todayReservation.end_address}行き
           </p>
 
-          <Link
-            to="/user/reservations"
-            className="ride-card-link"
-          >
-            予約を確認する
-          </Link>
+         <button
+          type="button"
+          onClick={() => nextStatus("waiting")}
+          className="primary-button ride-card-button"
+        >
+          お迎え開始
+        </button>
         </section>
       )}
 
@@ -115,20 +306,23 @@ function UserHomePage() {
           </p>
 
           <p className="ride-arrival">
-            9:20 ごろ到着予定
+            {todayReservation?.scheduled_pickup_at
+              ? `${formatTime(todayReservation.scheduled_pickup_at)} ごろ到着予定`
+              : "9:20 ごろ到着予定"}
           </p>
 
           <p className="ride-destination">
-            乗車地点：自宅
+            乗車地点：{todayReservation?.start_address ?? "自宅"}
           </p>
 
-          <Link
-            to="/user/driver-location"
+          <button
+            type="button"
+            onClick={() => nextStatus("riding")}
             className="primary-button ride-card-button"
           >
             <MapPin size={20} aria-hidden="true" />
-            車の位置を見る
-          </Link>
+            乗車開始
+          </button>
         </section>
       )}
 
@@ -146,19 +340,22 @@ function UserHomePage() {
           </p>
 
           <p className="ride-arrival">
-            9:40 ごろ到着予定
+            {todayReservation?.desired_arrival_at
+              ? `${formatTime(todayReservation.desired_arrival_at)} ごろ到着予定`
+              : "9:40 ごろ到着予定"}
           </p>
 
           <p className="ride-destination">
-            春日井市民病院行き
+            {todayReservation?.end_address ?? "春日井市民病院"}行き
           </p>
 
-          <Link
-            to="/user/ride"
+          <button
+            type="button"
+            onClick={() => nextStatus("outbound_completed")}
             className="primary-button ride-card-button"
           >
-            乗車状況を見る
-          </Link>
+            目的地に到着
+          </button>
         </section>
       )}
 
@@ -177,37 +374,14 @@ function UserHomePage() {
             帰るときはこちらから車を呼べます
           </p>
 
-          <Link
-            to="/user/return"
+          <button
+            type="button"
+            onClick={() => nextStatus("return_waiting")}
             className="primary-button ride-card-button"
           >
             <RotateCcw size={20} aria-hidden="true" />
             帰る
-          </Link>
-        </section>
-      )}
-
-      {rideStatus === "return_matching" && (
-        <section className="ride-card">
-          <div className="ride-card-heading">
-            <span className="ride-card-icon">
-              <Car size={22} aria-hidden="true" />
-            </span>
-            <strong>帰りの車を探しています</strong>
-          </div>
-
-          <h2>マッチング中です</h2>
-
-          <p className="ride-card-message">
-            ドライバーが決まるまでお待ちください
-          </p>
-
-          <Link
-            to="/user/return/matching"
-            className="primary-button ride-card-button"
-          >
-            状況を確認する
-          </Link>
+          </button>
         </section>
       )}
 
@@ -229,16 +403,17 @@ function UserHomePage() {
           </p>
 
           <p className="ride-destination">
-            春日井市民病院へお迎え
+            {todayReservation?.end_address ?? "春日井市民病院"}へお迎え
           </p>
 
-          <Link
-            to="/user/return/confirmed"
+          <button
+            type="button"
+            onClick={() => nextStatus("return_riding")}
             className="primary-button ride-card-button"
           >
             <MapPin size={20} aria-hidden="true" />
-            お迎え状況を見る
-          </Link>
+            乗車開始
+          </button>
         </section>
       )}
 
@@ -248,7 +423,7 @@ function UserHomePage() {
             <span className="ride-card-icon">
               <House size={22} aria-hidden="true" />
             </span>
-            <strong>帰宅中です</strong>
+            <strong>帰宅中</strong>
           </div>
 
           <p className="ride-countdown">
@@ -260,15 +435,16 @@ function UserHomePage() {
           </p>
 
           <p className="ride-destination">
-            自宅へ向かっています
+            {todayReservation?.start_address ?? "自宅"}へ向かっています
           </p>
 
-          <Link
-            to="/user/ride"
+          <button
+            type="button"
+            onClick={() => nextStatus("none")}
             className="primary-button ride-card-button"
           >
-            乗車状況を見る
-          </Link>
+            帰宅完了
+          </button>
         </section>
       )}
 

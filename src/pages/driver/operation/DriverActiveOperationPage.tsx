@@ -392,11 +392,18 @@ function PickupSection({
           </span>
         </div>
 
-        <button
+      <button
           type="button"
-          className="activeRoute__navigation"
+          className="operationDetail__navigation"
+          onClick={() => {
+            window.open(
+              "https://www.google.com/maps/search/?api=1&query=春日井市役所",
+              "_blank",
+              "noopener,noreferrer"
+            );
+          }}
         >
-          <Navigation size={19} />
+          <Navigation size={20} />
           地図を開く
         </button>
       </section>

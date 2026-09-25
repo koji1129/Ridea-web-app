@@ -283,9 +283,16 @@ function DriverOperationDetailPage() {
           </div>
 
           <div className="operationDetail__actions">
-            <button
+           <button
               type="button"
               className="operationDetail__navigation"
+              onClick={() => {
+                window.open(
+                  "https://www.google.com/maps/search/?api=1&query=春日井市役所",
+                  "_blank",
+                  "noopener,noreferrer"
+                );
+              }}
             >
               <Navigation size={20} />
               乗車場所を地図で確認

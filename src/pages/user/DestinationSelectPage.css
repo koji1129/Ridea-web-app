@@ -1,81 +1,42 @@
+
 .destination-heading {
-  margin: 38px 0;
+  margin: 24px 0;
 }
 
 .destination-heading h2 {
   margin: 0;
-  font-size: 31px;
+  font-size: 26px;
+  color: #10345f;
 }
 
 .destination-heading p {
-  margin-top: 14px;
-  font-size: 21px;
+  margin-top: 12px;
+  font-size: 18px;
+  color: #66819f;
 }
 
-.destination-search {
-  min-height: 66px;
-  margin-bottom: 32px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  border: 2px solid #dceaf5;
-  border-radius: 14px;
-  padding: 0 20px;
-  color: #5a7898;
+.destination-heading + .location-picker {
+  margin-bottom: 20px;
 }
 
-.destination-search input {
+.pickup-next {
   width: 100%;
-  min-width: 0;
-  border: 0;
-  outline: 0;
-  color: #10345f;
+  min-height: 58px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 10px;
+  background: #0b8f9e;
+  color: #fff;
   font-size: 20px;
-}
-
-.destination-list {
-  border-top: 2px solid #e2edf5;
-}
-
-.destination-item {
-  width: 100%;
-  min-height: 98px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  border: 0;
-  border-bottom: 2px solid #e2edf5;
-  padding: 16px;
-  background: #fff;
-  color: #0e3970;
-  text-align: left;
+  font-weight: 700;
   cursor: pointer;
 }
 
-.destination-item svg {
-  flex: 0 0 44px;
-  stroke-width: 2.5;
+.pickup-next:hover:not(:disabled) {
+  background: #087b89;
 }
 
-.destination-item span {
-  display: grid;
-  gap: 5px;
-}
-
-.destination-item strong {
-  font-size: 23px;
-}
-
-.destination-item small {
-  color: #66819f;
-  font-size: 18px;
-}
-
-.destination-item.selected {
-  background: #f8fcfe;
-}
-
-.destination-item.selected svg,
-.destination-item.selected strong {
-  color: #0797a5;
+.pickup-next:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

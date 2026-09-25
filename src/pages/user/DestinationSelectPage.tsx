@@ -1,15 +1,12 @@
-import {
-  Building2,
-  MapPin,
-  Search,
-  Store,
-  TrainFront,
-} from "lucide-react";
+
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserScreen from "../../components/user/UserScreen";
+import LocationPicker from "../../components/user/LocationPicker";
+import type { LocationResult } from "../../lib/geocoding";
 import type { ReservationState } from "./flowTypes";
 import "./DestinationSelectPage.css";
+
 function DestinationSelectPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,45 +14,29 @@ function DestinationSelectPage() {
   const previous =
     (location.state as ReservationState | null) ?? {};
 
-  const [destination, setDestination] = useState(
-    previous.destination ?? "春日井市民病院"
-  );
-
-  const [search, setSearch] = useState("");
-
-  const destinations = [
-    [
-      "春日井市民病院",
-      "春日井市中央町1-1-1",
-      Building2,
-    ],
-    [
-      "春日井市役所",
-      "春日井市鳥居松町5-44",
-      MapPin,
-    ],
-    [
-      "イオン春日井店",
-      "春日井市柏井町4-17",
-      Store,
-    ],
-    [
-      "JR春日井駅",
-      "春日井市上条町1-1",
-      TrainFront,
-    ],
-  ] as const;
-
-  const visibleDestinations = destinations.filter(
-    ([name, address]) =>
-      `${name}${address}`.includes(search)
-  );
+  const [selectedLocation, setSelectedLocation] =
+    useState<LocationResult | null>(
+      previous.destinationLat !== undefined &&
+      previous.destinationLng !== undefined
+        ? {
+            name: previous.destination ?? "",
+            address: previous.destinationAddress ?? "",
+            lat: previous.destinationLat,
+            lng: previous.destinationLng,
+          }
+        : null
+    );
 
   const handleNext = () => {
+    if (!selectedLocation) return;
+
     navigate("/user/reservation/datetime", {
       state: {
         ...previous,
-        destination,
+        destination: selectedLocation.name,
+        destinationAddress: selectedLocation.address,
+        destinationLat: selectedLocation.lat,
+        destinationLng: selectedLocation.lng,
       },
     });
   };
@@ -71,53 +52,14 @@ function DestinationSelectPage() {
         <p>どこへ行きますか？</p>
       </div>
 
-      <label className="destination-search">
-        <Search size={24} aria-hidden="true" />
-
-        <input
-          value={search}
-          onChange={(event) =>
-            setSearch(event.target.value)
-          }
-          placeholder="施設名・住所で検索"
-        />
-      </label>
-
-      <section
-        className="destination-list"
-        aria-label="目的地一覧"
-      >
-        {visibleDestinations.map(
-          ([name, address, Icon]) => (
-            <button
-              className={`destination-item${
-                destination === name
-                  ? " selected"
-                  : ""
-              }`}
-              type="button"
-              key={name}
-              onClick={() =>
-                setDestination(name)
-              }
-            >
-              <Icon
-                size={32}
-                aria-hidden="true"
-              />
-
-              <span>
-                <strong>{name}</strong>
-                <small>{address}</small>
-              </span>
-            </button>
-          )
-        )}
-      </section>
+      <LocationPicker
+        onSelect={setSelectedLocation}
+      />
 
       <button
         className="primary-button pickup-next"
         type="button"
+        disabled={!selectedLocation}
         onClick={handleNext}
       >
         次へ
