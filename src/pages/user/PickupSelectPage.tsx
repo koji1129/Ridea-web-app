@@ -1,10 +1,24 @@
-import { Home, Map, MapPin, Search, Trash2 } from "lucide-react";
+
+import { Home, Map, MapPin, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import UserPopup from "../../components/user/UserPopup";
 import UserScreen from "../../components/user/UserScreen";
+import LocationPicker from "../../components/user/LocationPicker";
+import {
+  searchLocations,
+  type LocationResult,
+} from "../../lib/geocoding";
 import type { ReservationState } from "./flowTypes";
 import "./PickupSelectPage.css";
+
+const history = [
+  ["春日井市役所", "春日井市鳥居松町5-44"],
+  ["イオン春日井店", "春日井市柏井町4-17"],
+  ["JR春日井駅", "春日井市上条町1-1"],
+  ["勝川駅", "春日井市松新町1-4"],
+  ["味美駅", "春日井市西本町1-8"],
+];
+
 function PickupSelectPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,27 +30,84 @@ function PickupSelectPage() {
     previous.pickup ?? "自宅"
   );
 
+  const [selectedLocation, setSelectedLocation] =
+    useState<LocationResult | null>(
+      previous.pickupLat !== undefined &&
+      previous.pickupLng !== undefined
+        ? {
+            name: previous.pickup ?? "",
+            address: previous.pickupAddress ?? "",
+            lat: previous.pickupLat,
+            lng: previous.pickupLng,
+          }
+        : null
+    );
+
   const [activeTab, setActiveTab] = useState<
     "home" | "history" | "map"
   >("home");
 
-  const [search, setSearch] = useState("");
-  const [showLocationPopup, setShowLocationPopup] =
-    useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const history = [
-    ["春日井市役所", "春日井市鳥居松町5-44"],
-    ["イオン春日井店", "春日井市柏井町4-17"],
-    ["JR春日井駅", "春日井市上条町1-1"],
-    ["勝川駅", "春日井市松新町1-4"],
-    ["味美駅", "春日井市西本町1-8"],
-  ];
+  const selectLocation = (place: LocationResult) => {
+    setSelectedLocation(place);
+    setPickup(place.name);
+    setError("");
+  };
+
+  const selectByAddress = async (
+    name: string,
+    address: string
+  ) => {
+    setPickup(name);
+    setSelectedLocation(null);
+    setError("");
+    setLoading(true);
+
+    try {
+      const results = await searchLocations(address);
+
+      if (results.length === 0) {
+        setError(
+          "住所が見つかりません。地図から選択してください。"
+        );
+        return;
+      }
+
+      if (results.length === 1) {
+        selectLocation({
+          ...results[0],
+          name,
+        });
+      } else {
+        setActiveTab("map");
+        setError(
+          "複数の候補が見つかりました。地図から正しい地点を選択してください。"
+        );
+      }
+    } catch {
+      setError(
+        "住所検索に失敗しました。地図から選択してください。"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleNext = () => {
+    if (!selectedLocation) {
+      setError("乗車地点を選択してください。");
+      return;
+    }
+
     navigate("/user/reservation/destination", {
       state: {
         ...previous,
-        pickup,
+        pickup: selectedLocation.name,
+        pickupAddress: selectedLocation.address,
+        pickupLat: selectedLocation.lat,
+        pickupLng: selectedLocation.lng,
       },
     });
   };
@@ -78,10 +149,7 @@ function PickupSelectPage() {
         <button
           className={activeTab === "map" ? "active" : ""}
           type="button"
-          onClick={() => {
-            setActiveTab("map");
-            setShowLocationPopup(true);
-          }}
+          onClick={() => setActiveTab("map")}
         >
           <Map size={18} aria-hidden="true" />
           地図から選ぶ
@@ -94,7 +162,13 @@ function PickupSelectPage() {
             pickup === "自宅" ? "selected" : ""
           }`}
           type="button"
-          onClick={() => setPickup("自宅")}
+          disabled={loading}
+          onClick={() =>
+            void selectByAddress(
+              "自宅",
+              "春日井市中央町1-1-1"
+            )
+          }
         >
           <Home size={24} aria-hidden="true" />
 
@@ -115,7 +189,12 @@ function PickupSelectPage() {
           <div className="pickup-history-heading">
             <strong>最近の乗車地点</strong>
 
-            <button type="button">
+            <button
+              type="button"
+              onClick={() =>
+                setError("履歴の削除機能は未実装です。")
+              }
+            >
               <Trash2 size={15} aria-hidden="true" />
               履歴をすべて削除
             </button>
@@ -128,7 +207,10 @@ function PickupSelectPage() {
               }`}
               type="button"
               key={name}
-              onClick={() => setPickup(name)}
+              disabled={loading}
+              onClick={() =>
+                void selectByAddress(name, address)
+              }
             >
               <MapPin size={24} aria-hidden="true" />
 
@@ -148,75 +230,31 @@ function PickupSelectPage() {
 
       {activeTab === "map" && (
         <section className="pickup-map-section">
-          <label className="pickup-search">
-            <Search size={21} aria-hidden="true" />
-
-            <input
-              value={search}
-              onChange={(event) =>
-                setSearch(event.target.value)
-              }
-              placeholder="住所・施設名で検索"
-            />
-          </label>
-
-          <div className="pickup-map-placeholder">
-            <span className="map-marker main">
-              <MapPin size={32} />
-            </span>
-
-            <span className="map-marker second">
-              <MapPin size={24} />
-            </span>
-
-            <span className="map-marker third">
-              <MapPin size={22} />
-            </span>
-
-            <span className="map-road road-one" />
-            <span className="map-road road-two" />
-          </div>
-
-          <button
-            className="pickup-selected-place"
-            type="button"
-            onClick={() => setPickup("自宅")}
-          >
-            <MapPin size={24} aria-hidden="true" />
-
-            <span>
-              <strong>選択中の地点</strong>
-              <small>春日井市中央町1-1-1</small>
-            </span>
-          </button>
+          <LocationPicker
+            onSelect={selectLocation}
+          />
         </section>
       )}
 
-      <label className="pickup-search bottom">
-        <Search size={21} aria-hidden="true" />
+      {selectedLocation && (
+        <div className="location-selected">
+          <strong>
+            選択中：{selectedLocation.name}
+          </strong>
+          <p>{selectedLocation.address}</p>
+        </div>
+      )}
 
-        <input
-          value={pickup}
-          onChange={(event) =>
-            setPickup(event.target.value)
-          }
-          placeholder="他の場所を検索"
-        />
-      </label>
+      {error && <p role="alert">{error}</p>}
 
       <button
         className="primary-button pickup-next"
         type="button"
+        disabled={loading || !selectedLocation}
         onClick={handleNext}
       >
-        次へ
+        {loading ? "検索中..." : "次へ"}
       </button>
-
-      <UserPopup
-        variant="location"
-        isOpen={showLocationPopup}
-        onClose={() => setShowLocationPopup(false)}
-      />
     </UserScreen>
   );
 }

@@ -1,3 +1,4 @@
+
 import { useLocation, useNavigate } from "react-router-dom";
 import UserScreen from "../../components/user/UserScreen";
 import type { ReservationState } from "./flowTypes";
@@ -30,11 +31,15 @@ function ReservationConfirmPage() {
     });
   };
 
-  const handleSubmit = () => {
-    navigate("/user/reservation/complete", {
-      state: reservation,
-    });
-  };
+  const isValid =
+    Boolean(reservation.pickupAddress) &&
+    reservation.pickupLat !== undefined &&
+    reservation.pickupLng !== undefined &&
+    Boolean(reservation.destinationAddress) &&
+    reservation.destinationLat !== undefined &&
+    reservation.destinationLng !== undefined &&
+    Boolean(reservation.date) &&
+    Boolean(reservation.time);
 
   return (
     <UserScreen
@@ -44,28 +49,30 @@ function ReservationConfirmPage() {
     >
       <div className="confirm-heading">
         <h2>予約内容確認</h2>
-        <p>この内容で予約しますか？</p>
+        <p>予約内容に間違いがないか確認してください。</p>
       </div>
 
       <section className="reservation-confirm-list">
         <ConfirmSection
           label="乗車地点"
-          value={reservation.pickup ?? "自宅"}
-          detail="春日井市中央町1-1-1"
+          value={reservation.pickup ?? "未設定"}
+          detail={
+            reservation.pickupAddress ?? "住所未設定"
+          }
           onEdit={() =>
-            moveWithState(
-              "/user/reservation/pickup"
-            )
+            moveWithState("/user/reservation/pickup")
           }
         />
 
         <ConfirmSection
           label="目的地"
           value={
-            reservation.destination ??
-            "春日井市民病院"
+            reservation.destination ?? "未設定"
           }
-          detail="春日井市中央町1-1-1"
+          detail={
+            reservation.destinationAddress ??
+            "住所未設定"
+          }
           onEdit={() =>
             moveWithState(
               "/user/reservation/destination"
@@ -87,16 +94,31 @@ function ReservationConfirmPage() {
 
       <section className="estimated-fare">
         <h2>想定料金</h2>
-        <strong>約 800円</strong>
+        <strong>料金調整中</strong>
         <p>
-          （相乗りのため変動する場合があります）
+          相乗り人数や移動距離によって
+          料金が変動する場合があります。
         </p>
       </section>
+
+      {!isValid && (
+        <p
+          role="alert"
+          style={{
+            color: "#c0392b",
+            marginTop: "16px",
+          }}
+        >
+          未設定の項目があります。
+          「変更」から予約内容を入力してください。
+        </p>
+      )}
 
       <button
         className="primary-button confirm-submit"
         type="button"
-        onClick={handleSubmit}
+        disabled={true}
+        title="予約APIの接続後に利用できます"
       >
         この内容で予約する
       </button>
