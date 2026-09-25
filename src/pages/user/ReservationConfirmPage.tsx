@@ -1,14 +1,22 @@
 
+import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserScreen from "../../components/user/UserScreen";
+import {
+  createReservation,
+} from "../../lib/reservation-api";
 import type { ReservationState } from "./flowTypes";
 
 function ReservationConfirmPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const submittingRef = useRef(false);
 
   const reservation =
     (location.state as ReservationState | null) ?? {};
+
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const dateLabel = reservation.date
     ? new Date(
@@ -26,20 +34,115 @@ function ReservationConfirmPage() {
     : "未設定";
 
   const moveWithState = (path: string) => {
+    if (submitting) return;
+
     navigate(path, {
       state: reservation,
     });
   };
 
-  const isValid =
-    Boolean(reservation.pickupAddress) &&
+  const hasValidCoordinates =
     reservation.pickupLat !== undefined &&
     reservation.pickupLng !== undefined &&
-    Boolean(reservation.destinationAddress) &&
     reservation.destinationLat !== undefined &&
     reservation.destinationLng !== undefined &&
+    [
+      reservation.pickupLat,
+      reservation.pickupLng,
+      reservation.destinationLat,
+      reservation.destinationLng,
+    ].every(
+      (value) =>
+        typeof value === "number" &&
+        Number.isFinite(value)
+    );
+
+  const isValid =
+    Boolean(reservation.pickupAddress) &&
+    Boolean(reservation.destinationAddress) &&
     Boolean(reservation.date) &&
-    Boolean(reservation.time);
+    Boolean(reservation.time) &&
+    hasValidCoordinates;
+
+  const handleSubmit = async () => {
+    if (!isValid || submittingRef.current) return;
+
+    const {
+      pickupAddress,
+      pickupLat,
+      pickupLng,
+      destinationAddress,
+      destinationLat,
+      destinationLng,
+      date,
+      time,
+    } = reservation;
+
+    if (
+      !pickupAddress ||
+      pickupLat === undefined ||
+      pickupLng === undefined ||
+      !destinationAddress ||
+      destinationLat === undefined ||
+      destinationLng === undefined ||
+      !date ||
+      !time
+    ) {
+      setError("予約内容を確認してください。");
+      return;
+    }
+
+    // 画面で選択した日時を日本時間として解釈する
+    const arrivalDate = new Date(
+      `${date}T${time}:00+09:00`
+    );
+
+    if (
+      Number.isNaN(arrivalDate.getTime()) ||
+      arrivalDate.getTime() <= Date.now()
+    ) {
+      setError(
+        "未来の到着希望日時を選択してください。"
+      );
+      return;
+    }
+
+    submittingRef.current = true;
+    setSubmitting(true);
+    setError("");
+
+    try {
+      const savedReservation =
+        await createReservation({
+          passenger_count: 1,
+          start_address: pickupAddress,
+          start_latitude: pickupLat,
+          start_longitude: pickupLng,
+          end_address: destinationAddress,
+          end_latitude: destinationLat,
+          end_longitude: destinationLng,
+          desired_arrival_at:
+            arrivalDate.toISOString(),
+        });
+
+      navigate("/user/reservation/complete", {
+        replace: true,
+        state: {
+          ...reservation,
+          reservationId: savedReservation.id,
+        },
+      });
+    } catch (caughtError) {
+      setError(
+        caughtError instanceof Error
+          ? caughtError.message
+          : "予約に失敗しました。もう一度お試しください。"
+      );
+    } finally {
+      submittingRef.current = false;
+      setSubmitting(false);
+    }
+  };
 
   return (
     <UserScreen
@@ -60,8 +163,11 @@ function ReservationConfirmPage() {
             reservation.pickupAddress ?? "住所未設定"
           }
           onEdit={() =>
-            moveWithState("/user/reservation/pickup")
+            moveWithState(
+              "/user/reservation/pickup"
+            )
           }
+          disabled={submitting}
         />
 
         <ConfirmSection
@@ -78,6 +184,7 @@ function ReservationConfirmPage() {
               "/user/reservation/destination"
             )
           }
+          disabled={submitting}
         />
 
         <ConfirmSection
@@ -89,6 +196,7 @@ function ReservationConfirmPage() {
               "/user/reservation/datetime"
             )
           }
+          disabled={submitting}
         />
       </section>
 
@@ -114,13 +222,27 @@ function ReservationConfirmPage() {
         </p>
       )}
 
+      {error && (
+        <p
+          role="alert"
+          style={{
+            color: "#c0392b",
+            marginTop: "16px",
+          }}
+        >
+          {error}
+        </p>
+      )}
+
       <button
         className="primary-button confirm-submit"
         type="button"
-        disabled={true}
-        title="予約APIの接続後に利用できます"
+        disabled={!isValid || submitting}
+        onClick={() => void handleSubmit()}
       >
-        この内容で予約する
+        {submitting
+          ? "予約しています..."
+          : "この内容で予約する"}
       </button>
     </UserScreen>
   );
@@ -131,6 +253,7 @@ type ConfirmSectionProps = {
   value: string;
   detail: string;
   onEdit: () => void;
+  disabled?: boolean;
 };
 
 function ConfirmSection({
@@ -138,6 +261,7 @@ function ConfirmSection({
   value,
   detail,
   onEdit,
+  disabled = false,
 }: ConfirmSectionProps) {
   return (
     <div className="confirm-section">
@@ -150,6 +274,7 @@ function ConfirmSection({
       <button
         type="button"
         onClick={onEdit}
+        disabled={disabled}
       >
         変更
       </button>

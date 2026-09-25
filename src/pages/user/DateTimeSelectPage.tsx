@@ -1,72 +1,75 @@
 import { CalendarDays } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserScreen from "../../components/user/UserScreen";
 import type { ReservationState } from "./flowTypes";
-import "./DateTimeSelectPage.css"
+import "./DateTimeSelectPage.css";
 
 function DateTimeSelectPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const dateInputRef = useRef<HTMLInputElement>(null);
 
   const previous =
     (location.state as ReservationState | null) ?? {};
 
-  const today = new Date().toLocaleDateString("sv-SE");
+  const getToday = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
 
-  const [date, setDate] = useState(
-    previous.date ?? today
-  );
+    return `${year}-${month}-${day}`;
+  };
 
-  const [time, setTime] = useState(
-    previous.time ?? "10:00"
-  );
+  const today = getToday();
+
+  const [date, setDate] = useState(previous.date ?? today);
+  const [time, setTime] = useState(previous.time ?? "10:00");
 
   const hourOptions = Array.from(
     { length: 24 },
-    (_, index) =>
-      String(index).padStart(2, "0")
+    (_, index) => String(index).padStart(2, "0")
   );
 
-  const minuteOptions = [
-    "00",
-    "15",
-    "30",
-    "45",
-  ];
+  const minuteOptions = ["00", "15", "30", "45"];
 
   const [hour, minute] = time.split(":");
 
-  const updateHourFromScroll = (
-    scrollTop: number
-  ) => {
+  const updateHourFromScroll = (scrollTop: number) => {
     const index = Math.min(
       hourOptions.length - 1,
-      Math.max(
-        0,
-        Math.round(scrollTop / 58)
-      )
+      Math.max(0, Math.round(scrollTop / 58))
     );
 
-    setTime(
-      `${hourOptions[index]}:${minute}`
-    );
+    setTime(`${hourOptions[index]}:${minute}`);
   };
 
-  const updateMinuteFromScroll = (
-    scrollTop: number
-  ) => {
+  const updateMinuteFromScroll = (scrollTop: number) => {
     const index = Math.min(
       minuteOptions.length - 1,
-      Math.max(
-        0,
-        Math.round(scrollTop / 58)
-      )
+      Math.max(0, Math.round(scrollTop / 58))
     );
 
-    setTime(
-      `${hour}:${minuteOptions[index]}`
-    );
+    setTime(`${hour}:${minuteOptions[index]}`);
+  };
+
+  const openDatePicker = () => {
+    const input = dateInputRef.current;
+
+    if (!input) return;
+
+    if (typeof input.showPicker === "function") {
+      try {
+        input.showPicker();
+        return;
+      } catch {
+        input.focus();
+      }
+    } else {
+      input.focus();
+      input.click();
+    }
   };
 
   const dateLabel = date
@@ -86,6 +89,11 @@ function DateTimeSelectPage() {
   ) => {
     event.preventDefault();
 
+    if (!date || date < today) {
+      alert("本日以降の日付を選択してください。");
+      return;
+    }
+
     navigate("/user/reservation/confirm", {
       state: {
         ...previous,
@@ -103,24 +111,30 @@ function DateTimeSelectPage() {
     >
       <div className="datetime-heading">
         <h2>到着希望日時を選択</h2>
-        <p>
-          いつまでに到着したいですか？
-        </p>
+        <p>いつまでに到着したいですか？</p>
       </div>
 
       <form
         className="datetime-form"
         onSubmit={handleSubmit}
       >
-        <label className="datetime-date-card">
-          <CalendarDays
-            size={34}
-            aria-hidden="true"
-          />
-
-          <span>{dateLabel}</span>
+        <div className="datetime-date-card">
+          <button
+            type="button"
+            className="datetime-date-trigger"
+            onClick={openDatePicker}
+            aria-label="到着希望日を選択"
+          >
+            <CalendarDays
+              size={34}
+              aria-hidden="true"
+            />
+            <span>{dateLabel}</span>
+          </button>
 
           <input
+            ref={dateInputRef}
+            className="datetime-date-input"
             type="date"
             value={date}
             min={today}
@@ -128,8 +142,9 @@ function DateTimeSelectPage() {
               setDate(event.target.value)
             }
             aria-label="到着希望日"
+            tabIndex={-1}
           />
-        </label>
+        </div>
 
         <div
           className="time-wheel"
@@ -151,16 +166,12 @@ function DateTimeSelectPage() {
               {hourOptions.map((option) => (
                 <button
                   className={
-                    hour === option
-                      ? "selected"
-                      : ""
+                    hour === option ? "selected" : ""
                   }
                   type="button"
                   key={option}
                   onClick={() =>
-                    setTime(
-                      `${option}:${minute}`
-                    )
+                    setTime(`${option}:${minute}`)
                   }
                 >
                   {option}時
@@ -182,26 +193,20 @@ function DateTimeSelectPage() {
                 )
               }
             >
-              {minuteOptions.map(
-                (option) => (
-                  <button
-                    className={
-                      minute === option
-                        ? "selected"
-                        : ""
-                    }
-                    type="button"
-                    key={option}
-                    onClick={() =>
-                      setTime(
-                        `${hour}:${option}`
-                      )
-                    }
-                  >
-                    {option}分
-                  </button>
-                )
-              )}
+              {minuteOptions.map((option) => (
+                <button
+                  className={
+                    minute === option ? "selected" : ""
+                  }
+                  type="button"
+                  key={option}
+                  onClick={() =>
+                    setTime(`${hour}:${option}`)
+                  }
+                >
+                  {option}分
+                </button>
+              ))}
             </div>
           </div>
         </div>

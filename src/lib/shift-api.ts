@@ -14,60 +14,60 @@ type ShiftInput = {
   end_time: string;
 };
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "/api";
+const STORAGE_KEY = "yoriai_dev_shifts";
 
-function getAccessToken() {
-  return (
-    localStorage.getItem("supabase_access_token") ??
-    localStorage.getItem("access_token")
-  );
-}
-
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const accessToken = getAccessToken();
-  const headers = new Headers(init?.headers);
-  headers.set("Content-Type", "application/json");
-  if (accessToken) headers.set("Authorization", `Bearer ${accessToken}`);
-
-  const response = await fetch(`${apiBaseUrl}${path}`, {
-    ...init,
-    headers,
-  });
-  const body = (await response.json().catch(() => ({}))) as {
-    error?: string;
-  } & T;
-
-  if (!response.ok) {
-    throw new Error(body.error ?? `API request failed (${response.status})`);
+function readShifts(): Shift[] {
+  try {
+    const value = localStorage.getItem(STORAGE_KEY);
+    return value ? JSON.parse(value) as Shift[] : [];
+  } catch {
+    return [];
   }
-
-  return body;
 }
 
-export async function getShifts() {
-  const response = await request<{ shifts: Shift[] }>("/shift");
-  return response.shifts;
+function writeShifts(shifts: Shift[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(shifts));
 }
 
-export async function createShift(input: ShiftInput) {
-  const response = await request<{ shift: Shift }>("/shift", {
-    method: "POST",
-    body: JSON.stringify(input),
-  });
-  return response.shift;
+export async function getShifts(): Promise<Shift[]> {
+  return readShifts().filter((shift) => shift.status !== "canceled");
 }
 
-export async function updateShift(id: number, input: ShiftInput) {
-  const response = await request<{ shift: Shift }>(`/shift?id=${id}`, {
-    method: "PATCH",
-    body: JSON.stringify(input),
-  });
-  return response.shift;
+export async function createShift(input: ShiftInput): Promise<Shift> {
+  const shifts = readShifts();
+  const shift: Shift = {
+    ...input,
+    id: Date.now(),
+    driver_id: 1,
+    status: "available",
+    created_at: new Date().toISOString()
+  };
+  writeShifts([...shifts, shift]);
+  return shift;
 }
 
-export async function cancelShift(id: number) {
-  const response = await request<{ shift: Shift }>(`/shift?id=${id}`, {
-    method: "DELETE",
-  });
-  return response.shift;
+export async function updateShift(id: number, input: ShiftInput): Promise<Shift> {
+  const shifts = readShifts();
+  const index = shifts.findIndex((shift) => shift.id === id);
+  if (index === -1) throw new Error("シフトが見つかりません");
+  if (shifts[index].status !== "available") {
+    throw new Error("確定済みのシフトは変更できません");
+  }
+  const updated = { ...shifts[index], ...input };
+  shifts[index] = updated;
+  writeShifts(shifts);
+  return updated;
+}
+
+export async function cancelShift(id: number): Promise<Shift> {
+  const shifts = readShifts();
+  const index = shifts.findIndex((shift) => shift.id === id);
+  if (index === -1) throw new Error("シフトが見つかりません");
+  if (shifts[index].status !== "available") {
+    throw new Error("確定済みのシフトは削除できません");
+  }
+  const canceled: Shift = { ...shifts[index], status: "canceled" };
+  shifts[index] = canceled;
+  writeShifts(shifts);
+  return canceled;
 }
