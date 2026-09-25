@@ -7,6 +7,7 @@ import {
 import {
   useRef,
   useState,
+  useEffect, // ★追加：画面表示時にGETするため
   type ChangeEvent,
   type FormEvent,
 } from "react";
@@ -25,51 +26,154 @@ type ZipCloudResponse = {
   results: ZipCloudResult[] | null;
 };
 
+// ==========================================
+// ★追加：バックエンドAPI設定
+// ==========================================
+
+const API_URL = "http://localhost:3000";
+
+// ★接続確認用
+// 後でログイン中ユーザーのIDに変更する
+const USER_ID =
+  "71788f4c-4e57-4d3d-945d-29919f3a07ea";
+
 function ProfileEditPage() {
   const navigate = useNavigate();
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [name, setName] = useState("山田 太郎");
-  const [kana, setKana] = useState("やまだ たろう");
-  const [phone, setPhone] = useState("09012345678");
-  const [email, setEmail] = useState("taro@example.com");
-  const [postalCode, setPostalCode] = useState("");
-  const [prefecture, setPrefecture] = useState("");
-  const [city, setCity] = useState("");
-  const [town, setTown] = useState("");
-  const [block, setBlock] = useState("");
-  const [building, setBuilding] = useState("");
+  const fileInputRef =
+    useRef<HTMLInputElement>(null);
+
+  const [name, setName] =
+    useState("山田 太郎");
+
+  const [kana, setKana] =
+    useState("やまだ たろう");
+
+  const [phone, setPhone] =
+    useState("09012345678");
+
+  const [postalCode, setPostalCode] =
+    useState("4860804");
+
+  const [prefecture, setPrefecture] =
+    useState("愛知県");
+
+  const [city, setCity] =
+    useState("春日井市");
+
+  const [town, setTown] =
+    useState("神領町");
+
+  const [block, setBlock] =
+    useState("2-24");
+
+  const [building, setBuilding] =
+    useState("");
+
   const [profileImage, setProfileImage] =
     useState<string | null>(null);
-  const [error, setError] = useState("");
-  const [addressSearchError, setAddressSearchError] =
+
+  const [error, setError] =
     useState("");
-  const [isSearchingAddress, setIsSearchingAddress] =
-    useState(false);
-  const [showCompleteModal, setShowCompleteModal] =
-    useState(false);
+
+  const [
+    addressSearchError,
+    setAddressSearchError,
+  ] = useState("");
+
+  const [
+    isSearchingAddress,
+    setIsSearchingAddress,
+  ] = useState(false);
+
+  const [
+    showCompleteModal,
+    setShowCompleteModal,
+  ] = useState(false);
+
+  // ==========================================
+  // ★追加：利用者情報取得
+  // GET /api/users?id=UUID
+  // ==========================================
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(
+          `${API_URL}/api/users?id=${USER_ID}`
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            "ユーザー情報の取得に失敗しました"
+          );
+        }
+
+        const data = await response.json();
+
+        console.log(
+          "★ユーザー情報取得成功:",
+          data
+        );
+
+        const user = data.user;
+
+        setName(user.user_name ?? "");
+        setPhone(user.phone_number ?? "");
+        setPostalCode(
+          user.address_postcode ?? ""
+        );
+
+        /*
+         * 現在DBの住所はaddressという
+         * 1つのカラムなので、
+         * 既存住所は一旦blockへ表示する。
+         */
+        setPrefecture("");
+        setCity("");
+        setTown("");
+        setBlock(user.address ?? "");
+        setBuilding("");
+
+      } catch (err) {
+        console.error(err);
+
+        setError(
+          "登録情報を取得できませんでした"
+        );
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleImageChange = (
     event: ChangeEvent<HTMLInputElement>
   ) => {
-    const file = event.target.files?.[0];
+    const file =
+      event.target.files?.[0];
 
     if (!file) {
       return;
     }
 
     if (!file.type.startsWith("image/")) {
-      setError("画像ファイルを選択してください");
+      setError(
+        "画像ファイルを選択してください"
+      );
       return;
     }
 
-    const imageUrl = URL.createObjectURL(file);
+    const imageUrl =
+      URL.createObjectURL(file);
 
     setProfileImage(imageUrl);
     setError("");
   };
 
-  const handlePostalCodeChange = (value: string) => {
+  const handlePostalCodeChange = (
+    value: string
+  ) => {
     const formatted = value
       .replace(/[^\d-]/g, "")
       .slice(0, 8);
@@ -78,56 +182,73 @@ function ProfileEditPage() {
     setAddressSearchError("");
   };
 
-  const handleSearchAddress = async () => {
-    const zipCode = postalCode.replace(/-/g, "");
+  const handleSearchAddress =
+    async () => {
+      const zipCode =
+        postalCode.replace(/-/g, "");
 
-    if (!/^\d{7}$/.test(zipCode)) {
-      setAddressSearchError(
-        "郵便番号を7桁で入力してください"
-      );
-      return;
-    }
-
-    setIsSearchingAddress(true);
-    setAddressSearchError("");
-
-    try {
-      const response = await fetch(
-        `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zipCode}`
-      );
-
-      if (!response.ok) {
-        throw new Error();
-      }
-
-      const data =
-        (await response.json()) as ZipCloudResponse;
-
-      if (
-        !data.results ||
-        data.results.length === 0
-      ) {
+      if (!/^\d{7}$/.test(zipCode)) {
         setAddressSearchError(
-          "該当する住所が見つかりませんでした"
+          "郵便番号を7桁で入力してください"
         );
         return;
       }
 
-      const address = data.results[0];
+      setIsSearchingAddress(true);
+      setAddressSearchError("");
 
-      setPrefecture(address.address1);
-      setCity(address.address2);
-      setTown(address.address3);
-    } catch {
-      setAddressSearchError(
-        "住所を取得できませんでした。もう一度お試しください"
-      );
-    } finally {
-      setIsSearchingAddress(false);
-    }
-  };
+      try {
+        const response = await fetch(
+          `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zipCode}`
+        );
 
-  const handleSubmit = (
+        if (!response.ok) {
+          throw new Error();
+        }
+
+        const data =
+          (await response.json()) as ZipCloudResponse;
+
+        if (
+          !data.results ||
+          data.results.length === 0
+        ) {
+          setAddressSearchError(
+            "該当する住所が見つかりませんでした"
+          );
+          return;
+        }
+
+        const address =
+          data.results[0];
+
+        setPrefecture(
+          address.address1
+        );
+
+        setCity(
+          address.address2
+        );
+
+        setTown(
+          address.address3
+        );
+
+      } catch {
+        setAddressSearchError(
+          "住所を取得できませんでした。もう一度お試しください"
+        );
+
+      } finally {
+        setIsSearchingAddress(false);
+      }
+    };
+
+  // ==========================================
+  // ★変更：保存時にPATCHを呼ぶ
+  // ==========================================
+
+  const handleSubmit = async (
     event: FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
@@ -136,18 +257,20 @@ function ProfileEditPage() {
       !name.trim() ||
       !kana.trim() ||
       !phone.trim() ||
-      !email.trim() ||
       !postalCode.trim() ||
       !prefecture ||
       !city.trim() ||
       !town.trim() ||
       !block.trim()
     ) {
-      setError("必須項目を入力してください");
+      setError(
+        "必須項目を入力してください"
+      );
       return;
     }
 
-    const zipCode = postalCode.replace(/-/g, "");
+    const zipCode =
+      postalCode.replace(/-/g, "");
 
     if (!/^\d{7}$/.test(zipCode)) {
       setError(
@@ -164,7 +287,62 @@ function ProfileEditPage() {
     }
 
     setError("");
-    setShowCompleteModal(true);
+
+    try {
+
+      // ★追加：分割されている住所を
+      // DB用の1つの文字列にする
+      const fullAddress =
+        `${prefecture}${city}${town}${block}${building}`;
+
+      // ======================================
+      // ★追加：バックエンドへPATCH
+      // ======================================
+
+      const response = await fetch(
+        `${API_URL}/api/users`,
+        {
+          method: "PATCH",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            id: USER_ID,
+            user_name: name,
+            phone_number: phone,
+            address_postcode:
+              postalCode,
+            address: fullAddress,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "ユーザー情報の更新に失敗しました"
+        );
+      }
+
+      const data =
+        await response.json();
+
+      console.log(
+        "★ユーザー情報更新成功:",
+        data
+      );
+
+      setShowCompleteModal(true);
+
+    } catch (err) {
+      console.error(err);
+
+      setError(
+        "登録情報を更新できませんでした"
+      );
+    }
   };
 
   return (
@@ -255,16 +433,6 @@ function ProfileEditPage() {
           autoComplete="tel"
         />
 
-        <ProfileInput
-          label="メールアドレス"
-          required
-          type="email"
-          inputMode="email"
-          value={email}
-          onChange={setEmail}
-          autoComplete="email"
-        />
-
         <section className="address-fields">
           <h2 className="profile-address-title">
             住所
@@ -302,8 +470,12 @@ function ProfileEditPage() {
               <button
                 type="button"
                 className="postal-search-button"
-                onClick={handleSearchAddress}
-                disabled={isSearchingAddress}
+                onClick={
+                  handleSearchAddress
+                }
+                disabled={
+                  isSearchingAddress
+                }
               >
                 {isSearchingAddress
                   ? "検索中..."
@@ -458,7 +630,9 @@ function ProfileEditPage() {
               type="button"
               className="primary-button profile-save-complete-button"
               onClick={() =>
-                navigate("/user/settings")
+                navigate(
+                  "/user/settings"
+                )
               }
             >
               設定に戻る
@@ -479,7 +653,6 @@ type ProfileInputProps = {
   required?: boolean;
   inputMode?:
     | "text"
-    | "email"
     | "tel"
     | "numeric";
   autoComplete?: string;
