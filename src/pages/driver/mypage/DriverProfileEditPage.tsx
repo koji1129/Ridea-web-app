@@ -3,17 +3,22 @@ import type {
   FormEvent,
   ReactNode,
 } from "react";
-import { useState } from "react";
+
+import {
+  useEffect, // ★追加
+  useState,
+} from "react";
+
 import {
   ChevronLeft,
   Home,
-  Mail,
   Pencil,
   Phone,
   Save,
   User,
   X,
 } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
 
 import "./DriverProfileEditPage.css";
@@ -21,21 +26,28 @@ import "./DriverProfileEditPage.css";
 type ProfileForm = {
   name: string;
   phone: string;
-  email: string;
   address: string;
 };
 
 type ProfileErrors = {
   name?: string;
   phone?: string;
-  email?: string;
   address?: string;
 };
+
+// ==========================================
+// ★追加：API設定
+// ==========================================
+
+const API_URL = "http://localhost:3000";
+
+// ★接続確認用
+// Supabaseのdriversテーブルのidに変更する
+const DRIVER_ID = 1;
 
 const initialProfile: ProfileForm = {
   name: "山田 太郎",
   phone: "090-1234-5678",
-  email: "taro@example.com",
   address: "愛知県春日井市○○町1-2-3",
 };
 
@@ -57,10 +69,65 @@ function DriverProfileEditPage() {
   const [isSubmitting, setIsSubmitting] =
     useState(false);
 
+  // ==========================================
+  // ★追加：ドライバー情報取得
+  // GET /api/drivers?id=1
+  // ==========================================
+
+  useEffect(() => {
+    const fetchDriver = async () => {
+      try {
+        const response = await fetch(
+          `${API_URL}/api/drivers?id=${DRIVER_ID}`
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            "ドライバー情報の取得に失敗しました"
+          );
+        }
+
+        const data =
+          await response.json();
+
+        console.log(
+          "★ドライバー情報取得成功:",
+          data
+        );
+
+        const driver =
+          data.driver;
+
+        const profile: ProfileForm = {
+          name:
+            driver.user_name ?? "",
+
+          phone:
+            driver.phone_number ?? "",
+
+          address:
+            driver.address ?? "",
+        };
+
+        setForm(profile);
+        setSavedProfile(profile);
+
+      } catch (error) {
+        console.error(
+          "ドライバー情報取得エラー:",
+          error
+        );
+      }
+    };
+
+    fetchDriver();
+  }, []);
+
   const handleChange = (
     event: ChangeEvent<HTMLInputElement>
   ) => {
-    const { name, value } = event.target;
+    const { name, value } =
+      event.target;
 
     setForm((prev) => ({
       ...prev,
@@ -74,7 +141,8 @@ function DriverProfileEditPage() {
   };
 
   const validate = () => {
-    const nextErrors: ProfileErrors = {};
+    const nextErrors: ProfileErrors =
+      {};
 
     if (!form.name.trim()) {
       nextErrors.name =
@@ -86,11 +154,6 @@ function DriverProfileEditPage() {
         "電話番号を入力してください";
     }
 
-    if (!form.email.trim()) {
-      nextErrors.email =
-        "メールアドレスを入力してください";
-    }
-
     if (!form.address.trim()) {
       nextErrors.address =
         "住所を入力してください";
@@ -99,7 +162,8 @@ function DriverProfileEditPage() {
     setErrors(nextErrors);
 
     return (
-      Object.keys(nextErrors).length === 0
+      Object.keys(nextErrors).length ===
+      0
     );
   };
 
@@ -115,7 +179,11 @@ function DriverProfileEditPage() {
     setIsEditing(false);
   };
 
-  const handleSubmit = (
+  // ==========================================
+  // ★変更：ドライバー情報をPATCH
+  // ==========================================
+
+  const handleSubmit = async (
     event: FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
@@ -126,23 +194,72 @@ function DriverProfileEditPage() {
 
     setIsSubmitting(true);
 
-    /*
-     * TODO:
-     * API完成後
-     * ユーザー基本情報更新APIを呼び出す
-     */
+    try {
 
-    setTimeout(() => {
+      // ======================================
+      // ★追加：バックエンドへPATCH
+      // ======================================
+
+      const response = await fetch(
+        `${API_URL}/api/drivers`,
+        {
+          method: "PATCH",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            id: DRIVER_ID,
+
+            user_name:
+              form.name,
+
+            phone_number:
+              form.phone,
+
+            address:
+              form.address,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "ドライバー情報の更新に失敗しました"
+        );
+      }
+
+      const data =
+        await response.json();
+
+      console.log(
+        "★ドライバー情報更新成功:",
+        data
+      );
+
       setSavedProfile(form);
-      setIsSubmitting(false);
+
       setIsEditing(false);
-    }, 500);
+
+    } catch (error) {
+      console.error(
+        "ドライバー情報更新エラー:",
+        error
+      );
+
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="driverProfileEdit">
       <div className="driverProfileEdit__container">
+
         <header className="driverProfileEdit__header">
+
           <button
             type="button"
             className="driverProfileEdit__back"
@@ -155,10 +272,13 @@ function DriverProfileEditPage() {
           </button>
 
           <h1>基本情報</h1>
+
         </header>
 
         <main className="driverProfileEdit__main">
+
           <section className="driverProfileEdit__intro">
+
             <div className="driverProfileEdit__introIcon">
               <User size={28} />
             </div>
@@ -171,48 +291,53 @@ function DriverProfileEditPage() {
                 基本情報を確認できます。
               </p>
             </div>
+
           </section>
 
           {!isEditing ? (
             <>
+
               <section className="driverProfileView">
+
                 <ProfileViewRow
                   icon={<User size={20} />}
                   label="氏名"
-                  value={savedProfile.name}
+                  value={
+                    savedProfile.name
+                  }
                 />
 
                 <ProfileViewRow
                   icon={<Phone size={20} />}
                   label="電話番号"
-                  value={savedProfile.phone}
-                />
-
-                <ProfileViewRow
-                  icon={<Mail size={20} />}
-                  label="メールアドレス"
-                  value={savedProfile.email}
+                  value={
+                    savedProfile.phone
+                  }
                 />
 
                 <ProfileViewRow
                   icon={<Home size={20} />}
                   label="住所"
-                  value={savedProfile.address}
+                  value={
+                    savedProfile.address
+                  }
                 />
+
               </section>
 
               <div className="driverProfileEdit__notice">
+
                 <strong>
                   登録情報について
                 </strong>
 
                 <p>
-                  電話番号やメールアドレス、住所は、
-                  運行時の連絡や本人確認などに
-                  使用される場合があります。
+                  電話番号や住所は、運行時の連絡や
+                  本人確認などに使用される場合があります。
                   変更があった場合は最新の情報に
                   更新してください。
                 </p>
+
               </div>
 
               <button
@@ -223,12 +348,16 @@ function DriverProfileEditPage() {
                 <Pencil size={18} />
                 基本情報を編集する
               </button>
+
             </>
+
           ) : (
+
             <form
               className="driverProfileEdit__form"
               onSubmit={handleSubmit}
             >
+
               <ProfileField
                 icon={<User size={20} />}
                 label="氏名"
@@ -251,17 +380,6 @@ function DriverProfileEditPage() {
               />
 
               <ProfileField
-                icon={<Mail size={20} />}
-                label="メールアドレス"
-                name="email"
-                type="email"
-                value={form.email}
-                placeholder="taro@example.com"
-                error={errors.email}
-                onChange={handleChange}
-              />
-
-              <ProfileField
                 icon={<Home size={20} />}
                 label="住所"
                 name="address"
@@ -272,6 +390,7 @@ function DriverProfileEditPage() {
               />
 
               <div className="driverProfileEdit__notice">
+
                 <strong>
                   変更内容を確認してください
                 </strong>
@@ -280,6 +399,7 @@ function DriverProfileEditPage() {
                   入力した情報に間違いがないことを
                   確認してから保存してください。
                 </p>
+
               </div>
 
               <button
@@ -287,11 +407,13 @@ function DriverProfileEditPage() {
                 className="driverProfileEdit__save"
                 disabled={isSubmitting}
               >
+
                 <Save size={19} />
 
                 {isSubmitting
                   ? "保存しています..."
                   : "変更内容を保存"}
+
               </button>
 
               <button
@@ -300,11 +422,17 @@ function DriverProfileEditPage() {
                 disabled={isSubmitting}
                 onClick={handleCancel}
               >
+
                 <X size={17} />
+
                 編集をキャンセル
+
               </button>
+
             </form>
+
           )}
+
         </main>
       </div>
     </div>
@@ -322,8 +450,10 @@ function ProfileViewRow({
   label,
   value,
 }: ProfileViewRowProps) {
+
   return (
     <div className="driverProfileView__row">
+
       <div className="driverProfileView__icon">
         {icon}
       </div>
@@ -332,6 +462,7 @@ function ProfileViewRow({
         <span>{label}</span>
         <strong>{value}</strong>
       </div>
+
     </div>
   );
 }
@@ -344,6 +475,7 @@ type ProfileFieldProps = {
   type?: string;
   placeholder?: string;
   error?: string;
+
   onChange: (
     event: ChangeEvent<HTMLInputElement>
   ) => void;
@@ -359,10 +491,14 @@ function ProfileField({
   error,
   onChange,
 }: ProfileFieldProps) {
+
   return (
     <div className="driverProfileField">
+
       <label htmlFor={name}>
+
         <div className="driverProfileField__label">
+
           <div className="driverProfileField__icon">
             {icon}
           </div>
@@ -370,7 +506,9 @@ function ProfileField({
           <span>{label}</span>
 
           <strong>必須</strong>
+
         </div>
+
       </label>
 
       <input
@@ -380,6 +518,7 @@ function ProfileField({
         value={value}
         placeholder={placeholder}
         onChange={onChange}
+
         className={
           error
             ? "driverProfileField__input driverProfileField__input--error"
@@ -392,6 +531,7 @@ function ProfileField({
           {error}
         </p>
       )}
+
     </div>
   );
 }
