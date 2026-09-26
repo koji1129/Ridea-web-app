@@ -2,6 +2,8 @@ const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "").replace(
   /\/$/,
   "",
 );
+const YAHOO_FURIGANA_URL = "https://jlp.yahooapis.jp/jsonrpc";
+const YAHOO_APP_ID = import.meta.env.VITE_YAHOO_APP_ID ?? "";
 const ZIP_CLOUD_URL = "https://zipcloud.ibsnet.co.jp/api/search";
 
 export type UserRole = "passenger" | "driver";
@@ -171,4 +173,99 @@ export async function searchAddress(
 
   const data = (await response.json()) as ZipCloudResponse;
   return data.results?.[0] ?? null;
+}
+
+type FuriganaResponse = {
+  result?: {
+    word: { surface: string; furigana?: string }[];
+  };
+  error?: { code: number | string; message: string };
+};
+
+/**
+ * Yahoo! JAPAN のルビ振りAPI（V2）から、カタカナのふりがなを取得します。
+ * VITE_YAHOO_APP_ID にClient IDを設定してください（ブラウザに公開されます）。
+ * 読みが付かない単語は元の表記を使い、ひらがなをカタカナに変換します。
+ */
+export async function getFurigana(
+  text: string,
+  signal?: AbortSignal,
+): Promise<string> {
+  if (!text.trim()) return "";
+
+  if (!YAHOO_APP_ID.trim()) {
+    throw new UserApiError(
+      0,
+      "MISSING_APP_ID",
+      "Yahoo! JAPAN のClient IDが設定されていません。",
+    );
+  }
+
+  const query = new URLSearchParams({ appid: YAHOO_APP_ID });
+  let response: Response;
+
+  try {
+    response = await fetch(`${YAHOO_FURIGANA_URL}?${query.toString()}`, {
+      method: "POST",
+      // 公式ブラウザサンプルに合わせてContent-Typeは明示しません。
+      body: JSON.stringify({
+        id: "furigana",
+        jsonrpc: "2.0",
+        method: "jlp.furiganaservice.furigana",
+        params: { q: text },
+      }),
+      signal,
+    });
+  } catch (error) {
+    if (signal?.aborted) throw error;
+    throw new UserApiError(
+      0,
+      "NETWORK_ERROR",
+      "ルビ振りAPIに接続できませんでした。",
+    );
+  }
+
+  let body: FuriganaResponse | null;
+  try {
+    body = (await response.json()) as FuriganaResponse | null;
+  } catch {
+    throw new UserApiError(
+      response.status,
+      "INVALID_RESPONSE",
+      "ルビ振りAPIから不正なレスポンスが返されました。",
+    );
+  }
+
+  if (!response.ok || body?.error) {
+    throw new UserApiError(
+      response.status,
+      String(body?.error?.code ?? "UNKNOWN_ERROR"),
+      body?.error?.message ?? "ふりがなの取得に失敗しました。",
+    );
+  }
+
+  if (
+    !Array.isArray(body?.result?.word) ||
+    !body.result.word.every(
+      (word) =>
+        word !== null &&
+        typeof word === "object" &&
+        typeof word.surface === "string" &&
+        (word.furigana === undefined || typeof word.furigana === "string"),
+    )
+  ) {
+    throw new UserApiError(
+      response.status,
+      "INVALID_RESPONSE",
+      "ルビ振りAPIから不正なレスポンスが返されました。",
+    );
+  }
+
+  return body.result.word
+    .map((word) => word.furigana ?? word.surface)
+    .join("")
+    .normalize("NFC")
+    .replace(/[ぁ-ゖゝゞ]/g, (character) =>
+      String.fromCharCode(character.charCodeAt(0) + 0x60),
+    );
 }

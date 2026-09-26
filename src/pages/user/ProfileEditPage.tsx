@@ -9,7 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import UserScreen from "../../components/user/UserScreen";
 import { PREFECTURES } from "../../constants/prefectures";
-import { getUser, searchAddress, updateUser } from "../../lib/user-api";
+import { getUser, searchAddress, updateUser, getFurigana } from "../../lib/user-api";
 import "./ProfileEditPage.css";
 
 function ProfileEditPage() {
@@ -19,7 +19,11 @@ function ProfileEditPage() {
 
   const [name, setName] = useState("山田 太郎");
 
-  const [kana, setKana] = useState("やまだ たろう");
+  const [kana, setKana] = useState("");
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
+  const [furiganaError, setFuriganaError] = useState("");
+  const [isFetchingFurigana, setIsFetchingFurigana] = useState(false);
+  const furiganaControllerRef = useRef<AbortController | null>(null);
 
   const [phone, setPhone] = useState("09012345678");
 
@@ -62,6 +66,7 @@ function ProfileEditPage() {
         const user = await getUser(userId, accessToken);
 
         setName(user.user_name ?? "");
+        setIsUserLoaded(true);
         setPhone(user.phone_number ?? "");
         setPostalCode(user.address_postcode ?? "");
 
@@ -88,6 +93,53 @@ function ProfileEditPage() {
 
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    if (!isUserLoaded) return;
+
+    const controller = new AbortController();
+    furiganaControllerRef.current = controller;
+
+    const timer = window.setTimeout(async () => {
+      if (controller.signal.aborted) return;
+      setIsFetchingFurigana(true);
+      setFuriganaError("");
+
+      try {
+        const furigana = await getFurigana(name, controller.signal);
+        if (!controller.signal.aborted) setKana(furigana);
+      } catch {
+        if (!controller.signal.aborted) {
+          setFuriganaError(
+            "フリガナを取得できませんでした。手動で入力してください",
+          );
+        }
+      } finally {
+        if (!controller.signal.aborted) setIsFetchingFurigana(false);
+      }
+    }, 500);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [name, isUserLoaded]);
+
+  const handleNameChange = (value: string) => {
+    furiganaControllerRef.current?.abort();
+    setName(value);
+    setKana("");
+    setFuriganaError("");
+    setIsFetchingFurigana(false);
+  };
+
+  const handleKanaChange = (value: string) => {
+    // 手動で修正した読みを、通信中の結果で上書きしないようにします。
+    furiganaControllerRef.current?.abort();
+    setKana(value);
+    setFuriganaError("");
+    setIsFetchingFurigana(false);
+  };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -212,7 +264,7 @@ function ProfileEditPage() {
       !postalCode.trim() ||
       !prefecture ||
       !city.trim() ||
-      !town.trim() ||
+      // !town.trim() ||
       !block.trim()
     ) {
       setError("必須項目を入力してください");
@@ -317,16 +369,21 @@ function ProfileEditPage() {
           label="氏名"
           required
           value={name}
-          onChange={setName}
+          onChange={handleNameChange}
           autoComplete="name"
         />
 
         <ProfileInput
-          label="ふりがな"
+          label="フリガナ"
           required
           value={kana}
-          onChange={setKana}
+          onChange={handleKanaChange}
         />
+
+        {isFetchingFurigana && <p role="status">フリガナを取得中...</p>}
+        {furiganaError && (
+          <p className="error-message" role="alert">{furiganaError}</p>
+        )}
 
         <ProfileInput
           label="電話番号"
