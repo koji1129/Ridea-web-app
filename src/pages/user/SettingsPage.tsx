@@ -1,3 +1,4 @@
+import { AuthApiError, logout } from "../../lib/auth-api";
 import {
   Car,
   ChevronRight,
@@ -22,6 +23,8 @@ function SettingsPage() {
 
   const [user, setUser] = useState<User | null>(null);
   const [userError, setUserError] = useState("");
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
   const isDriver = user?.role === "driver";
 
   useEffect(() => {
@@ -48,9 +51,29 @@ function SettingsPage() {
     return () => controller.abort();
   }, []);
 
-  const handleLogout = () => {
-    setShowLogoutPopup(false);
-    navigate("/login", { replace: true });
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
+    setLogoutError("");
+
+    try {
+      const accessToken = localStorage.getItem("access_token");
+      if (accessToken) {
+        try {
+          await logout(accessToken);
+        } catch (error) {
+          // 期限切れなどで認証できない場合も、端末のセッションを破棄します。
+          if (!(error instanceof AuthApiError && error.status === 401)) throw error;
+        }
+      }
+      localStorage.clear();
+      setShowLogoutPopup(false);
+      navigate("/login", { replace: true });
+    } catch {
+      setLogoutError("ログアウトできませんでした。もう一度お試しください");
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (
@@ -148,7 +171,10 @@ function SettingsPage() {
         isOpen={showLogoutPopup}
         onClose={() => setShowLogoutPopup(false)}
         onConfirm={handleLogout}
-      />
+        isBusy={isLoggingOut}
+      >
+        {logoutError && <p className="error-message" role="alert">{logoutError}</p>}
+      </UserPopup>
     </UserScreen>
   );
 }

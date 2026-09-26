@@ -10,6 +10,7 @@ type UserPopupProps = {
   onClose: () => void;
   onConfirm?: () => void;
   children?: ReactNode;
+  isBusy?: boolean;
 };
 
 const popupContent = {
@@ -20,11 +21,11 @@ const popupContent = {
   location: { title: "位置情報を使用しますか？", message: "乗車地点の検索に位置情報を使用します。", confirm: "許可する", confirmClass: "popup-primary" },
 } as const;
 
-function UserPopup({ variant, isOpen, onClose, onConfirm, children }: UserPopupProps) {
+function UserPopup({ variant, isOpen, onClose, onConfirm, children, isBusy = false }: UserPopupProps) {
   if (!isOpen) return null;
   const content = popupContent[variant];
   const isError = variant === "input-error" || variant === "network-error";
-  return <div className="user-popup-backdrop" role="presentation" onClick={onClose}><section className="user-popup" role="dialog" aria-modal="true" aria-labelledby="user-popup-title" onClick={(event) => event.stopPropagation()}><button className="user-popup-close" type="button" onClick={onClose} aria-label="閉じる"><X size={22} /></button>{isError && variant === "input-error" && <AlertTriangle className="user-popup-icon error" size={42} />}{variant === "network-error" && <WifiOff className="user-popup-icon" size={42} />}{variant === "location" && <MapPin className="user-popup-icon" size={42} /> }<h2 id="user-popup-title">{content.title}</h2>{content.message && <p>{content.message}</p>}{children}<div className="user-popup-actions"><button className={content.confirmClass} type="button" onClick={onConfirm ?? onClose}>{content.confirm}</button>{(variant === "logout" || variant === "delete" || variant === "location") && <button className="popup-outline" type="button" onClick={onClose}>{variant === "location" ? "許可しない" : "キャンセル"}</button>}</div></section></div>;
+  return <div className="user-popup-backdrop" role="presentation" onClick={isBusy ? undefined : onClose}><section className="user-popup" role="dialog" aria-modal="true" aria-labelledby="user-popup-title" onClick={(event) => event.stopPropagation()}><button className="user-popup-close" type="button" onClick={isBusy ? undefined : onClose} aria-label="閉じる"><X size={22} /></button>{isError && variant === "input-error" && <AlertTriangle className="user-popup-icon error" size={42} />}{variant === "network-error" && <WifiOff className="user-popup-icon" size={42} />}{variant === "location" && <MapPin className="user-popup-icon" size={42} /> }<h2 id="user-popup-title">{content.title}</h2>{content.message && <p>{content.message}</p>}{children}<div className="user-popup-actions"><button className={content.confirmClass} type="button" disabled={isBusy} onClick={onConfirm ?? onClose}>{isBusy ? "処理中..." : content.confirm}</button>{(variant === "logout" || variant === "delete" || variant === "location") && <button className="popup-outline" type="button" onClick={isBusy ? undefined : onClose}>{variant === "location" ? "許可しない" : "キャンセル"}</button>}</div></section></div>;
 }
 
 export default UserPopup;

@@ -1,3 +1,4 @@
+import { AuthApiError, logout } from "../../../lib/auth-api";
 import { useEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import {
   Bell,
@@ -33,6 +34,8 @@ function DriverMyPage() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [user, setUser] = useState<UserInfo | null>(null);
   const [userError, setUserError] = useState("");
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -75,9 +78,29 @@ function DriverMyPage() {
     setProfileImage(imageUrl);
   };
 
-  const handleLogout = () => {
-    setShowLogoutModal(false);
-    navigate("/login");
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
+    setLogoutError("");
+
+    try {
+      const accessToken = localStorage.getItem("access_token");
+      if (accessToken) {
+        try {
+          await logout(accessToken);
+        } catch (error) {
+          // 期限切れなどで認証できない場合も、端末のセッションを破棄します。
+          if (!(error instanceof AuthApiError && error.status === 401)) throw error;
+        }
+      }
+      localStorage.clear();
+      setShowLogoutModal(false);
+      navigate("/login", { replace: true });
+    } catch {
+      setLogoutError("ログアウトできませんでした。もう一度お試しください");
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (
@@ -264,7 +287,7 @@ function DriverMyPage() {
       {showLogoutModal && (
         <div
           className="modal-backdrop"
-          onClick={() => setShowLogoutModal(false)}
+          onClick={() => { if (!isLoggingOut) setShowLogoutModal(false); }}
         >
           <section
             className="modal"
@@ -276,7 +299,7 @@ function DriverMyPage() {
             <button
               type="button"
               className="modal__close"
-              onClick={() => setShowLogoutModal(false)}
+              onClick={() => { if (!isLoggingOut) setShowLogoutModal(false); }}
               aria-label="閉じる"
             >
               <X size={25} />
@@ -293,11 +316,13 @@ function DriverMyPage() {
               ログアウトするとログイン画面に戻ります。
             </p>
 
+            {logoutError && <p className="error-message" role="alert">{logoutError}</p>}
+
             <div className="driverLogoutModal__actions">
               <button
                 type="button"
                 className="driverLogoutModal__cancel"
-                onClick={() => setShowLogoutModal(false)}
+                onClick={() => { if (!isLoggingOut) setShowLogoutModal(false); }}
               >
                 キャンセル
               </button>
@@ -306,8 +331,9 @@ function DriverMyPage() {
                 type="button"
                 className="driverLogoutModal__confirm"
                 onClick={handleLogout}
+                disabled={isLoggingOut}
               >
-                ログアウト
+                {isLoggingOut ? "ログアウト中..." : "ログアウト"}
               </button>
             </div>
           </section>
