@@ -14,28 +14,15 @@ import {
 import { useNavigate } from "react-router-dom";
 import UserScreen from "../../components/user/UserScreen";
 import { PREFECTURES } from "../../constants/prefectures";
+import { getUser, searchAddress, updateUser } from "../../lib/user-api";
 import "./ProfileEditPage.css";
-
-type ZipCloudResult = {
-  address1: string;
-  address2: string;
-  address3: string;
-};
-
-type ZipCloudResponse = {
-  results: ZipCloudResult[] | null;
-};
 
 // ==========================================
 // ★追加：バックエンドAPI設定
 // ==========================================
 
-const API_URL = "http://localhost:3000";
-
-// ★接続確認用
-// 後でログイン中ユーザーのIDに変更する
-const USER_ID =
-  "71788f4c-4e57-4d3d-945d-29919f3a07ea";
+// ログイン時に保存したユーザーIDを利用する
+const USER_ID_STORAGE_KEY = "user_id";
 
 function ProfileEditPage() {
   const navigate = useNavigate();
@@ -99,24 +86,13 @@ function ProfileEditPage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/api/users?id=${USER_ID}`
-        );
-
-        if (!response.ok) {
-          throw new Error(
-            "ユーザー情報の取得に失敗しました"
-          );
+        const accessToken = localStorage.getItem("access_token");
+        const userId = localStorage.getItem(USER_ID_STORAGE_KEY);
+        if (!accessToken || !userId) {
+          throw new Error("ログイン情報がありません");
         }
 
-        const data = await response.json();
-
-        console.log(
-          "★ユーザー情報取得成功:",
-          data
-        );
-
-        const user = data.user;
+        const user = await getUser(userId, accessToken);
 
         setName(user.user_name ?? "");
         setPhone(user.phone_number ?? "");
@@ -198,29 +174,14 @@ function ProfileEditPage() {
       setAddressSearchError("");
 
       try {
-        const response = await fetch(
-          `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zipCode}`
-        );
+        const address = await searchAddress(zipCode);
 
-        if (!response.ok) {
-          throw new Error();
-        }
-
-        const data =
-          (await response.json()) as ZipCloudResponse;
-
-        if (
-          !data.results ||
-          data.results.length === 0
-        ) {
+        if (!address) {
           setAddressSearchError(
             "該当する住所が見つかりませんでした"
           );
           return;
         }
-
-        const address =
-          data.results[0];
 
         setPrefecture(
           address.address1
@@ -299,40 +260,18 @@ function ProfileEditPage() {
       // ★追加：バックエンドへPATCH
       // ======================================
 
-      const response = await fetch(
-        `${API_URL}/api/users`,
-        {
-          method: "PATCH",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          body: JSON.stringify({
-            id: USER_ID,
-            user_name: name,
-            phone_number: phone,
-            address_postcode:
-              postalCode,
-            address: fullAddress,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          "ユーザー情報の更新に失敗しました"
-        );
+      const accessToken = localStorage.getItem("access_token");
+      const userId = localStorage.getItem(USER_ID_STORAGE_KEY);
+      if (!accessToken || !userId) {
+        throw new Error("ログイン情報がありません");
       }
 
-      const data =
-        await response.json();
-
-      console.log(
-        "★ユーザー情報更新成功:",
-        data
-      );
+      await updateUser(userId, {
+        user_name: name,
+        phone_number: phone,
+        address_postcode: postalCode,
+        address: fullAddress,
+      }, accessToken);
 
       setShowCompleteModal(true);
 
