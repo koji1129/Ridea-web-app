@@ -1,9 +1,4 @@
-import {
-  Camera,
-  ChevronDown,
-  User,
-  X,
-} from "lucide-react";
+import { Camera, ChevronDown, User, X } from "lucide-react";
 import {
   useRef,
   useState,
@@ -17,66 +12,38 @@ import { PREFECTURES } from "../../constants/prefectures";
 import { getUser, searchAddress, updateUser } from "../../lib/user-api";
 import "./ProfileEditPage.css";
 
-// ==========================================
-// ★追加：バックエンドAPI設定
-// ==========================================
-
-// ログイン時に保存したユーザーIDを利用する
-const USER_ID_STORAGE_KEY = "user_id";
-
 function ProfileEditPage() {
   const navigate = useNavigate();
 
-  const fileInputRef =
-    useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [name, setName] =
-    useState("山田 太郎");
+  const [name, setName] = useState("山田 太郎");
 
-  const [kana, setKana] =
-    useState("やまだ たろう");
+  const [kana, setKana] = useState("やまだ たろう");
 
-  const [phone, setPhone] =
-    useState("09012345678");
+  const [phone, setPhone] = useState("09012345678");
 
-  const [postalCode, setPostalCode] =
-    useState("4860804");
+  const [postalCode, setPostalCode] = useState("4860804");
 
-  const [prefecture, setPrefecture] =
-    useState("愛知県");
+  const [prefecture, setPrefecture] = useState("愛知県");
 
-  const [city, setCity] =
-    useState("春日井市");
+  const [city, setCity] = useState("春日井市");
 
-  const [town, setTown] =
-    useState("神領町");
+  const [town, setTown] = useState("神領町");
 
-  const [block, setBlock] =
-    useState("2-24");
+  const [block, setBlock] = useState("2-24");
 
-  const [building, setBuilding] =
-    useState("");
+  const [building, setBuilding] = useState("");
 
-  const [profileImage, setProfileImage] =
-    useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
-  const [error, setError] =
-    useState("");
+  const [error, setError] = useState("");
 
-  const [
-    addressSearchError,
-    setAddressSearchError,
-  ] = useState("");
+  const [addressSearchError, setAddressSearchError] = useState("");
 
-  const [
-    isSearchingAddress,
-    setIsSearchingAddress,
-  ] = useState(false);
+  const [isSearchingAddress, setIsSearchingAddress] = useState(false);
 
-  const [
-    showCompleteModal,
-    setShowCompleteModal,
-  ] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
 
   // ==========================================
   // ★追加：利用者情報取得
@@ -87,7 +54,7 @@ function ProfileEditPage() {
     const fetchUser = async () => {
       try {
         const accessToken = localStorage.getItem("access_token");
-        const userId = localStorage.getItem(USER_ID_STORAGE_KEY);
+        const userId = localStorage.getItem("user_id");
         if (!accessToken || !userId) {
           throw new Error("ログイン情報がありません");
         }
@@ -96,122 +63,146 @@ function ProfileEditPage() {
 
         setName(user.user_name ?? "");
         setPhone(user.phone_number ?? "");
-        setPostalCode(
-          user.address_postcode ?? ""
-        );
+        setPostalCode(user.address_postcode ?? "");
 
-        /*
-         * 現在DBの住所はaddressという
-         * 1つのカラムなので、
-         * 既存住所は一旦blockへ表示する。
-         */
-        setPrefecture("");
-        setCity("");
-        setTown("");
-        setBlock(user.address ?? "");
-        setBuilding("");
-
+        if (user.address == null || user.address == undefined) {
+          setPrefecture("");
+          setCity("");
+          setTown("");
+          setBlock(user.address ?? "");
+          setBuilding("");
+        } else {
+          const address = splitAddress(user.address);
+          setPrefecture(address.prefecture);
+          setCity(address.cityAndTown);
+          setTown("");
+          setBlock(address.block);
+          setBuilding(address.building);
+        }
       } catch (err) {
         console.error(err);
 
-        setError(
-          "登録情報を取得できませんでした"
-        );
+        setError("登録情報を取得できませんでした");
       }
     };
 
     fetchUser();
   }, []);
 
-  const handleImageChange = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    const file =
-      event.target.files?.[0];
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
 
     if (!file) {
       return;
     }
 
     if (!file.type.startsWith("image/")) {
-      setError(
-        "画像ファイルを選択してください"
-      );
+      setError("画像ファイルを選択してください");
       return;
     }
 
-    const imageUrl =
-      URL.createObjectURL(file);
+    const imageUrl = URL.createObjectURL(file);
 
     setProfileImage(imageUrl);
     setError("");
   };
 
-  const handlePostalCodeChange = (
-    value: string
-  ) => {
-    const formatted = value
-      .replace(/[^\d-]/g, "")
-      .slice(0, 8);
+  const handlePostalCodeChange = (value: string) => {
+    const formatted = value.replace(/[^\d-]/g, "").slice(0, 8);
 
     setPostalCode(formatted);
     setAddressSearchError("");
   };
 
-  const handleSearchAddress =
-    async () => {
-      const zipCode =
-        postalCode.replace(/-/g, "");
+  const handleSearchAddress = async () => {
+    const zipCode = postalCode.replace(/-/g, "");
 
-      if (!/^\d{7}$/.test(zipCode)) {
-        setAddressSearchError(
-          "郵便番号を7桁で入力してください"
-        );
+    if (!/^\d{7}$/.test(zipCode)) {
+      setAddressSearchError("郵便番号を7桁で入力してください");
+      return;
+    }
+
+    setIsSearchingAddress(true);
+    setAddressSearchError("");
+
+    try {
+      const address = await searchAddress(zipCode);
+
+      if (!address) {
+        setAddressSearchError("該当する住所が見つかりませんでした");
         return;
       }
 
-      setIsSearchingAddress(true);
-      setAddressSearchError("");
+      setPrefecture(address.address1);
 
-      try {
-        const address = await searchAddress(zipCode);
+      setCity(address.address2);
 
-        if (!address) {
-          setAddressSearchError(
-            "該当する住所が見つかりませんでした"
-          );
-          return;
-        }
+      setTown(address.address3);
+    } catch {
+      setAddressSearchError(
+        "住所を取得できませんでした。もう一度お試しください",
+      );
+    } finally {
+      setIsSearchingAddress(false);
+    }
+  };
 
-        setPrefecture(
-          address.address1
-        );
+  type SplitAddress = {
+    prefecture: string;
+    cityAndTown: string;
+    block: string;
+    building: string;
+  };
 
-        setCity(
-          address.address2
-        );
+  function splitAddress(address: string): SplitAddress {
+    const prefectureMatch = address.match(
+      /^(北海道|東京都|大阪府|京都府|.+県)/,
+    );
 
-        setTown(
-          address.address3
-        );
+    const prefecture = prefectureMatch?.[0] ?? "";
+    const rest = address.slice(prefecture.length);
 
-      } catch {
-        setAddressSearchError(
-          "住所を取得できませんでした。もう一度お試しください"
-        );
+    const numberMatch = rest.match(/\d/);
 
-      } finally {
-        setIsSearchingAddress(false);
-      }
+    if (!numberMatch || numberMatch.index === undefined) {
+      return {
+        prefecture,
+        cityAndTown: rest,
+        block: "",
+        building: "",
+      };
+    }
+
+    const cityAndTown = rest.slice(0, numberMatch.index);
+    const addressWithNumber = rest.slice(numberMatch.index);
+
+    const blockMatch = addressWithNumber.match(/^\d+(?:丁目)?-\d+(?:-\d+)?/);
+
+    if (!blockMatch) {
+      return {
+        prefecture,
+        cityAndTown,
+        block: addressWithNumber,
+        building: "",
+      };
+    }
+
+    const block = blockMatch[0];
+    const building = addressWithNumber.slice(block.length);
+
+    return {
+      prefecture,
+      cityAndTown,
+      block,
+      building,
     };
+  }
 
   // ==========================================
   // ★変更：保存時にPATCHを呼ぶ
   // ==========================================
 
-  const handleSubmit = async (
-    event: FormEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (
@@ -224,63 +215,55 @@ function ProfileEditPage() {
       !town.trim() ||
       !block.trim()
     ) {
-      setError(
-        "必須項目を入力してください"
-      );
+      setError("必須項目を入力してください");
       return;
     }
 
-    const zipCode =
-      postalCode.replace(/-/g, "");
+    const zipCode = postalCode.replace(/-/g, "");
 
     if (!/^\d{7}$/.test(zipCode)) {
-      setError(
-        "郵便番号を7桁で入力してください"
-      );
+      setError("郵便番号を7桁で入力してください");
       return;
     }
 
     if (!/^[0-9-]+$/.test(phone)) {
-      setError(
-        "電話番号を正しく入力してください"
-      );
+      setError("電話番号を正しく入力してください");
       return;
     }
 
     setError("");
 
     try {
-
       // ★追加：分割されている住所を
       // DB用の1つの文字列にする
-      const fullAddress =
-        `${prefecture}${city}${town}${block}${building}`;
+      const fullAddress = `${prefecture}${city}${town}${block}${building}`;
 
       // ======================================
       // ★追加：バックエンドへPATCH
       // ======================================
 
       const accessToken = localStorage.getItem("access_token");
-      const userId = localStorage.getItem(USER_ID_STORAGE_KEY);
+      const userId = localStorage.getItem("user_id");
       if (!accessToken || !userId) {
         throw new Error("ログイン情報がありません");
       }
 
-      await updateUser(userId, {
-        user_name: name,
-        phone_number: phone,
-        address_postcode: postalCode,
-        address: fullAddress,
-      }, accessToken);
+      await updateUser(
+        userId,
+        {
+          user_name: name,
+          phone_number: phone,
+          address_postcode: postalCode,
+          address: fullAddress,
+        },
+        accessToken,
+      );
 
       setShowCompleteModal(true);
-
     } catch (err) {
       console.error(err);
 
-      setError(
-        "登録情報を更新できませんでした"
-      );
+      setError("登録情報を更新できませんでした");
     }
   };
 
@@ -290,9 +273,7 @@ function ProfileEditPage() {
       showBack={true}
       showNavigation={false}
     >
-      <p className="page-lead">
-        登録している情報を編集できます
-      </p>
+      <p className="page-lead">登録している情報を編集できます</p>
 
       <section className="profile-image-section">
         <div className="profile-edit-avatar">
@@ -303,34 +284,22 @@ function ProfileEditPage() {
               className="profile-edit-avatar-image"
             />
           ) : (
-            <User
-              size={48}
-              aria-hidden="true"
-            />
+            <User size={48} aria-hidden="true" />
           )}
         </div>
 
         <div className="profile-image-info">
-          <strong>
-            プロフィール画像
-          </strong>
+          <strong>プロフィール画像</strong>
 
-          <p>
-            ドライバーに表示される画像です
-          </p>
+          <p>ドライバーに表示される画像です</p>
         </div>
 
         <button
           type="button"
           className="secondary-button profile-image-button"
-          onClick={() =>
-            fileInputRef.current?.click()
-          }
+          onClick={() => fileInputRef.current?.click()}
         >
-          <Camera
-            size={19}
-            aria-hidden="true"
-          />
+          <Camera size={19} aria-hidden="true" />
           画像を変更
         </button>
 
@@ -343,10 +312,7 @@ function ProfileEditPage() {
         />
       </section>
 
-      <form
-        className="form-stack profile-edit-form"
-        onSubmit={handleSubmit}
-      >
+      <form className="form-stack profile-edit-form" onSubmit={handleSubmit}>
         <ProfileInput
           label="氏名"
           required
@@ -373,20 +339,12 @@ function ProfileEditPage() {
         />
 
         <section className="address-fields">
-          <h2 className="profile-address-title">
-            住所
-          </h2>
+          <h2 className="profile-address-title">住所</h2>
 
           <div className="field-group">
-            <label
-              className="field-label"
-              htmlFor="profile-postal-code"
-            >
+            <label className="field-label" htmlFor="profile-postal-code">
               郵便番号
-
-              <span className="required-badge">
-                必須
-              </span>
+              <span className="required-badge">必須</span>
             </label>
 
             <div className="postal-code-row">
@@ -399,46 +357,28 @@ function ProfileEditPage() {
                 placeholder="例：4860804"
                 maxLength={8}
                 value={postalCode}
-                onChange={(event) =>
-                  handlePostalCodeChange(
-                    event.target.value
-                  )
-                }
+                onChange={(event) => handlePostalCodeChange(event.target.value)}
               />
 
               <button
                 type="button"
                 className="postal-search-button"
-                onClick={
-                  handleSearchAddress
-                }
-                disabled={
-                  isSearchingAddress
-                }
+                onClick={handleSearchAddress}
+                disabled={isSearchingAddress}
               >
-                {isSearchingAddress
-                  ? "検索中..."
-                  : "住所を検索"}
+                {isSearchingAddress ? "検索中..." : "住所を検索"}
               </button>
             </div>
 
             {addressSearchError && (
-              <p className="error-message">
-                {addressSearchError}
-              </p>
+              <p className="error-message">{addressSearchError}</p>
             )}
           </div>
 
           <div className="field-group">
-            <label
-              className="field-label"
-              htmlFor="profile-prefecture"
-            >
+            <label className="field-label" htmlFor="profile-prefecture">
               都道府県
-
-              <span className="required-badge">
-                必須
-              </span>
+              <span className="required-badge">必須</span>
             </label>
 
             <div className="select-wrapper">
@@ -446,33 +386,19 @@ function ProfileEditPage() {
                 id="profile-prefecture"
                 className="field-select"
                 value={prefecture}
-                onChange={(event) =>
-                  setPrefecture(
-                    event.target.value
-                  )
-                }
+                onChange={(event) => setPrefecture(event.target.value)}
                 autoComplete="address-level1"
               >
-                <option value="">
-                  選択してください
-                </option>
+                <option value="">選択してください</option>
 
-                {PREFECTURES.map(
-                  (item) => (
-                    <option
-                      key={item}
-                      value={item}
-                    >
-                      {item}
-                    </option>
-                  )
-                )}
+                {PREFECTURES.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
               </select>
 
-              <ChevronDown
-                size={20}
-                aria-hidden="true"
-              />
+              <ChevronDown size={20} aria-hidden="true" />
             </div>
           </div>
 
@@ -485,13 +411,13 @@ function ProfileEditPage() {
             autoComplete="address-level2"
           />
 
-          <ProfileInput
+          {/* <ProfileInput
             label="町名"
             required
             placeholder="例：神領町"
             value={town}
             onChange={setTown}
-          />
+          /> */}
 
           <ProfileInput
             label="丁目・番地"
@@ -511,16 +437,9 @@ function ProfileEditPage() {
           />
         </section>
 
-        {error && (
-          <p className="error-message">
-            {error}
-          </p>
-        )}
+        {error && <p className="error-message">{error}</p>}
 
-        <button
-          className="primary-button profile-save-button"
-          type="submit"
-        >
+        <button className="primary-button profile-save-button" type="submit">
           変更を保存する
         </button>
       </form>
@@ -528,51 +447,36 @@ function ProfileEditPage() {
       {showCompleteModal && (
         <div
           className="modal-backdrop"
-          onClick={() =>
-            setShowCompleteModal(false)
-          }
+          onClick={() => setShowCompleteModal(false)}
         >
           <section
             className="modal"
             role="dialog"
             aria-modal="true"
             aria-labelledby="profileSaveTitle"
-            onClick={(event) =>
-              event.stopPropagation()
-            }
+            onClick={(event) => event.stopPropagation()}
           >
             <button
               type="button"
               className="modal__close"
-              onClick={() =>
-                setShowCompleteModal(false)
-              }
+              onClick={() => setShowCompleteModal(false)}
               aria-label="閉じる"
             >
               <X size={25} />
             </button>
 
-            <h2
-              id="profileSaveTitle"
-              className="modal__title"
-            >
+            <h2 id="profileSaveTitle" className="modal__title">
               変更を保存しました
             </h2>
 
             <div className="modal__content">
-              <p className="profile-save-complete">
-                登録情報を更新しました。
-              </p>
+              <p className="profile-save-complete">登録情報を更新しました。</p>
             </div>
 
             <button
               type="button"
               className="primary-button profile-save-complete-button"
-              onClick={() =>
-                navigate(
-                  "/user/settings"
-                )
-              }
+              onClick={() => navigate("/user/settings")}
             >
               設定に戻る
             </button>
@@ -590,10 +494,7 @@ type ProfileInputProps = {
   type?: string;
   placeholder?: string;
   required?: boolean;
-  inputMode?:
-    | "text"
-    | "tel"
-    | "numeric";
+  inputMode?: "text" | "tel" | "numeric";
   autoComplete?: string;
 };
 
@@ -612,11 +513,7 @@ function ProfileInput({
       <label className="field-label">
         {label}
 
-        {required && (
-          <span className="required-badge">
-            必須
-          </span>
-        )}
+        {required && <span className="required-badge">必須</span>}
       </label>
 
       <input
@@ -626,9 +523,7 @@ function ProfileInput({
         autoComplete={autoComplete}
         placeholder={placeholder}
         value={value}
-        onChange={(event) =>
-          onChange(event.target.value)
-        }
+        onChange={(event) => onChange(event.target.value)}
       />
     </div>
   );
