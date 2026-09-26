@@ -1,4 +1,4 @@
-import { useRef, useState, type ChangeEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import {
   Bell,
   Camera,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+import { getUser, type User as UserInfo } from "../../../lib/user-api";
 import "./DriverMyPage.css";
 
 type MenuItemProps = {
@@ -30,6 +31,36 @@ function DriverMyPage() {
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [user, setUser] = useState<UserInfo | null>(null);
+  const [userError, setUserError] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadUser = async () => {
+      try {
+        const userId = localStorage.getItem("user_id");
+        const accessToken = localStorage.getItem("access_token");
+
+        if (!userId || !accessToken) {
+          throw new Error("ログイン情報がありません");
+        }
+
+        const result = await getUser(userId, accessToken, controller.signal);
+        if (!controller.signal.aborted) setUser(result);
+      } catch {
+        if (!controller.signal.aborted) {
+          setUserError("利用者情報を取得できませんでした");
+        }
+      }
+    };
+
+    void loadUser();
+    return () => controller.abort();
+  }, []);
+
+  const displayedProfileImage = profileImage ?? user?.profile_image_path;
+  const fallbackValue = userError ? "取得できませんでした" : "読み込み中...";
 
   const handleProfileImageChange = (
     event: ChangeEvent<HTMLInputElement>
@@ -73,9 +104,9 @@ function DriverMyPage() {
               onClick={() => fileInputRef.current?.click()}
               aria-label="プロフィール画像を変更"
             >
-              {profileImage ? (
+              {displayedProfileImage ? (
                 <img
-                  src={profileImage}
+                  src={displayedProfileImage}
                   alt="プロフィール画像"
                   className="driverProfileCard__avatarImage"
                 />
@@ -98,8 +129,7 @@ function DriverMyPage() {
 
             <div className="driverProfileCard__info">
               <span>ドライバー</span>
-              <h2>山田 太郎</h2>
-              <p>春日井市</p>
+              <h2>{user ? user.user_name || "未登録" : fallbackValue}</h2>
             </div>
 
             <div className="driverProfileCard__status">
@@ -108,13 +138,15 @@ function DriverMyPage() {
             </div>
           </section>
 
+          {userError && <p className="error-message" role="alert">{userError}</p>}
+
           <section className="driverMyPage__section">
             <h2>アカウント情報</h2>
 
             <div className="driverInfoCard">
-              <InfoRow label="氏名" value="山田 太郎" />
-              <InfoRow label="電話番号" value="090-1234-5678" />
-              <InfoRow label="住所" value="愛知県春日井市○○町1-2-3" />
+              <InfoRow label="氏名" value={user ? user.user_name || "未登録" : fallbackValue} />
+              <InfoRow label="電話番号" value={user ? user.phone_number || "未登録" : fallbackValue} />
+              <InfoRow label="住所" value={user ? user.address || "未登録" : fallbackValue} />
             </div>
 
             <button
