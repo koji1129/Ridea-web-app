@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .devcontainer/
+
+.env*
+!.env.example
