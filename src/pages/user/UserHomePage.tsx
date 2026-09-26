@@ -19,6 +19,7 @@ import {
   getReservations,
   type Reservation,
 } from "../../lib/reservation-api";
+import { getUser } from "../../lib/user-api";
 import "./UserHomePage.css";
 
 type RideStatus =
@@ -104,6 +105,34 @@ function getSavedRideStatus(reservationId: number): RideStatus {
 }
 
 function UserHomePage() {
+  const [userName, setUserName] = useState("");
+  const [userError, setUserError] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadUser = async () => {
+      try {
+        const userId = localStorage.getItem("user_id");
+        const accessToken = localStorage.getItem("access_token");
+
+        if (!userId || !accessToken) {
+          throw new Error("ログイン情報がありません");
+        }
+
+        const user = await getUser(userId, accessToken, controller.signal);
+        if (!controller.signal.aborted) setUserName(user.user_name);
+      } catch {
+        if (!controller.signal.aborted) {
+          setUserError("利用者の名前を取得できませんでした");
+        }
+      }
+    };
+
+    void loadUser();
+    return () => controller.abort();
+  }, []);
+
   const [rideStatus, setRideStatus] = useState<RideStatus>("none");
   const [todayReservation, setTodayReservation] =
     useState<Reservation | null>(null);
@@ -230,10 +259,12 @@ function UserHomePage() {
       <section className="home-intro">
         <p>こんにちは</p>
         <h1>
-          山田 太郎
-          <small>さん</small>
+          {userName || (userError ? "利用者" : "読み込み中...")}
+          {userName && <small>さん</small>}
         </h1>
       </section>
+
+      {userError && <p className="error-message" role="alert">{userError}</p>}
 
       {rideStatus === "none" && (
         <section className="ride-card ride-card-empty">
