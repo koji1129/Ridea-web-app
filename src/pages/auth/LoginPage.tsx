@@ -52,6 +52,7 @@ function LoginPage() {
         "refresh_token",
         response.session.refresh_token,
       );
+      localStorage.setItem("user_id", response.user.id);
 
       navigate("/driver/guide");
     } catch (error) {
