@@ -92,6 +92,11 @@ async function request<T>(
     );
   }
 
+  // ログアウト成功時はレスポンスボディがありません。
+  if (response.status === 204) {
+    return undefined as T;
+  }
+
   let body: unknown;
 
   try {
@@ -157,6 +162,23 @@ export function login(
       email: input.email,
       password: input.password,
     }),
+    signal,
+  });
+}
+
+/**
+ * Bearerアクセストークンで現在のセッションをログアウトします。
+ * POST /auth/logout（成功時は204 No Content）
+ */
+export function logout(
+  accessToken: string,
+  signal?: AbortSignal,
+): Promise<void> {
+  return request<void>("/auth/logout", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
     signal,
   });
 }
