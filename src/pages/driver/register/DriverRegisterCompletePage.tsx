@@ -61,7 +61,7 @@ function DriverRegisterCompletePage() {
           <Button
             type="button"
             fullWidth
-            onClick={() => navigate("/driver/review")}
+            onClick={() => navigate("/driver/review/approved")}
           >
             審査状況を確認する
           </Button>
