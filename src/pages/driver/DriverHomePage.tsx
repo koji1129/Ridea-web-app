@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 import { getShifts } from "../../lib/shift-api";
+import { getUser } from "../../lib/user-api";
 import "./DriverHome.css";
 
 type Operation = {
@@ -41,10 +42,36 @@ function DriverHomePage() {
   const navigate = useNavigate();
   const hasTodayOperations = true;
   const hasUnreadNotifications = true;
-  const driverName = "山田 太郎";
+  const [driverName, setDriverName] = useState("");
+  const [userError, setUserError] = useState("");
   const todayRevenue = 3000;
   const [todayLabel, setTodayLabel] = useState(getTodayLabel);
   const [workTime, setWorkTime] = useState("勤務予定なし");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadUser = async () => {
+      try {
+        const userId = localStorage.getItem("user_id");
+        const accessToken = localStorage.getItem("access_token");
+
+        if (!userId || !accessToken) {
+          throw new Error("ログイン情報がありません");
+        }
+
+        const user = await getUser(userId, accessToken, controller.signal);
+        if (!controller.signal.aborted) setDriverName(user.user_name);
+      } catch {
+        if (!controller.signal.aborted) {
+          setUserError("利用者の名前を取得できませんでした");
+        }
+      }
+    };
+
+    void loadUser();
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -124,7 +151,8 @@ function DriverHomePage() {
             <div className="driverHome__avatar"><UserRound size={35} /></div>
             <div className="driverHome__greeting">
               <p>おはようございます</p>
-              <h1>{driverName}さん</h1>
+              <h1>{driverName ? `${driverName}さん` : userError ? "利用者" : "読み込み中..."}</h1>
+              {userError && <p className="error-message" role="alert">{userError}</p>}
             </div>
             <div className="driverHome__available">
               <span className="driverHome__availableDot" />
