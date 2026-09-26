@@ -5,7 +5,7 @@ import type {
 } from "react";
 
 import {
-  useEffect, // ★追加
+  useEffect,
   useState,
 } from "react";
 
@@ -21,6 +21,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
+import { getUser, updateUser, type User as UserInfo } from "../../../lib/user-api";
 import "./DriverProfileEditPage.css";
 
 type ProfileForm = {
@@ -35,30 +36,31 @@ type ProfileErrors = {
   address?: string;
 };
 
-// ==========================================
-// ★追加：API設定
-// ==========================================
+const emptyProfile: ProfileForm = { name: "", phone: "", address: "" };
 
-const API_URL = "http://localhost:3000";
+function toProfile(user: UserInfo): ProfileForm {
+  return {
+    name: user.user_name ?? "",
+    phone: user.phone_number ?? "",
+    address: user.address ?? "",
+  };
+}
 
-// ★接続確認用
-// Supabaseのdriversテーブルのidに変更する
-const DRIVER_ID = 1;
-
-const initialProfile: ProfileForm = {
-  name: "山田 太郎",
-  phone: "090-1234-5678",
-  address: "愛知県春日井市○○町1-2-3",
-};
+function getLoginInfo() {
+  const userId = localStorage.getItem("user_id");
+  const accessToken = localStorage.getItem("access_token");
+  if (!userId || !accessToken) throw new Error("ログイン情報がありません");
+  return { userId, accessToken };
+}
 
 function DriverProfileEditPage() {
   const navigate = useNavigate();
 
   const [form, setForm] =
-    useState<ProfileForm>(initialProfile);
+    useState<ProfileForm>(emptyProfile);
 
   const [savedProfile, setSavedProfile] =
-    useState<ProfileForm>(initialProfile);
+    useState<ProfileForm>(emptyProfile);
 
   const [errors, setErrors] =
     useState<ProfileErrors>({});
@@ -69,58 +71,34 @@ function DriverProfileEditPage() {
   const [isSubmitting, setIsSubmitting] =
     useState(false);
 
-  // ==========================================
-  // ★追加：ドライバー情報取得
-  // GET /api/drivers?id=1
-  // ==========================================
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [apiError, setApiError] = useState("");
 
   useEffect(() => {
-    const fetchDriver = async () => {
+    const controller = new AbortController();
+
+    const loadUser = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/api/drivers?id=${DRIVER_ID}`
-        );
+        const { userId, accessToken } = getLoginInfo();
+        const user = await getUser(userId, accessToken, controller.signal);
+        if (controller.signal.aborted) return;
 
-        if (!response.ok) {
-          throw new Error(
-            "ドライバー情報の取得に失敗しました"
-          );
-        }
-
-        const data =
-          await response.json();
-
-        console.log(
-          "★ドライバー情報取得成功:",
-          data
-        );
-
-        const driver =
-          data.driver;
-
-        const profile: ProfileForm = {
-          name:
-            driver.user_name ?? "",
-
-          phone:
-            driver.phone_number ?? "",
-
-          address:
-            driver.address ?? "",
-        };
-
+        const profile = toProfile(user);
         setForm(profile);
         setSavedProfile(profile);
-
-      } catch (error) {
-        console.error(
-          "ドライバー情報取得エラー:",
-          error
-        );
+        setIsLoaded(true);
+      } catch {
+        if (!controller.signal.aborted) {
+          setApiError("登録情報を取得できませんでした");
+        }
+      } finally {
+        if (!controller.signal.aborted) setIsLoading(false);
       }
     };
 
-    fetchDriver();
+    void loadUser();
+    return () => controller.abort();
   }, []);
 
   const handleChange = (
@@ -168,87 +146,43 @@ function DriverProfileEditPage() {
   };
 
   const handleEdit = () => {
+    if (!isLoaded) return;
+    setApiError("");
     setForm(savedProfile);
     setErrors({});
     setIsEditing(true);
   };
 
   const handleCancel = () => {
+    setApiError("");
     setForm(savedProfile);
     setErrors({});
     setIsEditing(false);
   };
 
-  // ==========================================
-  // ★変更：ドライバー情報をPATCH
-  // ==========================================
-
-  const handleSubmit = async (
-    event: FormEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (!validate()) {
-      return;
-    }
+    if (!isLoaded || isSubmitting || !validate()) return;
 
     setIsSubmitting(true);
-
+    setApiError("");
     try {
-
-      // ======================================
-      // ★追加：バックエンドへPATCH
-      // ======================================
-
-      const response = await fetch(
-        `${API_URL}/api/drivers`,
+      const { userId, accessToken } = getLoginInfo();
+      const user = await updateUser(
+        userId,
         {
-          method: "PATCH",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          body: JSON.stringify({
-            id: DRIVER_ID,
-
-            user_name:
-              form.name,
-
-            phone_number:
-              form.phone,
-
-            address:
-              form.address,
-          }),
-        }
+          user_name: form.name,
+          phone_number: form.phone,
+          address: form.address,
+        },
+        accessToken,
       );
-
-      if (!response.ok) {
-        throw new Error(
-          "ドライバー情報の更新に失敗しました"
-        );
-      }
-
-      const data =
-        await response.json();
-
-      console.log(
-        "★ドライバー情報更新成功:",
-        data
-      );
-
-      setSavedProfile(form);
-
+      const profile = toProfile(user);
+      setForm(profile);
+      setSavedProfile(profile);
       setIsEditing(false);
-
-    } catch (error) {
-      console.error(
-        "ドライバー情報更新エラー:",
-        error
-      );
-
+    } catch {
+      setApiError("登録情報を更新できませんでした。もう一度お試しください");
     } finally {
       setIsSubmitting(false);
     }
@@ -293,6 +227,9 @@ function DriverProfileEditPage() {
             </div>
 
           </section>
+
+          {isLoading && <p role="status">登録情報を読み込み中...</p>}
+          {apiError && <p className="error-message" role="alert">{apiError}</p>}
 
           {!isEditing ? (
             <>
@@ -344,6 +281,7 @@ function DriverProfileEditPage() {
                 type="button"
                 className="driverProfileEdit__editButton"
                 onClick={handleEdit}
+                disabled={!isLoaded || isLoading}
               >
                 <Pencil size={18} />
                 基本情報を編集する
@@ -460,7 +398,7 @@ function ProfileViewRow({
 
       <div className="driverProfileView__content">
         <span>{label}</span>
-        <strong>{value}</strong>
+        <strong>{value || "未登録"}</strong>
       </div>
 
     </div>
