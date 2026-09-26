@@ -15,6 +15,10 @@ import { useNavigate } from "react-router-dom";
 import { PREFECTURES } from "../../constants/prefectures";
 import { TERMS_CONTENT } from "../../constants/terms";
 import { PRIVACY_CONTENT } from "../../constants/privacyPolicy";
+import {
+  AuthApiError,
+  register,
+} from "../../lib/auth-api";
 
 import "./RegisterPage.css";
 
@@ -53,6 +57,10 @@ function RegisterPage() {
   const [isSearchingAddress, setIsSearchingAddress] =
     useState(false);
   const [addressSearchError, setAddressSearchError] =
+    useState("");
+  const [isRegistering, setIsRegistering] =
+    useState(false);
+  const [registerError, setRegisterError] =
     useState("");
 
   const isPasswordValid = password.length >= 8;
@@ -183,9 +191,37 @@ function RegisterPage() {
     window.scrollTo(0, 0);
   };
 
-  const handleRegister = () => {
-    setStep("complete");
-    window.scrollTo(0, 0);
+  const handleRegister = async () => {
+    if (isRegistering) {
+      return;
+    }
+
+    setIsRegistering(true);
+    setRegisterError("");
+
+    try {
+      await register({
+        email,
+        password,
+        user_name: name,
+        phone_number: phoneNumber.replace(/-/g, ""),
+        address_postcode: postalCode,
+        address: fullAddress,
+      });
+
+      setStep("complete");
+      window.scrollTo(0, 0);
+    } catch (error) {
+      if (error instanceof AuthApiError) {
+        setRegisterError(error.message);
+      } else {
+        setRegisterError(
+          "登録に失敗しました。時間をおいて再度お試しください",
+        );
+      }
+    } finally {
+      setIsRegistering(false);
+    }
   };
 
   if (step === "complete") {
@@ -286,9 +322,16 @@ function RegisterPage() {
             className="primary-button"
             type="button"
             onClick={handleRegister}
+            disabled={isRegistering}
           >
-            登録する
+            {isRegistering ? "登録中..." : "登録する"}
           </button>
+
+          {registerError && (
+            <p className="error-message">
+              {registerError}
+            </p>
+          )}
 
           <button
             className="secondary-button register-secondary-button"
@@ -345,12 +388,11 @@ function RegisterPage() {
               onChange={(event) =>
                 setName(event.target.value)
               }
-              className={`field-input ${
-                submitted &&
+              className={`field-input ${submitted &&
                 !name.trim()
-                  ? "input-error"
-                  : ""
-              }`}
+                ? "input-error"
+                : ""
+                }`}
             />
           </RegisterField>
 
@@ -374,12 +416,11 @@ function RegisterPage() {
               onChange={(event) =>
                 setPhoneNumber(event.target.value)
               }
-              className={`field-input ${
-                submitted &&
+              className={`field-input ${submitted &&
                 !phoneNumber.trim()
-                  ? "input-error"
-                  : ""
-              }`}
+                ? "input-error"
+                : ""
+                }`}
             />
           </RegisterField>
 
@@ -403,12 +444,11 @@ function RegisterPage() {
               onChange={(event) =>
                 setEmail(event.target.value)
               }
-              className={`field-input ${
-                submitted &&
+              className={`field-input ${submitted &&
                 !email.trim()
-                  ? "input-error"
-                  : ""
-              }`}
+                ? "input-error"
+                : ""
+                }`}
             />
           </RegisterField>
 
@@ -434,12 +474,11 @@ function RegisterPage() {
                 onChange={
                   handlePostalCodeChange
                 }
-                className={`field-input ${
-                  submitted &&
+                className={`field-input ${submitted &&
                   !isPostalCodeValid
-                    ? "input-error"
-                    : ""
-                }`}
+                  ? "input-error"
+                  : ""
+                  }`}
               />
 
               <button
@@ -486,12 +525,11 @@ function RegisterPage() {
                   event.target.value
                 )
               }
-              className={`field-select ${
-                submitted &&
+              className={`field-select ${submitted &&
                 !prefecture
-                  ? "input-error"
-                  : ""
-              }`}
+                ? "input-error"
+                : ""
+                }`}
             >
               <option value="">
                 都道府県を選択してください
@@ -529,12 +567,11 @@ function RegisterPage() {
               onChange={(event) =>
                 setCity(event.target.value)
               }
-              className={`field-input ${
-                submitted &&
+              className={`field-input ${submitted &&
                 !city.trim()
-                  ? "input-error"
-                  : ""
-              }`}
+                ? "input-error"
+                : ""
+                }`}
             />
           </RegisterField>
 
@@ -559,12 +596,11 @@ function RegisterPage() {
                   event.target.value
                 )
               }
-              className={`field-input ${
-                submitted &&
+              className={`field-input ${submitted &&
                 !streetAddress.trim()
-                  ? "input-error"
-                  : ""
-              }`}
+                ? "input-error"
+                : ""
+                }`}
             />
           </RegisterField>
 
@@ -613,12 +649,11 @@ function RegisterPage() {
                     event.target.value
                   )
                 }
-                className={`field-input ${
-                  submitted &&
+                className={`field-input ${submitted &&
                   !isPasswordValid
-                    ? "input-error"
-                    : ""
-                }`}
+                  ? "input-error"
+                  : ""
+                  }`}
               />
 
               <button

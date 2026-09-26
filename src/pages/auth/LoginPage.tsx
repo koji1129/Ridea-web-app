@@ -3,6 +3,10 @@ import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import UserPopup from "../../components/user/UserPopup";
 import logo from "../../assets/header_logo.png";
+import {
+  AuthApiError,
+  login,
+} from "../../lib/auth-api";
 import "./LoginPage.css";
 
 function LoginPage() {
@@ -13,17 +17,54 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showInputError, setShowInputError] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    event: FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
     setSubmitted(true);
+    setLoginError("");
 
     if (!email.trim() || !password.trim()) {
       setShowInputError(true);
       return;
     }
 
-    navigate("/driver/guide");
+    if (isLoggingIn) {
+      return;
+    }
+
+    setIsLoggingIn(true);
+
+    try {
+      const response = await login({
+        email,
+        password,
+      });
+
+      localStorage.setItem(
+        "access_token",
+        response.session.access_token,
+      );
+      localStorage.setItem(
+        "refresh_token",
+        response.session.refresh_token,
+      );
+
+      navigate("/driver/guide");
+    } catch (error) {
+      if (error instanceof AuthApiError) {
+        setLoginError(error.message);
+      } else {
+        setLoginError(
+          "ログインに失敗しました。時間をおいて再度お試しください",
+        );
+      }
+    } finally {
+      setIsLoggingIn(false);
+    }
   };
 
   return (
@@ -56,11 +97,10 @@ function LoginPage() {
 
             <input
               id="email"
-              className={`field-input ${
-                submitted && !email.trim()
+              className={`field-input ${submitted && !email.trim()
                   ? "input-error"
                   : ""
-              }`}
+                }`}
               type="email"
               inputMode="email"
               autoComplete="email"
@@ -89,11 +129,10 @@ function LoginPage() {
             <div className="login-password-wrapper">
               <input
                 id="password"
-                className={`field-input ${
-                  submitted && !password.trim()
+                className={`field-input ${submitted && !password.trim()
                     ? "input-error"
                     : ""
-                }`}
+                  }`}
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 placeholder="パスワードを入力"
@@ -133,9 +172,16 @@ function LoginPage() {
           <button
             className="primary-button"
             type="submit"
+            disabled={isLoggingIn}
           >
-            ログイン
+            {isLoggingIn ? "ログイン中..." : "ログイン"}
           </button>
+
+          {loginError && (
+            <p className="error-message">
+              {loginError}
+            </p>
+          )}
         </form>
 
         <div className="login-links">
