@@ -9,17 +9,44 @@ import {
   ShieldCheck,
   UserRound,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import UserPopup from "../../components/user/UserPopup";
 import UserScreen from "../../components/user/UserScreen";
+import { getUser, type User } from "../../lib/user-api";
 import "./SettingsPage.css";
 
 function SettingsPage() {
   const navigate = useNavigate();
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
-  const isDriver = true;
+  const [user, setUser] = useState<User | null>(null);
+  const [userError, setUserError] = useState("");
+  const isDriver = user?.role === "driver";
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadUser = async () => {
+      try {
+        const userId = localStorage.getItem("user_id");
+        const accessToken = localStorage.getItem("access_token");
+        if (!userId || !accessToken) {
+          throw new Error("ログイン情報がありません");
+        }
+
+        const result = await getUser(userId, accessToken, controller.signal);
+        if (!controller.signal.aborted) setUser(result);
+      } catch {
+        if (!controller.signal.aborted) {
+          setUserError("利用者情報を取得できませんでした");
+        }
+      }
+    };
+
+    void loadUser();
+    return () => controller.abort();
+  }, []);
 
   const handleLogout = () => {
     setShowLogoutPopup(false);
@@ -33,13 +60,19 @@ function SettingsPage() {
       showNavigation={false}
     >
       <div className="mypage-avatar">
-        <UserRound size={92} aria-hidden="true" />
+        {user?.profile_image_path ? (
+          <img src={user.profile_image_path} alt="プロフィール画像" />
+        ) : (
+          <UserRound size={92} aria-hidden="true" />
+        )}
       </div>
 
       <h2 className="mypage-name">
-        山田 太郎
-        <small>さん</small>
+        {user ? user.user_name || "氏名未登録" : userError ? "利用者" : "読み込み中..."}
+        {user?.user_name && <small>さん</small>}
       </h2>
+
+      {userError && <p className="error-message" role="alert">{userError}</p>}
 
       <nav className="mypage-menu">
         <Link to="/user/settings/profile">
