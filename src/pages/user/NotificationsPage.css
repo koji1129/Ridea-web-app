@@ -1,0 +1,126 @@
+.notifications-page {
+  width: 100%;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 18px;
+  border-bottom: 1px solid #e4eaed;
+  background: #ffffff;
+  color: #102d55;
+  text-decoration: none;
+}
+
+.notification-item-link {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.notification-item-link:hover {
+  background: #f7fbfb;
+}
+
+.notification-item-link:active {
+  background: #eef8f8;
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.notification-icon-pickup {
+  color: #0797a5;
+  background: #dff5f4;
+}
+
+.notification-icon-confirmed {
+  color: #0797a5;
+  background: #dff5f4;
+}
+
+.notification-icon-reserved {
+  color: #0797a5;
+  background: #eaf7f8;
+}
+
+.notification-icon-cancelled {
+  color: #66788a;
+  background: #eef1f3;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notification-title-row h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #102d55;
+}
+
+.notification-unread {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #0797a5;
+}
+
+.notification-message {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #536d8b;
+}
+
+.notification-meta {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #8a9aaa;
+}
+
+.notification-chevron {
+  flex-shrink: 0;
+  align-self: center;
+  color: #8a9aaa;
+}
+
+.notifications-empty {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #8a9aaa;
+}
+
+.notifications-empty p {
+  margin: 0;
+  font-size: 14px;
+}
