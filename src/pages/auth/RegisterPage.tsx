@@ -11,7 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import headerLogo from "../../assets/header_logo.png";
 import { PREFECTURES } from "../../constants/prefectures";
 import { TERMS_CONTENT } from "../../constants/terms";
 import { PRIVACY_CONTENT } from "../../constants/privacyPolicy";
@@ -353,7 +353,7 @@ function RegisterPage() {
         <div className="auth-brand-logo-wrapper">
           <img
             className="auth-brand-logo"
-            src="/src/assets/header_logo.png"
+            src={headerLogo}
             alt="YORIAI"
           />
         </div>
