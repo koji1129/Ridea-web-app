@@ -500,7 +500,7 @@ function UserHomePage() {
         </Link>
 
         <Link
-          to="/user/pickup-today"
+          to="/user/notifications"
           className="home-menu-item"
         >
           <Bell aria-hidden="true" />

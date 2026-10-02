@@ -12,6 +12,7 @@ import DriverGuidePage from "./pages/auth/DriverGuidePage";
 
 import UserHomePage from "./pages/user/UserHomePage";
 import PickupTodayPage from "./pages/user/PickupTodayPage";
+import NotificationsPage from "./pages/user/NotificationsPage";
 import PickupSelectPage from "./pages/user/PickupSelectPage";
 import DestinationSelectPage from "./pages/user/DestinationSelectPage";
 import DateTimeSelectPage from "./pages/user/DateTimeSelectPage";
@@ -74,6 +75,7 @@ function App() {
 
         <Route path="/user/home" element={<UserHomePage />} />
         <Route path="/user/pickup-today" element={<PickupTodayPage />} />
+        <Route path="/user/notifications"  element={<NotificationsPage />}/>
         <Route path="/user/reservation/pickup" element={<PickupSelectPage />} />
         <Route
           path="/user/reservation/destination"
